@@ -28,17 +28,17 @@ Kích hoạt môi trường ảo:
 - **Windows (PowerShell):**
 
 ```powershell
-.venv\Scripts\activate.ps1
+.\venv\Scripts\activate.ps1
 ```
 
 - **Windows (CMD):**
 
 ```cmd
-venv\Scripts\activate.bat
+.\venv\Scripts\activate.bat
 ```
 hoặc
 ```cmd
-venv\Scripts\activate
+.\venv\Scripts\activate
 ```
 
 - **macOS/Linux:**
