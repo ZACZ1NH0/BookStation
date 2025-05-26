@@ -74,10 +74,11 @@ python manage.py runserver
 
 ## 📄 Requirements
 
-- Python 3.11
-- Django 4.x
-- (Thêm các thư viện khác bạn dùng...)
-
+- asgiref==3.8.1
+- Django==5.2.1
+- mysqlclient==2.2.7
+- sqlparse==0.5.3
+- tzdata==2025.2
 ---
 
 ## 📝 Ghi chú
