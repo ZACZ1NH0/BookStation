@@ -39,9 +39,10 @@ class Book(models.Model):
     description = models.TextField(blank=True)        
     stock = models.PositiveIntegerField(default=0)    #tồn kho
     cover_image = models.ImageField(upload_to='book_covers/', blank=True, null=True)  
-    publication_date = models
-    id_author = models.ForeignKey(Author, on_delete=models.CASCADE)
-    id_publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
+    publication_date = models.DateField(null=True, blank=True)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
+    category = models.ManyToManyField(Category, related_name='books')
 
     def __str__(self):
         return self.title
