@@ -9,6 +9,9 @@ class Publisher(models.Model):
     address = models.TextField()
     email = models.EmailField()
 
+    def __str__(self):
+        return self.name
+
 
 class Author(models.Model):
     name = models.CharField(max_length=100)
@@ -16,6 +19,18 @@ class Author(models.Model):
     image = models.ImageField(upload_to='author/', blank=True, null=True)
     nationality = models.CharField(max_length=40)
     birth_date = models.DateField()
+
+    def __str__(self):
+        return self.name
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+
 
 
 class Book(models.Model):
