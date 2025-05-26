@@ -15,12 +15,12 @@ cd BookStation
 
 ---
 
-### 2. 🐍 Tạo môi trường ảo với Python 3.11
+### 2. 🐍 Tạo môi trường ảo với Python 3.11 (nếu chưa tạo)
 
 > ⚠️ Đảm bảo bạn đã cài Python 3.11 trước đó.
 
 ```bash
-python -m venv venv
+py -3.11 -m venv venv
 ```
 
 Kích hoạt môi trường ảo:
