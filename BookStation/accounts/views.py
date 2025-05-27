@@ -1,7 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect
-from django.contrib.auth import authenticate, login, logout
-from .forms import CustomUserCreationForm
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from .forms import CustomUserCreationForm,EditProfile
 from django.contrib import messages
+from django.contrib.auth.forms import PasswordChangeForm
+
 
 
 def register_view(request):
@@ -30,5 +33,25 @@ def logout_view(request):
     logout(request)
     return redirect('home')
 
+@login_required
+def edit_profile_view(request):
+    user = request.user
+    if request.method == 'POST':
+        profile_form = EditProfile(request.POST)
+        password_form = PasswordChangeForm(user=user)
+        if profile_form.is_valid():
+            profile_form.save()
+            password_form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request,'Cập nhật thành công')
+            return redirect('edit_profile')
+        else:
+            messages.error(request,'Có lỗi xảy ra, vui lòng thử lại!')
+    else:
+        profile_form = EditProfile(instance=request.user)
+        password_form = PasswordChangeForm(user=user)
+    return render(request, 'accounts/edit_profile.html',
+            {'profile_form': profile_form,
+                    'password_form': password_form})
 
 
