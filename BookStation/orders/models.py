@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from books.models import Book
 
 class Order(models.Model):
@@ -10,7 +10,7 @@ class Order(models.Model):
         ('cancelled', 'Cancelled'),
     ]
 
-    customer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     note = models.TextField(blank=True)
