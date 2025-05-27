@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from .models import Book
+from books.models import Book
 
 class Order(models.Model):
     STATUS_CHOICES = [
