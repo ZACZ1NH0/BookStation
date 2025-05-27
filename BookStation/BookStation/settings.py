@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'orders',
 
 ]
-
+AUTH_USER_MODEL = 'accounts.Users'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'admin@bookstation.local'
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
