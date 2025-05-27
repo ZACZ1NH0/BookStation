@@ -2,11 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from decimal import Decimal
 from .models import Order, OrderItem
-from books.models import Book  
+from books.models import Book
 from .forms import OrderForm, OrderItemFormSet
 
 
-@login_required
+# @login_required
 def create_order(request):
     if request.method == 'POST':
         form = OrderForm(request.POST)
