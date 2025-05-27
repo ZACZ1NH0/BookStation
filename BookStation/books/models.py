@@ -42,7 +42,7 @@ class Book(models.Model):
     publication_date = models.DateField(null=True, blank=True)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     publisher = models.ForeignKey(Publisher, on_delete=models.CASCADE)
-    category = models.ManyToManyField(Category, related_name='books')
+    categories = models.ManyToManyField(Category, related_name='books')
 
     def __str__(self):
         return self.title
