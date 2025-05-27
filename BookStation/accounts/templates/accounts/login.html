@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Đăng nhập - BookStation</title>
+    <link rel="stylesheet" href="login.css">
 </head>
 <body>
+    <form class="login-box" method="post" action="/login">
+        <h2>Đăng nhập</h2>
+        
+        <!-- Hiển thị thông báo lỗi -->
+        <p class="error">Tên đăng nhập hoặc mật khẩu không đúng.</p>
 
+        <input type="text" name="username" placeholder="Tên đăng nhập" required>
+        <input type="password" name="password" placeholder="Mật khẩu" required>
+        <button type="submit">Đăng nhập</button>
+    </form>
 </body>
 </html>
