@@ -9,7 +9,7 @@ def register_view(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            login = (request,user)
+            login(request,user)
             messages.success(request, 'Đăng kí thành công !!!')
             return redirect('home')
     return render(request, 'accounts/register.html', {'form': form})
