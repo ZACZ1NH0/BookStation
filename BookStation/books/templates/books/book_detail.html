@@ -1,0 +1,6 @@
+<form method="post" action="{% url 'add_to_cart' book.pk %}">
+  {% csrf_token %}
+  <label for="quantity">Quantity:</label>
+  <input type="number" id="quantity" name="quantity" value="1" min="1">
+  <button type="submit">Add to Cart</button>
+</form>

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+  <h2>Create Order</h2>
+  <form method="post">
+    {% csrf_token %}
+    
+    <fieldset>
+      <legend>Order Information</legend>
+      {{ form.as_p }}
+    </fieldset>
+    
+    <fieldset>
+      <legend>Order Items</legend>
+      {{ formset.management_form }}
+      {% for form in formset %}
+        <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+          {{ form.as_p }}
+          {% if form.instance.pk %}
+            <label for="{{ form.prefix }}-DELETE">Delete:</label> {{ form.DELETE }}
+          {% endif %}
+        </div>
+      {% endfor %}
+      <button type="button" onclick="addForm()">Add Item</button>
+    </fieldset>
+    
+    <button type="submit">Submit Order</button>
+  </form>
+
+  <script>
+    // JavaScript nhỏ để thêm formset động (nếu muốn)
+    function addForm() {
+      const totalForms = document.getElementById('id_orderitem_set-TOTAL_FORMS');
+      const currentCount = parseInt(totalForms.value);
+      const formCopyTarget = totalForms.parentNode;
+      const emptyForm = document.getElementById('empty-form').innerHTML.replace(/__prefix__/g, currentCount);
+      
+      const div = document.createElement('div');
+      div.innerHTML = emptyForm;
+      formCopyTarget.appendChild(div);
+      totalForms.value = currentCount + 1;
+    }
+  </script>
+
+  <div id="empty-form" style="display:none;">
+    {{ formset.empty_form.as_p }}
+  </div>
+{% endblock %}
