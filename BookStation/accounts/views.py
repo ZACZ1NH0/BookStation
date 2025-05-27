@@ -15,6 +15,8 @@ def register_view(request):
             login(request,user)
             messages.success(request, 'Đăng kí thành công !!!')
             return redirect('home')
+    else:
+         form= CustomUserCreationForm()
     return render(request, 'accounts/register.html', {'form': form})
 
 def login_view(request):

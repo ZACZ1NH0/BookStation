@@ -6,7 +6,7 @@ from books.models import Book
 from .forms import OrderForm, OrderItemFormSet
 
 
-@login_required
+# @login_required
 def create_order(request):
     if request.method == 'POST':
         form = OrderForm(request.POST)
