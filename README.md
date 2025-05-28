@@ -58,12 +58,6 @@ pip install -r requirements.txt
 ---
 
 ### 4. ⚙️ Cấu hình (nếu có)
-
-> Thêm các thông tin như database, biến môi trường vào `.env` hoặc `settings.py` tùy dự án.
-
----
-
-### 5. 🧪 Chạy ứng dụng với django
 ##với mysql (recommend với mysql workbench)
 
 **tạo database bookstore_db**
@@ -88,7 +82,11 @@ DATABASES = {
     }
 }
 ```
-**terminal**
+
+---
+
+### 5. 🧪 Chạy ứng dụng với django
+
 ```bash
 python manage.py migrate
 python manage.py runserver
