@@ -1,31 +1,21 @@
-{% comment %} {% extends "base.html" %} {% endcomment %}
-{% block content %}
-  <h2>Your Cart</h2>
+{% extends 'orders/base.html' %}
 
-  {% if cart %}
-    <table>
-      <thead>
-        <tr>
-          <th>Book</th>
-          <th>Price</th>
-          <th>Quantity</th>
-          <th>Subtotal</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for key, item in cart.items %}
-          <tr>
-            <td>{{ item.title }}</td>
-            <td>{{ item.price }}</td>
-            <td>{{ item.quantity }}</td>
-            <td>{{ item.price|floatformat:2|floatformat }} × {{ item.quantity }} = {{ item.price|floatformat:2|floatformat|add:"0" }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <p><strong>Total:</strong> {{ total }}</p>
-    <a href="{% url 'checkout' %}">Checkout</a>
-  {% else %}
-    <p>Your cart is empty.</p>
-  {% endif %}
+{% block title %}Giỏ hàng{% endblock %}
+
+{% block content %}
+<h2>🛒 Giỏ hàng của bạn</h2>
+
+{% if cart_items %}
+  <ul>
+    {% for item in cart_items %}
+      <li>
+        {{ item.book.title }} - Số lượng: {{ item.quantity }} - Giá: {{ item.book.price|floatformat:2 }}
+      </li>
+    {% endfor %}
+  </ul>
+  <p><strong>Tổng cộng:</strong> {{ total|floatformat:2 }}₫</p>
+  <button>🧾 Thanh toán</button>
+{% else %}
+  <p>Giỏ hàng của bạn đang trống.</p>
+{% endif %}
 {% endblock %}

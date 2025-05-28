@@ -1,10 +1,38 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Chỉnh sửa hồ sơ</title>
+    <link rel="stylesheet" href="{% static 'home/style.css' %}">
+    {% comment %} <link rel="stylesheet" href="{% static 'accounts/edit_profile.css' %}"> {% endcomment %}
 </head>
 <body>
+    <div class="form-container">
+        <h2>Chỉnh sửa hồ sơ</h2>
 
+        <div class="messages">
+            {% if messages %}
+                {% for message in messages %}
+                    <p class="{{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <form method="post">
+            {% csrf_token %}
+            <h3>Thông tin cá nhân</h3>
+            {{ profile_form.as_p }}
+
+            <h3>Đổi mật khẩu</h3>
+            {{ password_form.as_p }}
+
+            <button type="submit">Cập nhật</button>
+        </form>
+
+        <div style="text-align: center;">
+            <a href="{% url 'home' %}">⬅ Quay về trang chủ</a>
+        </div>
+    </div>
 </body>
 </html>

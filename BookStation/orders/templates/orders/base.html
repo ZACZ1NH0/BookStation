@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Book Store{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'home/style.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="logo">📚 BookStore</div>
+            <input type="text" placeholder="Bạn đang tìm gì?" class="search-box">
+            <div class="icons">
+                <span>👤</span>
+                <span>❤️</span>
+                <form action="{% url 'view_cart' %}" method="get" style="display:inline;">
+                    <button type="submit" class="cart-button">🛒 Giỏ hàng</button>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- Nội dung của từng trang cụ thể -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 BookStore. All rights reserved.</p>
+    </footer>
+</body>
+</html>
