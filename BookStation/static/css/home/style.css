@@ -1,0 +1,319 @@
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #fffdf7;
+  color: #333;
+}
+
+header {
+  background-color: #ffe082;
+  padding: 10px 20px;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+
+
+.icons span {
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+.banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff3e0;
+  padding: 40px 20px;
+}
+
+.banner .text {
+  max-width: 50%;
+}
+
+.banner h2 {
+  font-size: 28px;
+}
+
+.banner p {
+  font-size: 16px;
+  color: #666;
+}
+
+.banner button {
+  background-color: #ffc107;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.banner img {
+  max-width: 40%;
+  height: auto;
+}
+
+.section {
+  padding: 30px 20px;
+}
+
+.section h3 {
+  margin-bottom: 20px;
+}
+
+.book-list {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.book {
+  background-color: white;
+  border: 1px solid #eee;
+  padding: 15px;
+  border-radius: 10px;
+  width: 200px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.book img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.book h4 {
+  font-size: 16px;
+  margin: 10px 0 5px;
+}
+
+.book p {
+  font-size: 14px;
+  margin: 0;
+}
+
+.old-price {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+.book button {
+  margin-top: 10px;
+  background-color: #ffca28;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+footer {
+  background-color: #fff3e0;
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+  font-size: 14px;
+  color: #777;
+}
+.search-box {
+      width: 200px !important;
+      padding: 5px 10px;
+      font-size: 14px;
+}
+
+/* Popup nhỏ hiện khi ấn icon 👤 */
+.user-popup {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 10px;
+      background: white;
+      border: 1px solid #ccc;
+      padding: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      border-radius: 4px;
+      z-index: 1000;
+}
+
+.user-popup button {
+      display: block;
+      width: 100%;
+      margin-bottom: 8px;
+      padding: 8px;
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 4px;
+}
+
+.user-popup button.register {
+      background-color: #2196F3;
+}
+
+    /* Đặt vị trí và style cho icons container để tiện popup */
+.icons {
+      position: relative;
+}
+
+    /* Style 2 nút đăng nhập đăng ký trên navbar */
+.auth-buttons button {
+      margin-left: 10px;
+      padding: 5px 10px;
+      font-weight: bold;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+}
+
+.auth-buttons button.login {
+      background-color: #4CAF50;
+      color: white;
+}
+
+.auth-buttons button.register {
+      background-color: #2196F3;
+      color: white;
+}
+
+.user-popup {
+  display: none;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  border-radius: 4px;
+  z-index: 1000;
+}
+
+/*edit profile*/
+.form-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff3e0;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.form-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-container form {
+    margin-bottom: 30px;
+}
+
+.form-container label {
+    font-weight: bold;
+}
+
+.form-container input {
+    width: 100%;
+    padding: 8px;
+    margin: 6px 0 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.form-container button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.form-container .errorlist {
+    color: red;
+    list-style: none;
+    padding-left: 0;
+}
+
+.messages {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.messages .success {
+    color: green;
+}
+
+.messages .error {
+    color: red;
+}
+
+body {
+  font-family: Roboto, sans-serif;
+  background: #f8f8f8;
+  padding: 40px;
+}
+
+.profile-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+h2, h3 {
+  color: #333;
+}
+
+form p {
+  margin-bottom: 15px;
+}
+
+.save-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.save-button:hover {
+  background-color: #45a049;
+}
+
+ul.user-info {
+  list-style: none;
+  padding: 0;
+}
+
+ul.user-info li {
+  padding: 5px 0;
+}
+
+.messages {
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.messages li.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.messages li.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
