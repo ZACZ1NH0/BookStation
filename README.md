@@ -63,8 +63,25 @@ pip install -r requirements.txt
 
 ---
 
-### 5. 🧪 Chạy ứng dụng (ví dụ với Django)
-
+### 5. 🧪 Chạy ứng dụng với django
+##với mysql (recommend với mysql workbench)
+tạo database bookstore_db, dùng user root với mật khẩu 1234
+cổng 3306 
+```settings
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'bookstore_db',
+        'USER': 'root',                 # Username của MySQL
+        'PASSWORD': '1234',     # Password của MySQL
+        'HOST': 'localhost',            # Hoặc IP của DB server
+        'PORT': '3306',                 # Cổng mặc định
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        },
+    }
+}
+```
 ```bash
 python manage.py migrate
 python manage.py runserver
