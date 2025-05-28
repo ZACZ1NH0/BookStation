@@ -57,7 +57,7 @@ pip install -r requirements.txt
 
 ---
 
-### 4. ⚙️ Cấu hình (nếu có)
+### 4. ⚙️ Cấu hình
 ##với mysql (recommend với mysql workbench)
 
 **tạo database bookstore_db**
