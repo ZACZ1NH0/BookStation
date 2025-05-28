@@ -5,7 +5,8 @@ from .forms import CustomUserCreationForm,EditProfile
 from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
 
-
+def home_view(request):
+    return render(request, 'accounts/home.html')
 
 def register_view(request):
     if request.method == 'POST':
