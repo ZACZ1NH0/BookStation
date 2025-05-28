@@ -109,10 +109,9 @@ python manage.py runserver
 - Nếu gặp lỗi `git push`, hãy chắc chắn bạn đã `git pull` trước đó.
 
 ---
+## 📄 License
 
-## 💡 Tác giả
+This project is licensed under the [MIT License](LICENSE).
 
-**ZACZ1NH0**  
-📧 [Liên hệ qua GitHub](https://github.com/ZACZ1NH0)
 
 
