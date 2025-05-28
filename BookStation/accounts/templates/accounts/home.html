@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Book Store</title>
+  <link rel="stylesheet" href="{% static 'home/style.css' %}">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
+</head>
+<body>
+  <header>
+    <div class="navbar">
+      <div class="logo">📚 BookStore</div>
+      <input type="text" placeholder="Bạn đang tìm gì?" class="search-box">
+      <div class="icons">
+        <span>👤</span>
+        <span>❤️</span>
+        <a href="{% url 'cart' %}">
+            <span>🛒 Giỏ hàng</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <section class="banner">
+    <div class="text">
+      <h2>Sách mới phát hành</h2>
+      <p>Khám phá các đầu sách nổi bật vừa cập nhật!</p>
+      <button>Subscribe</button>
+    </div>
+    <img src="banner-book.png" alt="Banner sách">
+  </section>
+
+  <section class="section">
+    <h3>📈 Top bán chạy</h3>
+    <div class="book-list">
+      <div class="book">
+        <img src="book1.jpg" alt="Book 1">
+        <h4>The Time Has Come</h4>
+        <p>$27.89</p>
+        <button>🛒 Thêm vào giỏ hàng</button>
+      </div>
+      <div class="book">
+        <img src="book2.jpg" alt="Book 2">
+        <h4>I Want a Better Catastrophe</h4>
+        <p>$26.99 <span class="old-price">$29.99</span></p>
+        <button>🛒 Thêm vào giỏ hàng</button>
+      </div>
+      <div class="book">
+        <img src="book3.jpg" alt="Book 3">
+        <h4>Gov Means to Kill</h4>
+        <p>$24.90</p>
+        <button>🛒 Thêm vào giỏ hàng</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h3>✨ Gợi ý cho bạn</h3>
+    <div class="book-list">
+      <div class="book">
+        <img src="book4.jpg" alt="Book 4">
+        <h4>Pride and Protest</h4>
+        <p>$15.50 <span class="old-price">$18.50</span></p>
+        <button>🛒 Thêm vào giỏ hàng</button>
+      </div>
+      <div class="book">
+        <img src="book5.jpg" alt="Book 5">
+        <h4>Find a Sponsor</h4>
+        <p>$19.99</p>
+        <button>🛒 Thêm vào giỏ hàng</button>
+      </div>
+      <div class="book">
+        <img src="book6.jpg" alt="Book 6">
+        <h4>The Midnight Library</h4>
+        <p>$29.99 <span class="old-price">$32.99</span></p>
+        <button>🛒 Thêm vào giỏ hàng</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 BookStore. All rights reserved.</p>
+  </footer>
+</body>
+</html>
