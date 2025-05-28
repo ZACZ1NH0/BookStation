@@ -66,12 +66,13 @@ pip install -r requirements.txt
 ### 5. 🧪 Chạy ứng dụng với django
 ##với mysql (recommend với mysql workbench)
 
-tạo database bookstore_db
+**tạo database bookstore_db**
 
-dùng user root với mật khẩu 1234
+**dùng user root với mật khẩu 1234**
 
-cổng 3306 
+**cổng 3306**
 
+**file settings**
 ```settings
 DATABASES = {
     'default': {
