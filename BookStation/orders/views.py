@@ -42,6 +42,7 @@ def add_to_cart(request, pk):
         cart[str(pk)]['quantity'] += quantity
     else:
         cart[str(pk)] = {
+            'image': book.cover_image,
             'title': book.title,
             'price': float(book.price),
             'quantity': quantity
@@ -54,9 +55,12 @@ def add_to_cart(request, pk):
 def view_cart(request):
     cart = request.session.get('cart', {})
     total = sum(item['price'] * item['quantity'] for item in cart.values())
+    for item in cart.values():
+        item['subtotal'] = item['price'] * item['quantity']
     return render(request, 'orders/cart.html', {
         'cart': cart,
         'total': total
+        
     })
 
 

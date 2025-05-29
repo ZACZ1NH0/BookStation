@@ -4,8 +4,23 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from .forms import CustomUserCreationForm,EditProfile
 from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
+from books.models import Book
 
+def home_view(request):
+    books = Book.objects.all()[:50]
+    return render(request, 'accounts/home.html', {'books': books})
 
+def profile_view(request):
+    user = request.user
+    if request.method == 'POST':
+        form = EditProfile(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Cập nhật thành công')
+            return redirect('profile')
+    else:
+        form = EditProfile(instance=user)
+    return render(request, 'accounts/profile.html', {'form': form, 'user': user})
 
 def register_view(request):
     if request.method == 'POST':

@@ -1,31 +1,31 @@
-{% extends "base.html" %}
-{% block content %}
-  <h2>Your Cart</h2>
+{% extends 'orders/base.html' %}
+{% load static %}
 
-  {% if cart %}
-    <table>
-      <thead>
-        <tr>
-          <th>Book</th>
-          <th>Price</th>
-          <th>Quantity</th>
-          <th>Subtotal</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for key, item in cart.items %}
-          <tr>
-            <td>{{ item.title }}</td>
-            <td>{{ item.price }}</td>
-            <td>{{ item.quantity }}</td>
-            <td>{{ item.price|floatformat:2|floatformat }} × {{ item.quantity }} = {{ item.price|floatformat:2|floatformat|add:"0" }}</td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <p><strong>Total:</strong> {{ total }}</p>
-    <a href="{% url 'checkout' %}">Checkout</a>
-  {% else %}
-    <p>Your cart is empty.</p>
-  {% endif %}
+{% block title %}Giỏ hàng{% endblock %}
+
+{% block content %}
+<h2 style="text-align:center; margin-top: 20px;">🛒 Giỏ hàng của bạn</h2>
+
+<link rel="stylesheet" href="{% static 'css/home/style.css' %}" />
+
+{% if cart %}
+  <div class="cart-grid">
+    {% for key, item in cart.items %}
+      <div class="cart-item">
+        <h3>{{ item.title }}</h3>
+        <img src="{{ item.image.url}}" alt="{{ item.title }}" />
+        <p><strong>Giá:</strong> {{ item.price|floatformat:2 }} $</p>
+        <p><strong>Số lượng:</strong> {{ item.quantity }}</p>
+        <p><strong>Thành tiền:</strong> {{ item.subtotal }} $</p>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="cart-summary">
+    <p><strong>Tổng cộng:</strong> {{ total|floatformat:2 }} $</p>
+    <button class="checkout-btn">🧾 Thanh toán</button>
+  </div>
+{% else %}
+  <p style="text-align:center;">Giỏ hàng của bạn đang trống.</p>
+{% endif %}
 {% endblock %}

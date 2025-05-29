@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Trang cá nhân - BookStation</title>
+  <link rel="stylesheet" href="{% static 'css/home/style.css' %}">
+</head>
+<body>
+  <div class="profile-container">
+    <h2>Trang cá nhân</h2>
+    <h3>Thông tin tài khoản</h3>
+    <ul class="user-info">
+      <li><strong>Tên người dùng:</strong> {{ user.username }}</li>
+      <li><strong>Email:</strong> {{ user.email }}</li>
+      <li><strong>Họ tên:</strong> {{ user.get_full_name }}</li>
+      <!-- Bạn có thể hiển thị thêm các trường khác tùy model -->
+    </ul>
+
+    {% if messages %}
+      <ul class="messages">
+        {% for message in messages %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <a href="{% url 'edit_profile' %}">
+      <button class="save-button">Sửa trang cá nhân</button>
+    </a>
+
+    <hr>
+  </div>
+</body>
+</html>
