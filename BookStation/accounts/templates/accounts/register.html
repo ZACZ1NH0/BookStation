@@ -1,51 +1,80 @@
-{#<!DOCTYPE html>#}
-{#<html lang="vi">#}
-{#<head>#}
-{#    <meta charset="UTF-8">#}
-{#    <title>Đăng ký - BookStation</title>#}
-{#    <link rel="stylesheet" href="register.css">#}
-{#</head>#}
-{#<body>#}
-{#    <form class="register-box" method="post" action="/register">#}
-{#        <h2>Đăng ký</h2>#}
-{#        {{ %form_as% }}#}
-{##}
-{#        <!-- Thông báo lỗi (nếu có) -->#}
-{#        <p class="error">Tài khoản đã tồn tại hoặc dữ liệu không hợp lệ.</p>#}
-{#        <input type="text" name="username" placeholder="Tên đăng nhập" required>#}
-{#        <input type="email" name="email" placeholder="Email" required>#}
-{#        <input type="password" name="password1" placeholder="Mật khẩu" required>#}
-{#        <input type="password" name="password2" placeholder="Xác nhận mật khẩu" required>#}
-{#        <button type="submit">Đăng ký</button>#}
-{#    </form>#}
-{#</body>#}
-{#</html>#}
-<!-- templates/accounts/register.html -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8" />
-    <title>Đăng ký tài khoản</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký - BookStation</title>
+    <link rel="stylesheet" href="{% static 'css/register/style.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <h2>Đăng ký tài khoản</h2>
-
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %};">
-            {{ message }}
-        </li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Đăng ký</button>
-    </form>
-
-    <p>Đã có tài khoản? <a href="{% url 'login' %}">Đăng nhập tại đây</a></p>
+    <div class="register-container">
+        <div class="background-animation"></div>
+        
+        <div class="register-card">
+            <div class="register-header">
+                <a href="{% url 'home' %}" class="brand">
+                    <i class="fas fa-book-open"></i> BookStation
+                </a>
+                <h2>Đăng ký tài khoản</h2>
+                <p>Tạo tài khoản để truy cập vào BookStation</p>
+            </div>
+            
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="message {% if message.tags == 'error' %}error-message{% else %}success-message{% endif %}">
+                            <i class="{% if message.tags == 'error' %}fas fa-exclamation-circle{% else %}fas fa-check-circle{% endif %}"></i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            <form method="post" class="register-form">
+                {% csrf_token %}
+                
+                <div class="form-fields">
+                    {% for field in form %}
+                        <div class="input-group">
+                            <i class="fas {% if 'username' in field.name %}fa-user{% elif 'email' in field.name %}fa-envelope{% elif 'password' in field.name %}fa-lock{% else %}fa-info-circle{% endif %}"></i>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="field-error">
+                                    {{ field.errors|striptags }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <button type="submit" class="register-button">
+                    <span>Đăng ký</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+            
+            <div class="or-divider">
+                <span>hoặc</span>
+            </div>
+            
+            <div class="social-register">
+                <button class="google-btn">
+                    <i class="fab fa-google"></i>
+                    <span>Google</span>
+                </button>
+                <button class="facebook-btn">
+                    <i class="fab fa-facebook-f"></i>
+                    <span>Facebook</span>
+                </button>
+            </div>
+            
+            <div class="login-link">
+                Đã có tài khoản? <a href="{% url 'login' %}">Đăng nhập ngay</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

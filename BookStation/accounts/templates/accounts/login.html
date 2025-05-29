@@ -3,22 +3,79 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng nhập - BookStation</title>
-    <link rel="stylesheet" href="{% static 'css/home/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login/style.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <form class="login-box" method="post">
-        {% csrf_token %}
-        <h2>Đăng nhập</h2>
-        {% if messages %}
-            {% for message in messages %}
-                <p class="error">{{ message }}</p>
-            {% endfor %}
-        {% endif %}
-        <input type="text" name="username" placeholder="Tên đăng nhập" required>
-        <input type="password" name="password" placeholder="Mật khẩu" required>
-        <button type="submit">Đăng nhập</button>
-    </form>
+    <div class="login-container">
+        <div class="background-animation"></div>
+        
+        <div class="login-card">
+            <div class="login-header">
+                <a href="{% url 'home' %}" class="brand">
+                    <i class="fas fa-book-open"></i> BookStation
+                </a>
+                <h2>Đăng nhập</h2>
+                <p>Chào mừng trở lại! Đăng nhập để tiếp tục</p>
+            </div>
+            
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="error-message">
+                            <i class="fas fa-exclamation-circle"></i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            <form method="post" class="login-form">
+                {% csrf_token %}
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" name="username" placeholder="Tên đăng nhập" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="password" placeholder="Mật khẩu" required>
+                </div>
+                <div class="options">
+                    <label class="remember-me">
+                        <input type="checkbox" name="remember">
+                        <span>Ghi nhớ đăng nhập</span>
+                    </label>
+                    <a href="#" class="forgot-password">Quên mật khẩu?</a>
+                </div>
+                <button type="submit" class="login-button">
+                    <span>Đăng nhập</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+            
+            <div class="or-divider">
+                <span>hoặc</span>
+            </div>
+            
+            <div class="social-login">
+                <button class="google-btn">
+                    <i class="fab fa-google"></i>
+                    <span>Google</span>
+                </button>
+                <button class="facebook-btn">
+                    <i class="fab fa-facebook-f"></i>
+                    <span>Facebook</span>
+                </button>
+            </div>
+            
+            <div class="register-link">
+                Chưa có tài khoản? <a href="{% url 'register' %}">Đăng ký ngay</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 
