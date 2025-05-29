@@ -11,4 +11,4 @@ class CustomUserCreationForm(UserCreationForm):
 class EditProfile(forms.ModelForm):
     class Meta:
         model = Users
-        fields = ('email', 'phone','first_name','last_name' )
+        fields = ('email    x', 'phone','first_name','last_name' )
