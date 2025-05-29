@@ -6,7 +6,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Book Store</title>
   <link rel="stylesheet" href="{% static 'css/home/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/home/slide.css' %}" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
+  
+
 </head>
 <body>
   <header>
@@ -39,14 +42,52 @@
     </div>
   </header>
 
-  <section class="banner">
+  {% comment %} <section class="banner">
     <div class="text">
       <h2>📚 Sách mới phát hành!</h2>
       <p>Khám phá ngay cuốn <strong>"Dế Mèn Phiêu Lưu Ký"</strong> – tác phẩm kinh điển dành cho mọi lứa tuổi.</p>
       <a href="/books/123"><button>Mua ngay</button></a>
     </div>
     <img src="{% static 'image/demen1.jpg' %}" alt="Dế Mèn Phiêu Lưu Ký">
-  </section>
+  </section> {% endcomment %}
+  <section class="banner-slider">
+  <div class="slide active">
+    <div class="text">
+      <h2>📚 Sách mới phát hành!</h2>
+      <p>Khám phá cuốn <strong>"Dế Mèn Phiêu Lưu Ký"</strong>.</p>
+      <a href="/books/123"><button>Mua ngay</button></a>
+    </div>
+    <img src="{% static 'image/demen1.jpg' %}" alt="Dế Mèn Phiêu Lưu Ký" />
+  </div>
+
+  <div class="slide">
+    <div class="text">
+      <h2>🧠 Tư duy nhanh và chậm</h2>
+      <p>Hiểu sâu về cách con người đưa ra quyết định!</p>
+      <a href="/books/456"><button>Xem ngay</button></a>
+    </div>
+    <img src="{% static 'image/tuduynhanhcham.jpeg' %}" alt="Tư duy nhanh và chậm" />
+  </div>
+
+  <div class="slide">
+    <div class="text">
+      <h2>🌍 Bách khoa toàn thư</h2>
+      <p>Khám phá địa lý và văn hóa toàn cầu!</p>
+      <a href="/books/789"><button>Tìm hiểu</button></a>
+    </div>
+    <img src="{% static 'image/Bachkhoadialy.jpg' %}" alt="Bách khoa địa lý" />
+  </div>
+
+  <div class="slide">
+    <div class="text">
+      <h2>Your name</h2>
+      <p>Cuốn tiểu thuyết nổi tiếng</p>
+      <a href="/books/789"><button>Tìm hiểu</button></a>
+    </div>
+    <img src="{% static 'image/yourname.gif' %}" alt="Yourname" />
+  </div>
+</section>
+
 
   <section class="section">
     <h3>📚 Sách trong cửa hàng</h3>
@@ -68,20 +109,13 @@
         </div>
       {% endfor %}
     </div>
+  
   </section>
 
   <footer>
     <p>&copy; 2025 BookStore. All rights reserved.</p>
   </footer>
-  <script src ="{% static 'home/script.js' %}"></script>
-  <style>
-    input[name="quantity"] {
-  width: 60px;
-  padding: 4px;
-  font-size: 14px;
-  text-align: center;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  </style>
+  <script src ="{% static 'js/home/script.js' %}"></script>
+  <script src="{% static 'js/home/banner_slider.js' %}"></script>
 </body>
 </html>
