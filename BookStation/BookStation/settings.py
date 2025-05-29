@@ -83,7 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'bookstore_db',
         'USER': 'root',                 # Username của MySQL
-        'PASSWORD': 'tuan0604',     # Password của MySQL
+        'PASSWORD': '1234',     # Password của MySQL
         'HOST': 'localhost',            # Hoặc IP của DB server
         'PORT': '3306',                 # Cổng mặc định
         'OPTIONS': {
