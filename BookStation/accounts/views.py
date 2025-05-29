@@ -7,7 +7,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from books.models import Book
 
 def home_view(request):
-    books = Book.objects.all()[:10]
+    books = Book.objects.all()[:50]
     return render(request, 'accounts/home.html', {'books': books})
 
 def profile_view(request):
