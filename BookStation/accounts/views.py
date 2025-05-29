@@ -4,12 +4,9 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from .forms import CustomUserCreationForm,EditProfile
 from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
-from books.models import Book
 
-def home_view(request):
-    books = Book.objects.all()[:50]
-    return render(request, 'accounts/home.html', {'books': books})
 
+@login_required
 def profile_view(request):
     user = request.user
     if request.method == 'POST':
@@ -21,6 +18,7 @@ def profile_view(request):
     else:
         form = EditProfile(instance=user)
     return render(request, 'accounts/profile.html', {'form': form, 'user': user})
+
 
 def register_view(request):
     if request.method == 'POST':
