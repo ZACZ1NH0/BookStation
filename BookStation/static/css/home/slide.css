@@ -35,3 +35,55 @@
   opacity: 1;
   z-index: 1;
 }
+
+
+
+.banner-slider button.prev,
+.banner-slider button.next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0,0,0,0.4);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  z-index: 10;
+  font-size: 24px;
+  border-radius: 4px;
+}
+
+.banner-slider button.prev:hover,
+.banner-slider button.next:hover {
+  background-color: rgba(0,0,0,0.6);
+}
+
+.banner-slider button.prev {
+  left: 10px;
+}
+
+.banner-slider button.next {
+  right: 10px;
+}
+
+.dots {
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  text-align: center;
+}
+
+.dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin: 0 6px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dot.active {
+  background-color: rgba(0, 0, 0, 0.8);
+}
