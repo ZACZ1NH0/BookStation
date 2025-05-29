@@ -13,7 +13,7 @@
     {% for key, item in cart.items %}
       <div class="cart-item">
         <h3>{{ item.title }}</h3>
-        <img src="{{ item.image.url}}" alt="{{ item.title }}" />
+        {% comment %} <img src="{{ item.image.url}}" alt="{{ item.title }}" /> {% endcomment %}
         <p><strong>Giá:</strong> {{ item.price|floatformat:2 }} $</p>
         <p><strong>Số lượng:</strong> {{ item.quantity }}</p>
         <p><strong>Thành tiền:</strong> {{ item.subtotal }} $</p>

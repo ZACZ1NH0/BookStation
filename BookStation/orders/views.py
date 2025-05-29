@@ -42,7 +42,7 @@ def add_to_cart(request, pk):
         cart[str(pk)]['quantity'] += quantity
     else:
         cart[str(pk)] = {
-            'image': book.cover_image,
+            # 'image': book.cover_image,
             'title': book.title,
             'price': float(book.price),
             'quantity': quantity
