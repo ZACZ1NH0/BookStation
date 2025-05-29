@@ -590,13 +590,13 @@ footer {
   .navbar {
     flex-direction: column;
     gap: 15px;
-  }
+}
   
   .search-container {
     width: 100%;
   }
   
-  .search-box {
+.search-box {
     width: 100%;
   }
   
@@ -625,97 +625,97 @@ footer {
 
 /* Popup nhỏ hiện khi ấn icon 👤 */
 .user-popup {
-  display: none;
-  position: absolute;
-  top: 50px;
-  right: 10px;
-  background: white;
-  border: 1px solid #ccc;
-  padding: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  border-radius: 4px;
-  z-index: 1000;
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 10px;
+      background: white;
+      border: 1px solid #ccc;
+      padding: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      border-radius: 4px;
+      z-index: 1000;
 }
 
 .user-popup button {
-  display: block;
-  width: 100%;
-  margin-bottom: 8px;
-  padding: 8px;
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-weight: bold;
-  border-radius: 4px;
+      display: block;
+      width: 100%;
+      margin-bottom: 8px;
+      padding: 8px;
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 4px;
 }
 
 .user-popup button.register {
-  background-color: #2196F3;
+      background-color: #2196F3;
 }
 
-/* Đặt vị trí và style cho icons container để tiện popup */
+    /* Đặt vị trí và style cho icons container để tiện popup */
 .icons {
-  position: relative;
+      position: relative;
 }
 
 /*edit profile*/
 .form-container {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 20px;
-  background-color: #fff3e0;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff3e0;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .form-container h2 {
-  text-align: center;
-  margin-bottom: 20px;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 .form-container form {
-  margin-bottom: 30px;
+    margin-bottom: 30px;
 }
 
 .form-container label {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 .form-container input {
-  width: 100%;
-  padding: 8px;
-  margin: 6px 0 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+    width: 100%;
+    padding: 8px;
+    margin: 6px 0 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
 }
 
 .form-container button {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
-  cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
 .form-container .errorlist {
-  color: red;
-  list-style: none;
-  padding-left: 0;
+    color: red;
+    list-style: none;
+    padding-left: 0;
 }
 
 .messages {
-  text-align: center;
-  margin-bottom: 15px;
+    text-align: center;
+    margin-bottom: 15px;
 }
 
 .messages .success {
-  color: green;
+    color: green;
 }
 
 .messages .error {
-  color: red;
+    color: red;
 }
 
 .profile-container {

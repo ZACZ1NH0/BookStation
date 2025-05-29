@@ -37,17 +37,75 @@
                 {% csrf_token %}
                 
                 <div class="form-fields">
-                    {% for field in form %}
-                        <div class="input-group">
-                            <i class="fas {% if 'username' in field.name %}fa-user{% elif 'email' in field.name %}fa-envelope{% elif 'password' in field.name %}fa-lock{% else %}fa-info-circle{% endif %}"></i>
-                            {{ field }}
-                            {% if field.errors %}
-                                <div class="field-error">
-                                    {{ field.errors|striptags }}
-                                </div>
-                            {% endif %}
-                        </div>
-                    {% endfor %}
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="first_name" placeholder="Nhập tên của bạn" class="form-control">
+                        {% if form.first_name.errors %}
+                            <div class="field-error">
+                                {{ form.first_name.errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="last_name" placeholder="Nhập họ của bạn" class="form-control">
+                        {% if form.last_name.errors %}
+                            <div class="field-error">
+                                {{ form.last_name.errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="username" placeholder="Nhập tên đăng nhập" class="form-control">
+                        {% if form.username.errors %}
+                            <div class="field-error">
+                                {{ form.username.errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" name="email" placeholder="Nhập email của bạn" class="form-control">
+                        {% if form.email.errors %}
+                            <div class="field-error">
+                                {{ form.email.errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="input-group">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" name="phone" placeholder="Nhập số điện thoại" class="form-control">
+                        {% if form.phone.errors %}
+                            <div class="field-error">
+                                {{ form.phone.errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="password1" placeholder="Nhập mật khẩu" class="form-control">
+                        {% if form.password1.errors %}
+                            <div class="field-error">
+                                {{ form.password1.errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="password2" placeholder="Xác nhận mật khẩu" class="form-control">
+                        {% if form.password2.errors %}
+                            <div class="field-error">
+                                {{ form.password2.errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
                 
                 <button type="submit" class="register-button">
