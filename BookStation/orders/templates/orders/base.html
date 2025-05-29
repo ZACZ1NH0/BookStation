@@ -11,7 +11,10 @@
 <body>
     <header>
         <div class="navbar">
-            <div class="logo">📚 BookStore</div>
+            <form action="{% url 'home' %}" method="get" style="margin: 0;">
+            <button type="submit" class="logo-button">📚 BookStore</button>
+            </form>
+
             <input type="text" placeholder="Bạn đang tìm gì?" class="search-box">
             <div class="icons">
                 <span>👤</span>
