@@ -1,31 +1,10 @@
-{#<!DOCTYPE html>#}
-{#<html lang="vi">#}
-{#<head>#}
-{#    <meta charset="UTF-8">#}
-{#    <title>Đăng ký - BookStation</title>#}
-{#    <link rel="stylesheet" href="register.css">#}
-{#</head>#}
-{#<body>#}
-{#    <form class="register-box" method="post" action="/register">#}
-{#        <h2>Đăng ký</h2>#}
-{#        {{ %form_as% }}#}
-{##}
-{#        <!-- Thông báo lỗi (nếu có) -->#}
-{#        <p class="error">Tài khoản đã tồn tại hoặc dữ liệu không hợp lệ.</p>#}
-{#        <input type="text" name="username" placeholder="Tên đăng nhập" required>#}
-{#        <input type="email" name="email" placeholder="Email" required>#}
-{#        <input type="password" name="password1" placeholder="Mật khẩu" required>#}
-{#        <input type="password" name="password2" placeholder="Xác nhận mật khẩu" required>#}
-{#        <button type="submit">Đăng ký</button>#}
-{#    </form>#}
-{#</body>#}
-{#</html>#}
-<!-- templates/accounts/register.html -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8" />
     <title>Đăng ký tài khoản</title>
+    <link rel="stylesheet" href="{% static 'css/home/style.css' %}">
 </head>
 <body>
     <h2>Đăng ký tài khoản</h2>

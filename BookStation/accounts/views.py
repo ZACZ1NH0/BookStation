@@ -8,7 +8,7 @@ from books.models import Book
 
 def home_view(request):
     books = Book.objects.all()[:50]
-    return render(request, 'accounts/home.html', {'books': books})
+    return render(request, 'accounts/home_customer.html', {'books': books})
 
 def profile_view(request):
     user = request.user
@@ -41,11 +41,9 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
         else:
             messages.error(request, 'Tài khoản hoặc mật khẩu sai !')
     return render (request, 'accounts/login.html')
-
 def logout_view(request):
     logout(request)
     return redirect('home')
