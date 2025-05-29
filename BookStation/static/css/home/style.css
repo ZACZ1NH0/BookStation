@@ -459,3 +459,20 @@ ul.user-info li {
 .checkout-btn:hover {
   background-color: #ff4d94;
 }
+
+
+.logo-button {
+  background: none;
+  border: none;
+  font-size: 28px;        /* Tăng kích thước chữ */
+  font-weight: bold;
+  cursor: pointer;
+  color: #000;
+  font-family: 'Roboto', sans-serif;
+  padding: 5px 10px;      /* Thêm padding để nút trông lớn hơn */
+}
+
+.logo-button:hover {
+  text-decoration: underline;
+}
+
