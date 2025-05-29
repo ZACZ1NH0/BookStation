@@ -6,7 +6,7 @@ from books.models import Book
 from .forms import OrderForm, OrderItemFormSet
 
 
-# @login_required
+@login_required
 def create_order(request):
     if request.method == 'POST':
         form = OrderForm(request.POST)
@@ -32,7 +32,7 @@ def create_order(request):
         'formset': formset
     })
 
-
+@login_required
 def add_to_cart(request, pk):
     book = get_object_or_404(Book, pk=pk)
     cart = request.session.get('cart', {})
@@ -51,7 +51,7 @@ def add_to_cart(request, pk):
     request.session['cart'] = cart
     return redirect('view_cart')
 
-
+@login_required
 def view_cart(request):
     cart = request.session.get('cart', {})
     total = sum(item['price'] * item['quantity'] for item in cart.values())
