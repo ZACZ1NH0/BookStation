@@ -1,59 +1,31 @@
-{% load static %}
+{#<!DOCTYPE html>#}
+{#<html lang="vi">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>Đăng ký - BookStation</title>#}
+{#    <link rel="stylesheet" href="register.css">#}
+{#</head>#}
+{#<body>#}
+{#    <form class="register-box" method="post" action="/register">#}
+{#        <h2>Đăng ký</h2>#}
+{#        {{ %form_as% }}#}
+{##}
+{#        <!-- Thông báo lỗi (nếu có) -->#}
+{#        <p class="error">Tài khoản đã tồn tại hoặc dữ liệu không hợp lệ.</p>#}
+{#        <input type="text" name="username" placeholder="Tên đăng nhập" required>#}
+{#        <input type="email" name="email" placeholder="Email" required>#}
+{#        <input type="password" name="password1" placeholder="Mật khẩu" required>#}
+{#        <input type="password" name="password2" placeholder="Xác nhận mật khẩu" required>#}
+{#        <button type="submit">Đăng ký</button>#}
+{#    </form>#}
+{#</body>#}
+{#</html>#}
+<!-- templates/accounts/register.html -->
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8" />
     <title>Đăng ký tài khoản</title>
-    <style>
-       body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-    background-color:rgb(236, 193, 114);
-}
-
-h2 {
-    color: #333;
-    text-align: center;
-}
-
-form {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    max-width: 400px;         /* Giới hạn chiều ngang form */
-    margin: 40px auto;        /* Căn giữa form */
-    text-align: center;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-    width: 80%;               /* Giảm độ rộng input */
-    max-width: 300px;         /* Không vượt quá 300px */
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
-
-button {
-    background-color: #28a745;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-button:hover {
-    background-color: #218838;
-}
-
-    </style>
 </head>
 <body>
     <h2>Đăng ký tài khoản</h2>
@@ -61,7 +33,6 @@ button:hover {
     {% if messages %}
     <ul>
         {% for message in messages %}
-
         <li style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %};">
             {{ message }}
         </li>
