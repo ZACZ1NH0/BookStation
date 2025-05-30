@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang Quản trị Admin</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f2f2f2; padding: 20px; }
+        h1 { color: #333; }
+        .menu a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .menu a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Xin chào Admin, {{ user.username }}!</h1>
+
+    <div class="menu">
+        <a href="#">Quản lý người dùng</a>
+        <a href="#">Quản lý sách</a>
+        <a href="#">Xem báo cáo</a>
+        <a href="{% url 'logout' %}">Đăng xuất</a>
+    </div>
+</body>
+</html>

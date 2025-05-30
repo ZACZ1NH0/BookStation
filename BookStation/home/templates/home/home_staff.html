@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang Nhân viên</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #e8f0fe; padding: 20px; }
+        h1 { color: #333; }
+        .menu a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .menu a:hover {
+            background-color: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <h1>Xin chào Nhân viên, {{ user.username }}!</h1>
+
+    <div class="menu">
+        <a href="#">Quản lý đơn hàng</a>
+        <a href="#">Cập nhật sách</a>
+        <a href="#">Hỗ trợ khách hàng</a>
+        <a href="{% url 'logout' %}">Đăng xuất</a>
+    </div>
+</body>
+</html>

@@ -21,11 +21,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('', home_view, name = 'home'),
+    # path('', home_view, name = 'home'),
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
     path('books/', include('books.urls')),
-    path('orders/', include('orders.urls'))
+    path('orders/', include('orders.urls')),
+    path('',include('home.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
