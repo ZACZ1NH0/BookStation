@@ -104,7 +104,7 @@ WSGI_APPLICATION = 'BookStation.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bookstore_db',
+        'NAME': 'bookstore_db_nb5f',
         'USER': 'root',
         'PASSWORD': 'BlerzO8G8qIWvufPmbh9PhxF3OMIpmTD',
         'HOST': 'dpg-d0skdrjuibrs73ago7o0-a.render.com',
