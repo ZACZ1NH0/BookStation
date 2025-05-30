@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd BookStation
+
 # Cài thư viện
 pip install -r requirements.txt
 

@@ -3,7 +3,7 @@ services:
     name: BookStation
     env: python
     plan: free
-    buildCommand: "./BookStation/build.sh"
+    buildCommand: "build.sh"
     startCommand: "gunicorn BookStation.wsgi:application"
     envVars:
       - key: DATABASE_URL
