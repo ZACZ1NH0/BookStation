@@ -107,7 +107,7 @@ DATABASES = {
         'NAME': 'bookstore_db_nb5f',
         'USER': 'root',
         'PASSWORD': 'BlerzO8G8qIWvufPmbh9PhxF3OMIpmTD',
-        'HOST': 'dpg-d0skdrjuibrs73ago7o0-a.render.com',
+        'HOST': 'dpg-d0skdrjuibrs73ago7o0-a',
         'PORT': '5432',
     }
 }
