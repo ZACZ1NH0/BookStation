@@ -95,10 +95,20 @@ WSGI_APPLICATION = 'BookStation.wsgi.application'
 #         },
 #     }
 # }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'bookstore_db',
+        'USER': 'root',
+        'PASSWORD': 'BlerzO8G8qIWvufPmbh9PhxF3OMIpmTD',
+        'HOST': 'dpg-d0skdrjuibrs73ago7o0-a.render.com',
+        'PORT': '5432',
     }
 }
 
