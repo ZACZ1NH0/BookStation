@@ -1,6 +1,6 @@
 # 📚 BookStation
 
-Một ứng dụng web quản lý sách được xây dựng bằng Python 🐍 và Django 🌐.
+Một ứng dụng web quản lý sách được xây dựng bằng Django 🌐.
 ---
 https://bookstation-vjjf.onrender.com/
 ---
