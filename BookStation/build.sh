@@ -3,7 +3,7 @@
 # Cài thư viện
 pip install -r requirements.txt
 
-cd BookStation
+
 # Chạy migrate
 python manage.py migrate
 
