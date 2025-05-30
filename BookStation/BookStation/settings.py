@@ -81,17 +81,23 @@ WSGI_APPLICATION = 'BookStation.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'bookstore_db',
+#         'USER': 'root',                 # Username của MySQL
+#         'PASSWORD': '1234',     # Password của MySQL
+#         'HOST': 'localhost',            # Hoặc IP của DB server
+#         'PORT': '3306',                 # Cổng mặc định
+#         'OPTIONS': {
+#             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+#         },
+#     }
+# }
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bookstore_db',
-        'USER': 'root',                 # Username của MySQL
-        'PASSWORD': '1234',     # Password của MySQL
-        'HOST': 'localhost',            # Hoặc IP của DB server
-        'PORT': '3306',                 # Cổng mặc định
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-        },
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
