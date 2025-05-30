@@ -1,0 +1,11 @@
+<h2>Kết quả tìm kiếm cho "{{ query }}"</h2>
+
+{% if results %}
+  <ul>
+    {% for book in results %}
+      <li>{{ book.title }} - {{ book.price }}</li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Không tìm thấy kết quả nào.</p>
+{% endif %}
