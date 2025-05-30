@@ -10,17 +10,18 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+  
 </head>
 <body>
   <header>
     <div class="navbar">
       <div class="logo"><i class="fas fa-book-open"></i> BookStation</div>
-
-      <div class="search-container">
-        <input type="text" placeholder="Bạn đang tìm gì?" class="search-box" />
-        <button class="search-btn"><i class="fas fa-search"></i></button>
-      </div>
-
+      <form method="get" action="{% url 'book_search' %}">
+        <div class="search-container">
+          <input type="text" name = "q" placeholder="Bạn đang tìm gì?" class="search-box" />
+          <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+      </form>
       <div class="icons">
         <a href="#" class="nav-icon" title="Giỏ hàng"><i class="fas fa-shopping-cart"></i></a>
         <a href="#" class="nav-icon" title="Yêu thích"><i class="fas fa-heart"></i></a>
