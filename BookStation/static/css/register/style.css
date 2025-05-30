@@ -1,0 +1,310 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: url('../../image/yourname.gif') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.register-container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.background-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    z-index: 1;
+}
+
+.register-card {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+    animation: fadeIn 0.5s ease;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.register-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: #ff6b6b;
+    text-decoration: none;
+    margin-bottom: 20px;
+}
+
+.brand i {
+    margin-right: 10px;
+}
+
+.register-header h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.register-header p {
+    color: #666;
+    font-size: 14px;
+}
+
+.messages {
+    margin-bottom: 20px;
+}
+
+.message {
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    animation: slideIn 0.3s ease;
+}
+
+.error-message {
+    background: #ffe5e5;
+    color: #ff3333;
+    border-left: 4px solid #ff3333;
+}
+
+.success-message {
+    background: #e5ffe5;
+    color: #00cc00;
+    border-left: 4px solid #00cc00;
+}
+
+.message i {
+    margin-right: 10px;
+}
+
+.form-fields {
+    margin-bottom: 25px;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px 15px 15px 45px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    border-color: #ff6b6b;
+    box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
+    outline: none;
+}
+
+.field-error {
+    color: #ff3333;
+    font-size: 12px;
+    margin-top: 5px;
+    animation: shake 0.5s ease;
+}
+
+.register-button {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.register-button i {
+    margin-left: 10px;
+    transition: transform 0.3s ease;
+}
+
+.register-button:hover {
+    background: linear-gradient(45deg, #ff5252, #ff7676);
+    transform: translateY(-2px);
+}
+
+.register-button:hover i {
+    transform: translateX(5px);
+}
+
+.or-divider {
+    text-align: center;
+    margin: 25px 0;
+    position: relative;
+}
+
+.or-divider::before,
+.or-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 45%;
+    height: 1px;
+    background: #ddd;
+}
+
+.or-divider::before {
+    left: 0;
+}
+
+.or-divider::after {
+    right: 0;
+}
+
+.or-divider span {
+    background: white;
+    padding: 0 15px;
+    color: #666;
+    font-size: 14px;
+}
+
+.social-register {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.social-register button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.google-btn {
+    background: #fff;
+    color: #333;
+    border: 1px solid #ddd !important;
+}
+
+.facebook-btn {
+    background: #1877f2;
+    color: white;
+}
+
+.social-register button i {
+    margin-right: 10px;
+}
+
+.social-register button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.login-link {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}
+
+.login-link a {
+    color: #ff6b6b;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.login-link a:hover {
+    color: #ff5252;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .register-card {
+        padding: 30px 20px;
+    }
+    
+    .register-header h2 {
+        font-size: 24px;
+    }
+    
+    .social-register {
+        flex-direction: column;
+    }
+}

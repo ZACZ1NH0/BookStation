@@ -2,79 +2,137 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8" />
-    <title>Đăng ký tài khoản</title>
-    <style>
-       body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-    background-color:rgb(236, 193, 114);
-}
-
-h2 {
-    color: #333;
-    text-align: center;
-}
-
-form {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    max-width: 400px;         /* Giới hạn chiều ngang form */
-    margin: 40px auto;        /* Căn giữa form */
-    text-align: center;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-    width: 80%;               /* Giảm độ rộng input */
-    max-width: 300px;         /* Không vượt quá 300px */
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
-
-button {
-    background-color: #28a745;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-button:hover {
-    background-color: #218838;
-}
-
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký - BookStation</title>
+    <link rel="stylesheet" href="{% static 'css/register/style.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <h2>Đăng ký tài khoản</h2>
+    <div class="register-container">
+        <div class="background-animation"></div>
+        
+        <div class="register-card">
+            <div class="register-header">
+                <a href="{% url 'home' %}" class="brand">
+                    <i class="fas fa-book-open"></i> BookStation
+                </a>
+                <h2>Đăng ký tài khoản</h2>
+                <p>Tạo tài khoản để truy cập vào BookStation</p>
+            </div>
+            
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="message {% if message.tags == 'error' %}error-message{% else %}success-message{% endif %}">
+                            <i class="{% if message.tags == 'error' %}fas fa-exclamation-circle{% else %}fas fa-check-circle{% endif %}"></i>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            <form method="post" class="register-form">
+                {% csrf_token %}
+                
+                <div class="form-fields">
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="first_name" placeholder="Nhập tên của bạn" class="form-control">
+                        {% if form.first_name.errors %}
+                            <div class="field-error">
+                                {{ form.first_name.errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
 
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="last_name" placeholder="Nhập họ của bạn" class="form-control">
+                        {% if form.last_name.errors %}
+                            <div class="field-error">
+                                {{ form.last_name.errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
 
-        <li style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %};">
-            {{ message }}
-        </li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="username" placeholder="Nhập tên đăng nhập" class="form-control">
+                        {% if form.username.errors %}
+                            <div class="field-error">
+                                {{ form.username.errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Đăng ký</button>
-    </form>
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" name="email" placeholder="Nhập email của bạn" class="form-control">
+                        {% if form.email.errors %}
+                            <div class="field-error">
+                                {{ form.email.errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
 
-    <p>Đã có tài khoản? <a href="{% url 'login' %}">Đăng nhập tại đây</a></p>
+                    <div class="input-group">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" name="phone" placeholder="Nhập số điện thoại" class="form-control">
+                        {% if form.phone.errors %}
+                            <div class="field-error">
+                                {{ form.phone.errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="password1" placeholder="Nhập mật khẩu" class="form-control">
+                        {% if form.password1.errors %}
+                            <div class="field-error">
+                                {{ form.password1.errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" name="password2" placeholder="Xác nhận mật khẩu" class="form-control">
+                        {% if form.password2.errors %}
+                            <div class="field-error">
+                                {{ form.password2.errors|striptags }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <button type="submit" class="register-button">
+                    <span>Đăng ký</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </form>
+            
+            <div class="or-divider">
+                <span>hoặc</span>
+            </div>
+            
+            <div class="social-register">
+                <button class="google-btn">
+                    <i class="fab fa-google"></i>
+                    <span>Google</span>
+                </button>
+                <button class="facebook-btn">
+                    <i class="fab fa-facebook-f"></i>
+                    <span>Facebook</span>
+                </button>
+            </div>
+            
+            <div class="login-link">
+                Đã có tài khoản? <a href="{% url 'login' %}">Đăng nhập ngay</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
