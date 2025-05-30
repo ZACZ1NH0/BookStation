@@ -3,8 +3,9 @@
 # Cài thư viện
 pip install -r BookStation/requirements.txt
 
+cd BookStation
 # Chạy migrate
-python BookStation/manage.py migrate
+python manage.py migrate
 
 # Tạo superuser nếu chưa có
 echo "
