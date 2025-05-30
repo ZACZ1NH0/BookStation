@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Cài thư viện
-pip install -r ./requirements.txt
+pip install -r BookStation/requirements.txt
 
 python manage.py collectstatic --noinput
 # Chạy migrate
