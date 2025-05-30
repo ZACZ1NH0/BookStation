@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: bookstore-django
+    name: BookStation
     env: python
     plan: free
     buildCommand: "./BookStation/build.sh"
