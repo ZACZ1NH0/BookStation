@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Cài thư viện
-pip install -r BookStation/requirements.txt
+pip install -r requirements.txt
 
 cd BookStation
 # Chạy migrate
