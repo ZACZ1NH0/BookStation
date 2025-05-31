@@ -10,17 +10,18 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+  
 </head>
 <body>
   <header>
     <div class="navbar">
       <div class="logo"><i class="fas fa-book-open"></i> BookStation</div>
-
-      <div class="search-container">
-        <input type="text" placeholder="Bạn đang tìm gì?" class="search-box" />
-        <button class="search-btn"><i class="fas fa-search"></i></button>
-      </div>
-
+      <form method="get" action="{% url 'book_search' %}">
+        <div class="search-container">
+          <input type="text" name = "q" placeholder="Bạn đang tìm gì?" class="search-box" />
+          <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+      </form>
       <div class="icons">
         <a href="#" class="nav-icon" title="Giỏ hàng"><i class="fas fa-shopping-cart"></i></a>
         <a href="#" class="nav-icon" title="Yêu thích"><i class="fas fa-heart"></i></a>
@@ -48,15 +49,6 @@
       </div>
     </div>
   </header>
-
-  {% comment %} <section class="banner">
-    <div class="text">
-      <h2>📚 Sách mới phát hành!</h2>
-      <p>Khám phá ngay cuốn <strong>"Dế Mèn Phiêu Lưu Ký"</strong> – tác phẩm kinh điển dành cho mọi lứa tuổi.</p>
-      <a href="/books/123"><button>Mua ngay</button></a>
-    </div>
-    <img src="{% static 'image/demen1.jpg' %}" alt="Dế Mèn Phiêu Lưu Ký">
-  </section> {% endcomment %}
   <section class="banner-slider">
     <div class="slide">
       <div class="text">
@@ -187,7 +179,7 @@
         <a href="#" class="btn-explore">Khám phá ngay <i class="fas fa-long-arrow-alt-right"></i></a>
       </div>
       <div class="featured-image">
-        <img src="{% static 'image/books-pile.jpg' %}" alt="Sách bán chạy">
+        <img src="{% static 'image/yourname.gif' %}" alt="Sách bán chạy">
       </div>
     </div>
   </section>
@@ -226,13 +218,13 @@
       
       <div class="footer-section">
         <h4>Liên hệ</h4>
-        <p><i class="fas fa-map-marker-alt"></i> 123 Đường Sách, Quận 1, TP.HCM</p>
-        <p><i class="fas fa-phone"></i> +84 123 456 789</p>
-        <p><i class="fas fa-envelope"></i> info@bookstation.com</p>
+        <p><i class="fas fa-map-marker-alt"></i> Số 298 đường Cầu Diễn, quận Bắc Từ Liêm, Hà Nội</p>
+        <p><i class="fas fa-phone"></i> +84 972325863</p>
+        <p><i class="fas fa-envelope"></i> soloyasuokom@gmail.com</p>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2023 BookStation. Tất cả quyền được bảo lưu.</p>
+      <p>&copy; 2025 BookStation. Tất cả quyền được bảo lưu.</p>
     </div>
   </footer>
 

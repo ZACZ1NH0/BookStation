@@ -16,6 +16,16 @@ def book_detail(request, pk):
     book = get_object_or_404(Book, pk=pk)
     return render(request, 'books/book_detail.html', {'book': book})
 
+def book_search(request):
+    query = request.GET.get('q','')
+    results = Book.objects.filter(title__icontains = query) if query else []
+    return render(request, 'books/search_results.html', {
+        'query': query,
+        'results': results
+    })
+
+
+
 @user_passes_test(lambda u: u.is_superuser)
 def book_add(request):
     if request.method == 'POST':
