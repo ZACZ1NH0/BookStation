@@ -1,11 +1,140 @@
-<h2>Kết quả tìm kiếm cho "{{ query }}"</h2>
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kết quả tìm kiếm - BookStation</title>
+  <link rel="stylesheet" href="{% static 'css/home/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/search_results/style.css' %}" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+</head>
+<body>
+  <header>
+    <div class="navbar">
+      <div class="logo"><a href="{% url 'home' %}" style="text-decoration: none; color: inherit;"><i class="fas fa-book-open"></i> BookStation</a></div>
+      <form method="get" action="{% url 'book_search' %}">
+        <div class="search-container">
+          <input type="text" name="q" placeholder="Bạn đang tìm gì?" class="search-box" />
+          <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+      </form>
+      <div class="icons">
+        <a href="#" class="nav-icon" title="Giỏ hàng"><i class="fas fa-shopping-cart"></i></a>
+        <a href="#" class="nav-icon" title="Yêu thích"><i class="fas fa-heart"></i></a>
+        {% if user.is_authenticated %}
+          <div class="user-menu">
+            <a href="#" class="nav-icon user-icon" title="{{ user.username }}">
+              <i class="fas fa-user-circle"></i>
+            </a>
+            <div class="dropdown-menu">
+              <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Tài khoản của tôi</a>
+              <a href="#"><i class="fas fa-list"></i> Đơn hàng</a>
+              <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
+              </form>
+            </div>
+          </div>
+        {% else %}
+          <div class="auth-buttons">
+            <a href="{% url 'login' %}"><button class="login">Đăng nhập</button></a>
+            <a href="{% url 'register' %}"><button class="register">Đăng ký</button></a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </header>
 
-{% if results %}
-  <ul>
-    {% for book in results %}
-      <li>{{ book.title }} - {{ book.price }}</li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>Không tìm thấy kết quả nào.</p>
-{% endif %}
+  <section class="section">
+    <h3><i class="fas fa-search"></i> Kết quả tìm kiếm cho "{{ query }}"</h3>
+    {% if results %}
+      <div class="book-list">
+        {% for book in results %}
+          <div class="book">
+            <div class="book-badges">
+              {% if book.old_price %}
+                <span class="discount-badge">-{{ book.discount_percent }}%</span>
+              {% endif %}
+              {% if book.is_new %}
+                <span class="new-badge">New</span>
+              {% endif %}
+            </div>
+            <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" />
+            <div class="book-info">
+              <h4>{{ book.title }}</h4>
+              <p class="author">{{ book.author }}</p>
+              <div class="price-container">
+                <p>${{ book.price }}
+                  {% if book.old_price %}
+                    <span class="old-price">${{ book.old_price }}</span>
+                  {% endif %}
+                </p>
+                <div class="rating">
+                  <i class="fas fa-star"></i>
+                  <span>{{ book.rating|default:"4.5" }}</span>
+                </div>
+              </div>
+            </div>
+            <form action="{% url 'add_to_cart' book.id %}" method="post">
+              {% csrf_token %}
+              <div class="quantity-container">
+                <button type="button" class="quantity-btn decrease-btn" onclick="decreaseQuantity(this)"><i class="fas fa-minus"></i></button>
+                <input type="number" name="quantity" value="1" min="1" class="quantity-input" />
+                <button type="button" class="quantity-btn increase-btn" onclick="increaseQuantity(this)"><i class="fas fa-plus"></i></button>
+              </div>
+              <button type="submit" class="add_button"><i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng</button>
+            </form>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>Không tìm thấy kết quả nào.</p>
+    {% endif %}
+  </section>
+
+  <footer>
+    <p>&copy; 2025 BookStation. Tất cả quyền được bảo lưu.</p>
+  </footer>
+
+  <script>
+    function decreaseQuantity(button) {
+      const input = button.nextElementSibling;
+      let value = parseInt(input.value);
+      if (value > 1) {
+        value--;
+        input.value = value;
+      }
+    }
+    function increaseQuantity(button) {
+      const input = button.previousElementSibling;
+      let value = parseInt(input.value);
+      value++;
+      input.value = value;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchBox = document.querySelector('.search-box');
+      const searchBtn = document.querySelector('.search-btn');
+
+      searchBox.addEventListener('focus', function() {
+        this.style.borderColor = '#ff9800';
+      });
+
+      searchBox.addEventListener('blur', function() {
+        this.style.borderColor = '#ddd';
+      });
+
+      searchBtn.addEventListener('mouseover', function() {
+        this.style.backgroundColor = '#ff5722';
+      });
+
+      searchBtn.addEventListener('mouseout', function() {
+        this.style.backgroundColor = '#ff9800';
+      });
+    });
+  </script>
+</body>
+</html>
