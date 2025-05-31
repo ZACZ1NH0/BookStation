@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ publisher.name }} - BookStation{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'publisher_list' %}">Nhà xuất bản</a></li>
+            <li class="breadcrumb-item active">{{ publisher.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Publisher Info -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h1 class="card-title h4">{{ publisher.name }}</h1>
+                    
+                    {% if publisher.address %}
+                    <p class="card-text">
+                        <i class="fas fa-map-marker-alt me-2"></i>{{ publisher.address }}
+                    </p>
+                    {% endif %}
+
+                    {% if publisher.phone %}
+                    <p class="card-text">
+                        <i class="fas fa-phone me-2"></i>{{ publisher.phone }}
+                    </p>
+                    {% endif %}
+
+                    {% if publisher.email %}
+                    <p class="card-text">
+                        <i class="fas fa-envelope me-2"></i>
+                        <a href="mailto:{{ publisher.email }}">{{ publisher.email }}</a>
+                    </p>
+                    {% endif %}
+
+                    {% if publisher.website %}
+                    <p class="card-text">
+                        <i class="fas fa-globe me-2"></i>
+                        <a href="{{ publisher.website }}" target="_blank" rel="noopener noreferrer">
+                            {{ publisher.website }}
+                        </a>
+                    </p>
+                    {% endif %}
+
+                    {% if user.is_staff %}
+                    <div class="mt-3">
+                        <a href="{% url 'publisher_update' publisher.pk %}" class="btn btn-outline-primary me-2">
+                            <i class="fas fa-edit me-2"></i>Sửa
+                        </a>
+                        <a href="{% url 'publisher_delete' publisher.pk %}" class="btn btn-outline-danger">
+                            <i class="fas fa-trash me-2"></i>Xóa
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Publisher's Books -->
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title h4 mb-4">Sách từ {{ publisher.name }}</h2>
+                    
+                    {% if publisher.books.all %}
+                    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                        {% for book in publisher.books.all %}
+                        <div class="col">
+                            <div class="card h-100 shadow-sm">
+                                {% if book.cover %}
+                                <img src="{{ book.cover.url }}" class="card-img-top" 
+                                     alt="{{ book.title }}" style="height: 200px; object-fit: cover;">
+                                {% else %}
+                                <img src="{% static 'images/default_book.png' %}" 
+                                     class="card-img-top" alt="Default book cover" 
+                                     style="height: 200px; object-fit: cover;">
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ book.title }}</h5>
+                                    {% if book.authors.all %}
+                                    <p class="card-text">
+                                        <small class="text-muted">
+                                            Tác giả: {% for author in book.authors.all %}
+                                            {{ author.name }}{% if not forloop.last %}, {% endif %}
+                                            {% endfor %}
+                                        </small>
+                                    </p>
+                                    {% endif %}
+                                    <p class="card-text">
+                                        <strong>{{ book.price|floatformat:2 }} VNĐ</strong>
+                                    </p>
+                                    <div class="d-grid">
+                                        <a href="{% url 'book_detail' book.pk %}" 
+                                           class="btn btn-outline-primary btn-sm">
+                                            Chi tiết
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>Chưa có sách nào từ nhà xuất bản này
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

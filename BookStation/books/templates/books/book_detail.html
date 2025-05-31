@@ -1,6 +1,137 @@
-<form method="post" action="{% url 'add_to_cart' book.pk %}">
-  {% csrf_token %}
-  <label for="quantity">Quantity:</label>
-  <input type="number" id="quantity" name="quantity" value="1" min="1">
-  <button type="submit">Add to Cart</button>
-</form>
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ book.title }} - Chi tiết sách</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    {% load i18n %}
+    <!-- Bootstrap CSS -->
+    <!-- Dùng bản mới hơn (ví dụ Font Awesome 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/home/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/home/slide.css' %}" />
+    <style>
+        .quantity-input {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            max-width: 150px;
+        }
+
+        .quantity-input button {
+            width: 32px;
+            height: 32px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            background: #f8f9fa;
+            cursor: pointer;
+        }
+
+        .quantity-input input {
+            text-align: center;
+            width: 50px;
+            height: 32px;
+            border: 1px solid #ccc;
+        }
+
+        .badge {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+        <header>
+        <div class="navbar">
+        <div class="logo"><i class="fas fa-book-open"></i> BookStation</div>
+
+        <div class="search-container">
+            <input type="text" placeholder="Bạn đang tìm gì?" class="search-box" />
+            <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+
+        <div class="icons">
+            <a href="#" class="nav-icon" title="Giỏ hàng"><i class="fas fa-shopping-cart"></i></a>
+            <a href="#" class="nav-icon" title="Yêu thích"><i class="fas fa-heart"></i></a>
+            
+            {% if user.is_authenticated %}
+            <div class="user-menu">
+                <a href="#" class="nav-icon user-icon" title="{{ user.username }}">
+                    <i class="fas fa-user-circle"></i>
+                </a>
+                <div class="dropdown-menu">
+                <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Tài khoản của tôi</a>
+                <a href="#"><i class="fas fa-list"></i> Đơn hàng</a>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
+                </form>
+                </div>
+            </div>
+            {% else %}
+            <div class="auth-buttons">
+                <a href="{% url 'login' %}"><button class="login">Đăng nhập</button></a>
+                <a href="{% url 'register' %}"><button class="register">Đăng ký</button></a>
+            </div>
+            {% endif %}
+            </div>
+        </div>
+    </header>
+
+
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Ảnh bìa sách -->
+            <div class="col-md-4">
+                <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="img-fluid rounded shadow">
+            </div>
+
+            <!-- Thông tin sách -->
+            <div class="col-md-8">
+                <h2>{{ book.title }}</h2>
+                <h5 class="text-muted">Tác giả: {{ book.author.name }}</h5>
+                <p><strong>Nhà xuất bản:</strong> {{ book.publisher.name }}</p>
+                <p><strong>Ngày xuất bản:</strong> {{ book.publication_date|date:"d/m/Y" }}</p>
+                <p><strong>Còn lại:</strong> {{ book.stock }} quyển</p>
+                <p><strong>Giá:</strong> <span class="text-danger fs-4">${{ book.price }}</span></p>
+                <p>{{ book.description }}</p>
+
+                <!-- Danh mục -->
+                <p><strong>Thể loại:</strong>
+                    {% for category in book.categories.all %}
+                        <span class="badge bg-secondary">{{ category.name }}</span>
+                    {% endfor %}
+                </p>
+
+                <!-- Form thêm vào giỏ hàng -->
+                <form method="post" action="{% url 'add_to_cart' book.id %}">
+                    {% csrf_token %}
+                    <div class="quantity-input my-3">
+                        <button type="button" onclick="updateQuantity(-1)">−</button>
+                        <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ book.stock }}">
+                        <button type="button" onclick="updateQuantity(1)">+</button>
+                    </div>
+                    <button type="submit" class="btn btn-warning">Thêm vào giỏ hàng</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<!-- Script tăng giảm số lượng -->
+<script>
+    function updateQuantity(change) {
+        const input = document.getElementById("quantity");
+        const max = parseInt(input.max);
+        let current = parseInt(input.value);
+        current += change;
+        if (current < 1) current = 1;
+        if (current > max) current = max;
+        input.value = current;
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

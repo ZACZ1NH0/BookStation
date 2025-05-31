@@ -1,0 +1,118 @@
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #fffdf7;
+    color: #333;
+}
+
+header {
+    background-color: #ffe082;
+    padding: 10px 20px;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.search-box {
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    width: 300px;
+    font-size: 14px;
+}
+
+.icons {
+    display: flex;
+    align-items: center;
+}
+
+.login, .register {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.login {
+    background-color: #4CAF50;
+    margin-right: 10px;
+}
+
+.register {
+    background-color: #2196F3;
+}
+
+.featured-book {
+    background-color: #fff3d4;
+    padding: 40px 0;
+    margin-bottom: 40px;
+}
+.book-card {
+    border: none;
+    transition: transform 0.3s;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.book-card:hover {
+    transform: translateY(-5px);
+}
+.book-card img {
+    height: 300px;
+    object-fit: cover;
+}
+.heart-icon {
+    color: #ff4081;
+    margin-left: 10px;
+}
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    flex-wrap: wrap;
+}
+
+.pagination .page-item {
+    margin: 0 4px;
+}
+
+.pagination .page-link {
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    background-color: #f1f1f1;
+    color: #007bff;
+    font-weight: 500;
+    transition: background-color 0.3s, color 0.3s;
+    text-decoration: none;
+}
+
+.pagination .page-link:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.pagination .page-link:focus {
+    box-shadow: none;
+    outline: none;
+}
+.card a {
+    text-decoration: none;
+    color: inherit;
+}
