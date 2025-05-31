@@ -6,31 +6,55 @@ from books.models import Book
 from .forms import OrderForm, OrderItemFormSet
 
 
-@login_required
+# @login_required
+# def create_order(request):
+#     if request.method == 'POST':
+#         form = OrderForm(request.POST)
+#         formset = OrderItemFormSet(request.POST)
+
+#         if form.is_valid() and formset.is_valid():
+#             order = form.save(commit=False)
+#             order.customer = request.user
+#             order.save()
+
+#             order_items = formset.save(commit=False)
+#             for item in order_items:
+#                 item.order = order
+#                 item.save()
+
+#             return redirect('order_success')  
+#     else:
+#         form = OrderForm()
+#         formset = OrderItemFormSet()
+
+#     return render(request, 'orders/create_order.html', {
+#         'form': form,
+#         'formset': formset
+#     })
+
 def create_order(request):
-    if request.method == 'POST':
-        form = OrderForm(request.POST)
-        formset = OrderItemFormSet(request.POST)
+    cart = request.session.get("cart", {})
+    selected_keys = request.POST.getlist("selected_items")  # Lấy danh sách được chọn
+    selected_cart = {}
+    total = 0
 
-        if form.is_valid() and formset.is_valid():
-            order = form.save(commit=False)
-            order.customer = request.user
-            order.save()
+    for key in selected_keys:
+        if key in cart:
+            item = cart[key]
+            subtotal = float(item["price"]) * int(item["quantity"])
+            item["subtotal"] = subtotal
+            selected_cart[key] = item
+            total += subtotal
+            # return redirect('order_success')  # Chuyển hướng đến trang thành công
 
-            order_items = formset.save(commit=False)
-            for item in order_items:
-                item.order = order
-                item.save()
+    form = OrderForm()
 
-            return redirect('order_success')  
-    else:
-        form = OrderForm()
-        formset = OrderItemFormSet()
-
-    return render(request, 'orders/create_order.html', {
-        'form': form,
-        'formset': formset
+    return render(request, "orders/create_order.html", {
+        "form": form,
+        "cart": selected_cart,  # Chỉ truyền các item đã chọn
+        "total": total,
     })
+
 
 @login_required
 def add_to_cart(request, pk):
