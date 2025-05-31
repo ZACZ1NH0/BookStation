@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Xóa nhà xuất bản - {{ publisher.name }} - BookStation{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'publisher_list' %}">Nhà xuất bản</a></li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'publisher_detail' publisher.pk %}">{{ publisher.name }}</a>
+            </li>
+            <li class="breadcrumb-item active">Xóa nhà xuất bản</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <h2 class="card-title mb-4">Xác nhận xóa nhà xuất bản</h2>
+                    
+                    <p class="lead">Bạn có chắc chắn muốn xóa nhà xuất bản "{{ publisher.name }}" không?</p>
+                    
+                    {% if publisher.books.exists %}
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Nhà xuất bản này có {{ publisher.books.count }} cuốn sách. 
+                        Xóa nhà xuất bản sẽ ảnh hưởng đến các cuốn sách này.
+                    </div>
+                    {% endif %}
+                    
+                    <p class="text-danger">Lưu ý: Hành động này không thể hoàn tác!</p>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash me-2"></i>Xác nhận xóa
+                            </button>
+                            <a href="{% url 'publisher_detail' publisher.pk %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Hủy
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

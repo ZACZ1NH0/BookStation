@@ -1,0 +1,378 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Book Store</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    {% load i18n %}
+    <!-- Bootstrap CSS -->
+    <!-- Dùng bản mới hơn (ví dụ Font Awesome 6) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Load CSS của bạn sau để ghi đè -->
+    <link rel="stylesheet" href="{% static 'css/home/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/home/slide.css' %}" />
+
+</head>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', 'Roboto', sans-serif;
+            background-color: #fffdf7;
+            color: #333;
+        }
+
+        .featured-book {
+            background-color: #fff3d4;
+            padding: 40px 0;
+            margin-bottom: 40px;
+        }
+
+        .book-card {
+            border: none;
+            transition: transform 0.3s;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .book-card img {
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .heart-icon {
+            color: #ff4081;
+            margin-left: 10px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .pagination .page-item {
+            margin: 0 4px;
+        }
+
+        .pagination .page-link {
+            border: none;
+            border-radius: 6px;
+            padding: 8px 14px;
+            background-color: #f1f1f1;
+            color: #007bff;
+            font-weight: 500;
+            transition: background-color 0.3s, color 0.3s;
+            text-decoration: none;
+        }
+
+        .pagination .page-link:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .pagination .page-item.active .page-link {
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .pagination .page-link:focus {
+            box-shadow: none;
+            outline: none;
+        }
+
+        .card a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .book-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .book-heading {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .book-item {
+            background-color: #fff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .book-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .book-info {
+            padding: 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .book-title {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .book-title-link {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .book-title-link:hover {
+            color: #007bff;
+        }
+
+        .book-price {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .book-add-btn {
+            background-color: #ffc107;
+            border: none;
+            padding: 10px;
+            color: #000;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .book-add-btn:hover {
+            background-color: #e0a800;
+        }
+
+        .page-item {
+        }
+
+        .page-link {
+            display: block;
+            padding: 8px 14px;
+            background-color: #f1f1f1;
+            color: #007bff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .page-item.active .page-link {
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        .page-link:hover {
+            background-color: #007bff;
+            color: #fff;
+        }
+        .pagination {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .pagination li {
+            list-style: none !important; 
+        }
+
+
+    </style>
+</head>
+<body>    
+    <header>
+        <div class="navbar">
+        <div class="logo"><i class="fas fa-book-open"></i> BookStation</div>
+
+        <div class="search-container">
+            <input type="text" placeholder="Bạn đang tìm gì?" class="search-box" />
+            <button class="search-btn"><i class="fas fa-search"></i></button>
+        </div>
+
+        <div class="icons">
+            <a href="#" class="nav-icon" title="Giỏ hàng"><i class="fas fa-shopping-cart"></i></a>
+            <a href="#" class="nav-icon" title="Yêu thích"><i class="fas fa-heart"></i></a>
+            
+            {% if user.is_authenticated %}
+            <div class="user-menu">
+                <a href="#" class="nav-icon user-icon" title="{{ user.username }}">
+                    <i class="fas fa-user-circle"></i>
+                </a>
+                <div class="dropdown-menu">
+                <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Tài khoản của tôi</a>
+                <a href="#"><i class="fas fa-list"></i> Đơn hàng</a>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
+                </form>
+                </div>
+            </div>
+            {% else %}
+            <div class="auth-buttons">
+                <a href="{% url 'login' %}"><button class="login">Đăng nhập</button></a>
+                <a href="{% url 'register' %}"><button class="register">Đăng ký</button></a>
+            </div>
+            {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="book-container">
+        <h2 class="book-heading">Sách trong cửa hàng</h2>
+        <div class="book-grid">
+            {% for book in page_obj %}
+            <div class="book-item">
+                <a href="{% url 'book_detail' book.pk %}">
+                    <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-image">
+                </a>
+                <div class="book-info">
+                    <h5 class="book-title">
+                        <a href="{% url 'book_detail' book.pk %}" class="book-title-link">
+                            {{ book.title }}
+                        </a>
+                    </h5>
+                    <p class="book-price">${{ book.price }}</p>
+                    <button class="book-add-btn">Thêm vào giỏ hàng</button>
+                </div>
+            </div>
+            {% empty %}
+            <p>Không có sách nào.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Phân trang -->
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+
+            <!-- Nút về Trang đầu -->
+            {% if page_obj.number != 1 %}
+            <li class="page-item">
+            <a class="page-link" href="?page=1">Trang đầu</a>
+            </li>
+            {% endif %}
+    
+            <!-- Nút về trang trước -->
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+            </li>
+            {% endif %}
+
+            <!-- Số trang -->
+            {% for num in page_obj.paginator.page_range %}
+                {% if num == 1 and page_obj.number != 1 %}
+                    {# Bỏ qua số 1 nếu đã có nút "Trang đầu" #}
+                {% elif num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %}
+                <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+                {% endif %}
+            {% endfor %}
+
+            <!-- Nút tới trang sau -->
+            {% if page_obj.has_next %}
+            <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+            </li>
+            {% endif %}
+
+            <!-- Nút tới Trang cuối -->
+            {% if page_obj.number != page_obj.paginator.num_pages %}
+            <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Trang cuối</a>
+            </li>
+            {% endif %}
+
+        </ul>
+    </nav>
+
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+        <div class="footer-section">
+            <h4>BookStation</h4>
+            <p>Cửa hàng sách trực tuyến hàng đầu với đa dạng thể loại sách cho mọi lứa tuổi.</p>
+            <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+        
+        <div class="footer-section">
+            <h4>Thông tin</h4>
+            <ul>
+            <li><a href="#">Giới thiệu</a></li>
+            <li><a href="#">Điều khoản sử dụng</a></li>
+            <li><a href="#">Chính sách bảo mật</a></li>
+            <li><a href="#">Liên hệ</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-section">
+            <h4>Hỗ trợ khách hàng</h4>
+            <ul>
+            <li><a href="#">Hướng dẫn mua hàng</a></li>
+            <li><a href="#">Phương thức thanh toán</a></li>
+            <li><a href="#">Chính sách đổi trả</a></li>
+            <li><a href="#">Câu hỏi thường gặp</a></li>
+            </ul>
+        </div>
+        
+        <div class="footer-section">
+            <h4>Liên hệ</h4>
+            <p><i class="fas fa-map-marker-alt"></i> 123 Đường Sách, Quận 1, TP.HCM</p>
+            <p><i class="fas fa-phone"></i> +84 123 456 789</p>
+            <p><i class="fas fa-envelope"></i> info@bookstation.com</p>
+        </div>
+        </div>
+        <div class="footer-bottom">
+        <p>&copy; 2023 BookStation. Tất cả quyền được bảo lưu.</p>
+        </div>
+    </footer>
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

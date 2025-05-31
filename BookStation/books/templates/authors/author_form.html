@@ -1,17 +1,17 @@
-{% comment %} {% extends 'base.html' %} {% endcomment %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}
-    {% if book %}Sửa sách - {{ book.title }}{% else %}Thêm sách mới{% endif %} - BookStation
+    {% if author %}Sửa tác giả - {{ author.name }}{% else %}Thêm tác giả mới{% endif %} - BookStation
 {% endblock %}
 
 {% block content %}
 <div class="container mt-4">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'book_list' %}">Sách</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'author_list' %}">Tác giả</a></li>
             <li class="breadcrumb-item active">
-                {% if book %}Sửa sách{% else %}Thêm sách mới{% endif %}
+                {% if author %}Sửa tác giả{% else %}Thêm tác giả mới{% endif %}
             </li>
         </ol>
     </nav>
@@ -21,7 +21,7 @@
             <div class="card shadow">
                 <div class="card-body">
                     <h2 class="card-title text-center mb-4">
-                        {% if book %}Sửa sách - {{ book.title }}{% else %}Thêm sách mới{% endif %}
+                        {% if author %}Sửa tác giả - {{ author.name }}{% else %}Thêm tác giả mới{% endif %}
                     </h2>
 
                     <form method="post" enctype="multipart/form-data" novalidate>
@@ -35,21 +35,20 @@
                                 <span class="text-danger">*</span>
                                 {% endif %}
                             </label>
-                            
-                            {% if field.field.widget.input_type == 'file' %}
-                                {% if book and book.cover %}
-                                <div class="mb-2">
-                                    <img src="{{ book.cover.url }}" alt="Current cover" class="img-thumbnail" style="max-height: 200px;">
-                                </div>
-                                {% endif %}
+
+                            {% if field.field.widget.input_type == 'file' and author and author.photo %}
+                            <div class="mb-2">
+                                <img src="{{ author.photo.url }}" alt="Current photo" 
+                                     class="img-thumbnail" style="max-height: 200px;">
+                            </div>
                             {% endif %}
 
                             {{ field }}
-                            
+
                             {% if field.help_text %}
                             <div class="form-text">{{ field.help_text }}</div>
                             {% endif %}
-                            
+
                             {% if field.errors %}
                             <div class="invalid-feedback d-block">
                                 {% for error in field.errors %}
@@ -62,13 +61,13 @@
 
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-primary">
-                                {% if book %}
+                                {% if author %}
                                 <i class="fas fa-save me-2"></i>Lưu thay đổi
                                 {% else %}
-                                <i class="fas fa-plus me-2"></i>Thêm sách
+                                <i class="fas fa-plus me-2"></i>Thêm tác giả
                                 {% endif %}
                             </button>
-                            <a href="{% url 'book_list' %}" class="btn btn-outline-secondary">
+                            <a href="{% url 'author_list' %}" class="btn btn-outline-secondary">
                                 <i class="fas fa-times me-2"></i>Hủy
                             </a>
                         </div>
@@ -79,27 +78,6 @@
     </div>
 </div>
 
-{% block extra_css %}
-<style>
-    /* Style for form fields */
-    .form-control, .form-select {
-        border-radius: 0.375rem;
-    }
-    
-    /* Style for select2 fields if used */
-    .select2-container--default .select2-selection--multiple,
-    .select2-container--default .select2-selection--single {
-        border-radius: 0.375rem;
-        border-color: #dee2e6;
-    }
-    
-    /* Custom file input styling */
-    .custom-file-input:lang(en)~.custom-file-label::after {
-        content: "Browse";
-    }
-</style>
-{% endblock %}
-
 {% block extra_js %}
 <script>
     // Add Bootstrap validation classes to form fields
@@ -109,13 +87,6 @@
             input.classList.add('required');
         }
     });
-
-    // Initialize select2 if available
-    if (typeof $.fn.select2 !== 'undefined') {
-        $('.select2').select2({
-            theme: 'bootstrap4',
-        });
-    }
 </script>
 {% endblock %}
 
