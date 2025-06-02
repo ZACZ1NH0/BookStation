@@ -1,10 +1,11 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Book Store</title>
+
+{% block title %}Danh sách sách - BookStation{% endblock %}
+
+
+
+{% block content %}
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
     {% load i18n %}
@@ -14,8 +15,6 @@
     <!-- Load CSS của bạn sau để ghi đè -->
     <link rel="stylesheet" href="{% static 'css/home/style.css' %}" />
     <link rel="stylesheet" href="{% static 'css/home/slide.css' %}" />
-
-</head>
     <style>
         body {
             margin: 0;
@@ -217,44 +216,6 @@
 
 
     </style>
-</head>
-<body>    
-    <header>
-        <div class="navbar">
-        <div class="logo"><i class="fas fa-book-open"></i> BookStation</div>
-
-        <div class="search-container">
-            <input type="text" placeholder="Bạn đang tìm gì?" class="search-box" />
-            <button class="search-btn"><i class="fas fa-search"></i></button>
-        </div>
-
-        <div class="icons">
-            <a href="#" class="nav-icon" title="Giỏ hàng"><i class="fas fa-shopping-cart"></i></a>
-            <a href="#" class="nav-icon" title="Yêu thích"><i class="fas fa-heart"></i></a>
-            
-            {% if user.is_authenticated %}
-            <div class="user-menu">
-                <a href="#" class="nav-icon user-icon" title="{{ user.username }}">
-                    <i class="fas fa-user-circle"></i>
-                </a>
-                <div class="dropdown-menu">
-                <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Tài khoản của tôi</a>
-                <a href="#"><i class="fas fa-list"></i> Đơn hàng</a>
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
-                </form>
-                </div>
-            </div>
-            {% else %}
-            <div class="auth-buttons">
-                <a href="{% url 'login' %}"><button class="login">Đăng nhập</button></a>
-                <a href="{% url 'register' %}"><button class="register">Đăng ký</button></a>
-            </div>
-            {% endif %}
-            </div>
-        </div>
-    </header>
 
     <!-- Main Content -->
     <div class="book-container">
@@ -328,51 +289,7 @@
     </nav>
 
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-        <div class="footer-section">
-            <h4>BookStation</h4>
-            <p>Cửa hàng sách trực tuyến hàng đầu với đa dạng thể loại sách cho mọi lứa tuổi.</p>
-            <div class="social-links">
-            <a href="#"><i class="fab fa-facebook"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            </div>
-        </div>
-        
-        <div class="footer-section">
-            <h4>Thông tin</h4>
-            <ul>
-            <li><a href="#">Giới thiệu</a></li>
-            <li><a href="#">Điều khoản sử dụng</a></li>
-            <li><a href="#">Chính sách bảo mật</a></li>
-            <li><a href="#">Liên hệ</a></li>
-            </ul>
-        </div>
-        
-        <div class="footer-section">
-            <h4>Hỗ trợ khách hàng</h4>
-            <ul>
-            <li><a href="#">Hướng dẫn mua hàng</a></li>
-            <li><a href="#">Phương thức thanh toán</a></li>
-            <li><a href="#">Chính sách đổi trả</a></li>
-            <li><a href="#">Câu hỏi thường gặp</a></li>
-            </ul>
-        </div>
-        
-        <div class="footer-section">
-            <h4>Liên hệ</h4>
-            <p><i class="fas fa-map-marker-alt"></i> 123 Đường Sách, Quận 1, TP.HCM</p>
-            <p><i class="fas fa-phone"></i> +84 123 456 789</p>
-            <p><i class="fas fa-envelope"></i> info@bookstation.com</p>
-        </div>
-        </div>
-        <div class="footer-bottom">
-        <p>&copy; 2023 BookStation. Tất cả quyền được bảo lưu.</p>
-        </div>
-    </footer>
+    
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+{% endblock %}
