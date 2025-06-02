@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chỉnh sửa người dùng</title>
+</head>
+<body>
+    <h2>Chỉnh sửa người dùng: {{ user.username }}</h2>
+
+    <h3>Thông tin cá nhân</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" name="update_profile">Lưu thay đổi</button>
+    </form>
+
+    <h3>Đổi mật khẩu</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ password_form.as_p }}
+        <button type="submit" name="change_password">Đổi mật khẩu</button>
+    </form>
+
+    <p><a href="{% url 'list_user' %}">⬅ Quay lại danh sách người dùng</a></p>
+</body>
+</html>

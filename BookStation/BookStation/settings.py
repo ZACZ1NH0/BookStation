@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'books',
     'orders',
     'home',
+    'staff',
 
 ]
 AUTH_USER_MODEL = 'accounts.Users'
@@ -54,6 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+     'home.middleware.RoleRedict'
 ]
 
 ROOT_URLCONF = 'BookStation.urls'
@@ -140,6 +142,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+# LOGIN_URL = '/accounts/login/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
