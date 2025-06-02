@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     # BOOK
@@ -8,12 +10,14 @@ urlpatterns = [
     path('books/<int:pk>/', views.book_detail, name='book_detail'),
     path('books/<int:pk>/edit/', views.book_edit, name='book_edit'),
     path('books/<int:pk>/delete/', views.book_delete, name='book_delete'),
+    path('search/', views.book_search, name='book_search'),
 
     # AUTHOR
     path('authors/', views.author_list, name='author_list'),
     path('authors/add/', views.author_add, name='author_add'),
     path('authors/<int:pk>/edit/', views.author_edit, name='author_edit'),
     path('authors/<int:pk>/delete/', views.author_delete, name='author_delete'),
+    path('authors/<int:pk>/', views.author_detail, name='author_detail'),
 
     # PUBLISHER
     path('publishers/', views.publisher_list, name='publisher_list'),
@@ -29,3 +33,6 @@ urlpatterns = [
     path('categories/<int:pk>/edit/', views.category_edit, name='category_edit'),
     path('categories/<int:pk>/delete/', views.category_delete, name='category_delete'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

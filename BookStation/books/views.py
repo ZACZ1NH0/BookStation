@@ -2,14 +2,29 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Book, Author, Category, Publisher
 from .forms import BookForm, AuthorForm, CategoryForm, PublisherForm
 from django.contrib.auth.decorators import user_passes_test
-
+from django.core.paginator import Paginator
 def book_list(request):
+    Book.cover_image.field.upload_to = 'book_covers/'  # Đảm bảo đường dẫn đúng
     books = Book.objects.all()
-    return render(request, 'books/book_list.html', {'books': books})
+    paginator = Paginator(books, 20)  # 20 sách mỗi trang
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'books/book_list.html', {'page_obj': page_obj})
 
 def book_detail(request, pk):
     book = get_object_or_404(Book, pk=pk)
     return render(request, 'books/book_detail.html', {'book': book})
+
+def book_search(request):
+    query = request.GET.get('q','')
+    results = Book.objects.filter(title__icontains = query) if query else []
+    return render(request, 'books/search_results.html', {
+        'query': query,
+        'results': results
+    })
+
+
 
 @user_passes_test(lambda u: u.is_superuser)
 def book_add(request):

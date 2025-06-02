@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Xóa tác giả - {{ author.name }} - BookStation{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'author_list' %}">Tác giả</a></li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'author_detail' author.pk %}">{{ author.name }}</a>
+            </li>
+            <li class="breadcrumb-item active">Xóa tác giả</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    <h2 class="card-title mb-4">Xác nhận xóa tác giả</h2>
+                    
+                    {% if author.photo %}
+                    <img src="{{ author.photo.url }}" alt="{{ author.name }}" 
+                         class="img-thumbnail mb-3" style="max-height: 200px;">
+                    {% endif %}
+                    
+                    <p class="lead">Bạn có chắc chắn muốn xóa tác giả "{{ author.name }}" không?</p>
+                    
+                    {% if author.books.exists %}
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Tác giả này có {{ author.books.count }} cuốn sách. 
+                        Xóa tác giả sẽ ảnh hưởng đến các cuốn sách này.
+                    </div>
+                    {% endif %}
+                    
+                    <p class="text-danger">Lưu ý: Hành động này không thể hoàn tác!</p>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash me-2"></i>Xác nhận xóa
+                            </button>
+                            <a href="{% url 'author_detail' author.pk %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Hủy
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

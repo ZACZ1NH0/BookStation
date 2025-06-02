@@ -1,15 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Xóa sách - {{ book.title }} - BookStation{% endblock %}
+{% block title %}Xóa thể loại - {{ category.name }} - BookStation{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'book_list' %}">Sách</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'book_detail' book.pk %}">{{ book.title }}</a></li>
-            <li class="breadcrumb-item active">Xóa sách</li>
+            <li class="breadcrumb-item"><a href="{% url 'category_list' %}">Thể loại</a></li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'category_detail' category.pk %}">{{ category.name }}</a>
+            </li>
+            <li class="breadcrumb-item active">Xóa thể loại</li>
         </ol>
     </nav>
 
@@ -17,13 +19,18 @@
         <div class="col-md-6">
             <div class="card shadow">
                 <div class="card-body text-center">
-                    <h2 class="card-title mb-4">Xác nhận xóa sách</h2>
+                    <h2 class="card-title mb-4">Xác nhận xóa thể loại</h2>
                     
-                    {% if book.cover %}
-                    <img src="{{ book.cover.url }}" alt="{{ book.title }}" class="img-thumbnail mb-3" style="max-height: 200px;">
+                    <p class="lead">Bạn có chắc chắn muốn xóa thể loại "{{ category.name }}" không?</p>
+                    
+                    {% if category.books.exists %}
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        Thể loại này có {{ category.books.count }} cuốn sách. 
+                        Xóa thể loại sẽ ảnh hưởng đến các cuốn sách này.
+                    </div>
                     {% endif %}
                     
-                    <p class="lead">Bạn có chắc chắn muốn xóa sách "{{ book.title }}" không?</p>
                     <p class="text-danger">Lưu ý: Hành động này không thể hoàn tác!</p>
                     
                     <form method="post">
@@ -32,7 +39,7 @@
                             <button type="submit" class="btn btn-danger">
                                 <i class="fas fa-trash me-2"></i>Xác nhận xóa
                             </button>
-                            <a href="{% url 'book_detail' book.pk %}" class="btn btn-outline-secondary">
+                            <a href="{% url 'category_detail' category.pk %}" class="btn btn-outline-secondary">
                                 <i class="fas fa-times me-2"></i>Hủy
                             </a>
                         </div>
