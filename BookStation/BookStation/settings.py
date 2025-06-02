@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'books',
     'orders',
     'home',
+    'staff',
 
 ]
 AUTH_USER_MODEL = 'accounts.Users'

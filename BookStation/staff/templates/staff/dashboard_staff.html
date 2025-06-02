@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trang nhân viên</title>
+</head>
+<body>
+    <h1>Chào {{ request.user.username }}!</h1>
+    <p>Đây là trang dashboard của nhân viên.</p>
+
+    {% if can_add_user %}
+        <a href="{% url 'add_user' %}">➕ Thêm người dùng mới</a>
+    {% else %}
+        <p>Bạn không có quyền thêm người dùng.</p>
+    {% endif %}
+    {% if can_view_user %}
+    <a href="{% url 'list_user' %}">📋 Xem danh sách người dùng</a>
+    {% else %}
+    <p>Bạn không có quyền xem danh sách người dùng.</p>
+    {% endif %}
+
+
+</body>
+</html>

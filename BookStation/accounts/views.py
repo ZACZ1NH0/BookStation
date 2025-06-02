@@ -6,24 +6,21 @@ from django.contrib import messages
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import get_user_model
 
-
-
 def login_view(request):
-    User = get_user_model()
     if request.method == 'POST':
-        username = request.POST.get('username').strip()
-        password = request.POST.get('password')
-
-        if username == 'admin' and password == 'admin':
-            user = User.objects.get(username='admin')
-            login(request, user)
-            return redirect('home_admin')
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '')
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            if user.is_superuser:
+                return redirect('home')
+            elif user.is_staff:
+                return redirect('home')
+            else:
+                return redirect('home')
         else:
-            messages.error(request, 'Tài khoản hoặc mật khẩu sai!')
+            messages.error(request, 'Tài khoản hoặc mật khẩu không đúng!')
 
     return render(request, 'accounts/login.html')
 @login_required
@@ -51,8 +48,6 @@ def register_view(request):
     else:
          form= CustomUserCreationForm()
     return render(request, 'accounts/register.html', {'form': form})
-
-
 
 
 

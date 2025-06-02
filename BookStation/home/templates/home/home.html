@@ -47,6 +47,18 @@
         {% endif %}
       </div>
     </div>
+  {% block content %}
+<div class="container mt-5">
+    <h1>Chào {{ request.user.username }}!</h1>
+
+    {% if is_superuser %}
+        <a href="/admin/" class="btn btn-primary">Vào trang quản trị (Admin)</a>
+    {% elif is_staff %}
+        <a href="staff/staff_dashboard/" class="btn btn-success">Vào trang nhân viên</a>
+    {% else %}
+    {% endif %}
+</div>
+{% endblock %}
   </header>
 
   {% comment %} <section class="banner">

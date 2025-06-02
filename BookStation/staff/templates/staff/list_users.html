@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Danh sách người dùng</title>
+</head>
+<body>
+    <h1>📋 Danh sách người dùng</h1>
+
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Họ tên</th>
+            <th>Email</th>
+            <th>Thao tác</th>
+        </tr>
+        {% for u in users %}
+        <tr>
+            <td>{{ u.id }}</td>
+            <td>{{ u.username }}</td>
+            <td>{{ u.first_name }} {{ u.last_name }}</td>
+            <td>{{ u.email }}</td>
+            <td>
+                {% if can_change_user %}
+                    <a href="{% url 'change_user' user_id=u.id %}">✏️ Sửa</a>
+                {% else %}
+                    ❌
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+    <a href="{% url 'staff_dashboard' %}">⬅️ Về dashboard</a>
+</body>
+</html>

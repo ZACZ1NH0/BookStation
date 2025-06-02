@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Đăng ký - BookStation</title>
+    <title>Thêm người dùng - BookStation</title>
     <link rel="stylesheet" href="{% static 'css/register/style.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -12,16 +12,16 @@
 <body>
     <div class="register-container">
         <div class="background-animation"></div>
-        
+
         <div class="register-card">
             <div class="register-header">
-                <a href="{% url 'home' %}" class="brand">
-                    <i class="fas fa-book-open"></i> BookStation
+                <a class="brand">
+                    <i class="fas fa-user-cog"></i> Quản trị nhân viên
                 </a>
-                <h2>Đăng ký tài khoản</h2>
-                <p>Tạo tài khoản để truy cập vào BookStation</p>
+                <h2>Thêm người dùng mới</h2>
+                <p>Tạo tài khoản mới cho nhân viên hoặc khách hàng</p>
             </div>
-            
+
             {% if messages %}
                 <div class="messages">
                     {% for message in messages %}
@@ -32,14 +32,14 @@
                     {% endfor %}
                 </div>
             {% endif %}
-            
+
             <form method="post" class="register-form">
                 {% csrf_token %}
-                
+
                 <div class="form-fields">
                     <div class="input-group">
                         <i class="fas fa-user"></i>
-                        <input type="text" name="first_name" placeholder="Nhập tên của bạn" class="form-control">
+                        <input type="text" name="first_name" placeholder="Nhập tên " class="form-control">
                         {% if form.first_name.errors %}
                             <div class="field-error">
                                 {{ form.first_name.errors|striptags }}
@@ -49,7 +49,7 @@
 
                     <div class="input-group">
                         <i class="fas fa-user"></i>
-                        <input type="text" name="last_name" placeholder="Nhập họ của bạn" class="form-control">
+                        <input type="text" name="last_name" placeholder="Nhập họ " class="form-control">
                         {% if form.last_name.errors %}
                             <div class="field-error">
                                 {{ form.last_name.errors|striptags }}
@@ -69,7 +69,7 @@
 
                     <div class="input-group">
                         <i class="fas fa-envelope"></i>
-                        <input type="email" name="email" placeholder="Nhập email của bạn" class="form-control">
+                        <input type="email" name="email" placeholder="Nhập email " class="form-control">
                         {% if form.email.errors %}
                             <div class="field-error">
                                 {{ form.email.errors|striptags }}
@@ -108,30 +108,18 @@
                         {% endif %}
                     </div>
                 </div>
-                
+
                 <button type="submit" class="register-button">
-                    <span>Đăng ký</span>
+                    <span>Tạo người dùng mới</span>
                     <i class="fas fa-arrow-right"></i>
                 </button>
             </form>
-            
+
             <div class="or-divider">
-                <span>hoặc</span>
             </div>
-            
-            <div class="social-register">
-                <button class="google-btn">
-                    <i class="fab fa-google"></i>
-                    <span>Google</span>
-                </button>
-                <button class="facebook-btn">
-                    <i class="fab fa-facebook-f"></i>
-                    <span>Facebook</span>
-                </button>
-            </div>
-            
+
             <div class="login-link">
-                Đã có tài khoản? <a href="{% url 'login' %}">Đăng nhập ngay</a>
+                Quay lại <a href="{% url 'staff_dashboard' %}">Trang nhân viên</a>
             </div>
         </div>
     </div>
