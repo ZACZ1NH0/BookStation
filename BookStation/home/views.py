@@ -11,7 +11,6 @@ def home_view(request):
     if not request.user.is_authenticated:
         books = Book.objects.all()[:50]
         return render(request, 'home/home.html', {'books': books})
-    # Đã login sẽ được middleware redirect trước khi vào view này
     return render(request, 'home/home.html')  # Fallback
 
 @login_required
