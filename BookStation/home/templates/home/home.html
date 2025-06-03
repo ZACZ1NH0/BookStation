@@ -50,13 +50,22 @@
     </div>
   {% block content %}
 <div class="container mt-5">
-    <h1>Chào {{ request.user.username }}!</h1>
+
+    {% comment %} {% if is_superuser %}
+    <h1>Chào admin {{ request.user.username }}!</h1>
+    {% elif %}
+    <h1>Chào {{ request.user.last_name }} {{ request.user.first_name }}!</h1>
+    {% else%}
+    {% endif %} {% endcomment %}
 
     {% if is_superuser %}
+        <h1>Chào admin {{ request.user.username }}!</h1>
         <a href="/admin/" class="btn btn-primary">Vào trang quản trị (Admin)</a>
     {% elif is_staff %}
+        <h1>Chào nhân viên {{ request.user.username }}!</h1>
         <a href="staff/staff_dashboard/" class="btn btn-success">Vào trang nhân viên</a>
     {% else %}
+        <h1>Chào {{ request.user.last_name }} {{ request.user.first_name }}!</h1>
     {% endif %}
 </div>
 {% endblock %}
