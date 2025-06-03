@@ -14,7 +14,9 @@
 <body>
   <header>
     <div class="navbar">
-      <div class="logo"><i class="fas fa-book-open"></i> BookStation</div>
+      <a href="{% url 'home' %}" class="logo-link">
+        <div class="logo"><i class="fas fa-book-open"></i> BookStation</div>
+      </a>
       <form method="get" action="{% url 'book_search' %}">
         <div class="search-container">
           <input type="text" name = "q" placeholder="Bạn đang tìm gì?" class="search-box" />

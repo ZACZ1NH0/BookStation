@@ -6,7 +6,7 @@ body {
 }
 header {
     background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(245, 241, 241, 0.1);
     padding: 10px 20px;
 }
 .navbar {
@@ -43,7 +43,7 @@ header {
 }
 .nav-icon {
     margin-left: 15px;
-    color: #333;
+    color: #f8f1f1;
     text-decoration: none;
 }
 .auth-buttons button {

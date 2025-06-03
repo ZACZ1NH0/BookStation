@@ -25,11 +25,12 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 #     return render(request, 'home/home_customer.html')
 
 def home_view(request):
+    books = Book.objects.all()[:50]
     if not request.user.is_authenticated:
-        books = Book.objects.all()[:50]
         return render(request, 'home/home.html', {'books': books})
     context = {
         'is_staff': request.user.is_authenticated and request.user.is_staff,
         'is_superuser': request.user.is_authenticated and request.user.is_superuser,
+        'books': books
     }
     return render(request, 'home/home.html', context)
