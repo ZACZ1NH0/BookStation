@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import CustomUserCreationForm
-from .forms import CustomUserChangeForm
+from accounts.forms import CustomUserCreationForm
+from accounts.forms import EditProfile
+from books.forms import BookForm
+from books.models import Book
 from accounts.models import Users
 from django.contrib import messages
 from django.contrib.auth.forms import SetPasswordForm
@@ -14,12 +16,21 @@ def staff_dashboard(request):
     can_add_user = request.user.has_perm('accounts.add_users')
     can_change_user = request.user.has_perm('accounts.change_users')
     can_view_user = request.user.has_perm('accounts.view_users')
-    can_add_order = request.user.has_perm('accounts.add_orders')
-
+    can_add_order = request.user.has_perm('orders.add_orders')
+    can_add_book = request.user.has_perm('books.add_books')
+    can_add_category  = request.user.has_perm('books.add_category')
+    can_add_publisher = request.user.has_perm('books.add_publishers')
+    can_add_author = request.user.has_perm('books.add_authors')
     return render(request, 'staff/dashboard_staff.html', {
         'can_add_user': can_add_user,
         'can_change_user': can_change_user,
         'can_view_user': can_view_user,
+        'can_add_order': can_add_order,
+        'can_add_book': can_add_book,
+        'can_add_category': can_add_category,
+        'can_add_publisher': can_add_publisher,
+        'can_add_author': can_add_author,
+
     })
 
 
@@ -45,7 +56,7 @@ def edit_user_view(request, user_id):
         messages.error(request, "Bạn không có quyền chỉnh sửa tài khoản quản trị cao nhất.")
         return redirect('staff_dashboard')
     if request.method == 'POST':
-        form = CustomUserChangeForm(request.POST, instance=user)
+        form = EditProfile(request.POST, instance=user)
         password_form = SetPasswordForm(user, request.POST)
         if 'update_profile' in request.POST:
             if form.is_valid():
@@ -60,7 +71,7 @@ def edit_user_view(request, user_id):
                 return redirect('staff_dashboard')
 
     else:
-        form = CustomUserChangeForm(instance=user)
+        form = EditProfile(instance=user)
         password_form = SetPasswordForm(user)
 
     return render(request, 'staff/accounts/change_user.html', {
@@ -68,7 +79,6 @@ def edit_user_view(request, user_id):
         'password_form': password_form,
         'user': user,
     })
-
 
 
 @login_required
@@ -92,3 +102,17 @@ def list_user_view(request):
         'users': filtered_users,
         'can_change_user': can_change_user,
     })
+
+@login_required
+@permission_required('books.add_book', raise_exception=True)
+def add_book_view(request):
+    if request.method == 'POST':
+        return
+
+
+
+
+
+def add_order_view(request):
+   return
+
