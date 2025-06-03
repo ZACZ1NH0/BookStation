@@ -24,7 +24,7 @@
                     <p class="author-info"><strong>Quốc tịch:</strong> {{ author.nationality }}</p>
                 {% endif %}
                 <div class="author-description">
-                    {{ author.description|linebreaks }}
+                    {{ author.bio|linebreaks }}
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
                             {% endif %}
                             <div class="card-body">
                                 <h5 class="card-title">{{ book.title }}</h5>
-                                <p class="card-text text-muted">{{ book.price }} VND</p>
+                                <p class="card-text text-muted">{{ book.price }} $</p>
                             </div>
                         </a>
                     </div>
