@@ -1,75 +1,29 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Book Store</title>
+
+{% block title %}Trang chủ - Book Station{% endblock %}
+
+{% block content %}
   <link rel="stylesheet" href="{% static 'css/home/style.css' %}" />
   <link rel="stylesheet" href="{% static 'css/home/slide.css' %}" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-  
-</head>
-<body>
-  <header>
-    <div class="navbar">
-      <div class="logo"><i class="fas fa-book-open"></i> BookStation</div>
-      <form method="get" action="{% url 'book_search' %}">
-        <div class="search-container">
-          <input type="text" name = "q" placeholder="Bạn đang tìm gì?" class="search-box" />
-          <button class="search-btn"><i class="fas fa-search"></i></button>
-        </div>
-      </form>
-      <div class="icons">
-        <a href="#" class="nav-icon" title="Giỏ hàng"><i class="fas fa-shopping-cart"></i></a>
-        <a href="#" class="nav-icon" title="Yêu thích"><i class="fas fa-heart"></i></a>
-        
-        {% if user.is_authenticated %}
-          <div class="user-menu">
-            <a href="#" class="nav-icon user-icon" title="{{ user.username }}">
-              <i class="fas fa-user-circle"></i>
-            </a>
-            <div class="dropdown-menu">
-              <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Tài khoản của tôi</a>
-              <a href="#"><i class="fas fa-list"></i> Đơn hàng</a>
-              <form action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                <button type="submit"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
-              </form>
-            </div>
-          </div>
-        {% else %}
-          <div class="auth-buttons">
-            <a href="{% url 'login' %}"><button class="login">Đăng nhập</button></a>
-            <a href="{% url 'register' %}"><button class="register">Đăng ký</button></a>
-          </div>
-        {% endif %}
-      </div>
-    </div>
-  {% block content %}
+
 <div class="container mt-5">
-
-    {% comment %} {% if is_superuser %}
-    <h1>Chào admin {{ request.user.username }}!</h1>
-    {% elif %}
-    <h1>Chào {{ request.user.last_name }} {{ request.user.first_name }}!</h1>
-    {% else%}
-    {% endif %} {% endcomment %}
-
     {% if is_superuser %}
         <h1>Chào admin {{ request.user.username }}!</h1>
-        <a href="/admin/" class="btn btn-primary">Vào trang quản trị (Admin)</a>
+        <a href="/admin/" class="btn btn-sm btn-primary">Vào trang quản trị (Admin)</a>
     {% elif is_staff %}
-        <h1>Chào nhân viên {{ request.user.username }}!</h1>
-        <a href="staff/staff_dashboard/" class="btn btn-success">Vào trang nhân viên</a>
+        <h1>Chào nhân viên {{ request.user.last_name }} {{ request.user.first_name }}!</h1>
+
+        <a href="staff/staff_dashboard/" class="btn btn-sm btn-success">Vào trang nhân viên</a>
+
     {% else %}
         <h1>Chào {{ request.user.last_name }} {{ request.user.first_name }}!</h1>
-    {% endif %}
+    {% endif %} 
+
 </div>
-{% endblock %}
-  </header>
   <section class="banner-slider">
     <div class="slide">
       <div class="text">
@@ -205,49 +159,7 @@
     </div>
   </section>
 
-  <footer>
-    <div class="footer-content">
-      <div class="footer-section">
-        <h4>BookStation</h4>
-        <p>Cửa hàng sách trực tuyến hàng đầu với đa dạng thể loại sách cho mọi lứa tuổi.</p>
-        <div class="social-links">
-          <a href="#"><i class="fab fa-facebook"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-        </div>
-      </div>
-      
-      <div class="footer-section">
-        <h4>Thông tin</h4>
-        <ul>
-          <li><a href="#">Giới thiệu</a></li>
-          <li><a href="#">Điều khoản sử dụng</a></li>
-          <li><a href="#">Chính sách bảo mật</a></li>
-          <li><a href="#">Liên hệ</a></li>
-        </ul>
-      </div>
-      
-      <div class="footer-section">
-        <h4>Hỗ trợ khách hàng</h4>
-        <ul>
-          <li><a href="#">Hướng dẫn mua hàng</a></li>
-          <li><a href="#">Phương thức thanh toán</a></li>
-          <li><a href="#">Chính sách đổi trả</a></li>
-          <li><a href="#">Câu hỏi thường gặp</a></li>
-        </ul>
-      </div>
-      
-      <div class="footer-section">
-        <h4>Liên hệ</h4>
-        <p><i class="fas fa-map-marker-alt"></i> Số 298 đường Cầu Diễn, quận Bắc Từ Liêm, Hà Nội</p>
-        <p><i class="fas fa-phone"></i> +84 972325863</p>
-        <p><i class="fas fa-envelope"></i> soloyasuokom@gmail.com</p>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2025 BookStation. Tất cả quyền được bảo lưu.</p>
-    </div>
-  </footer>
+  
 
   <script src="{% static 'js/home/script.js' %}"></script>
   <script src="{% static 'js/home/banner_slider.js' %}"></script>
@@ -312,5 +224,4 @@
       }
     });
   </script>
-</body>
-</html>
+{% endblock %}

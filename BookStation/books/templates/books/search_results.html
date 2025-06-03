@@ -1,52 +1,15 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kết quả tìm kiếm - BookStation</title>
-  <link rel="stylesheet" href="{% static 'css/home/style.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/search_results/style.css' %}" />
+
+{% block title %}Kết quả tìm kiếm - Book Station{% endblock %}
+
+{% block content %}
+  
+  {% comment %} <link rel="stylesheet" href="{% static 'css/home/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/search_results/style.css' %}" /> {% endcomment %}
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-</head>
-<body>
-  <header>
-    <div class="navbar">
-      <div class="logo"><a href="{% url 'home' %}" style="text-decoration: none; color: inherit;"><i class="fas fa-book-open"></i> BookStation</a></div>
-      <form method="get" action="{% url 'book_search' %}">
-        <div class="search-container">
-          <input type="text" name="q" placeholder="Bạn đang tìm gì?" class="search-box" />
-          <button class="search-btn"><i class="fas fa-search"></i></button>
-        </div>
-      </form>
-      <div class="icons">
-        <a href="#" class="nav-icon" title="Giỏ hàng"><i class="fas fa-shopping-cart"></i></a>
-        <a href="#" class="nav-icon" title="Yêu thích"><i class="fas fa-heart"></i></a>
-        {% if user.is_authenticated %}
-          <div class="user-menu">
-            <a href="#" class="nav-icon user-icon" title="{{ user.username }}">
-              <i class="fas fa-user-circle"></i>
-            </a>
-            <div class="dropdown-menu">
-              <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Tài khoản của tôi</a>
-              <a href="#"><i class="fas fa-list"></i> Đơn hàng</a>
-              <form action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                <button type="submit"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
-              </form>
-            </div>
-          </div>
-        {% else %}
-          <div class="auth-buttons">
-            <a href="{% url 'login' %}"><button class="login">Đăng nhập</button></a>
-            <a href="{% url 'register' %}"><button class="register">Đăng ký</button></a>
-          </div>
-        {% endif %}
-      </div>
-    </div>
-  </header>
 
   <section class="section">
     <h3><i class="fas fa-search"></i> Kết quả tìm kiếm cho "{{ query }}"</h3>
@@ -94,11 +57,6 @@
       <p>Không tìm thấy kết quả nào.</p>
     {% endif %}
   </section>
-
-  <footer>
-    <p>&copy; 2025 BookStation. Tất cả quyền được bảo lưu.</p>
-  </footer>
-
   <script>
     function decreaseQuantity(button) {
       const input = button.nextElementSibling;
@@ -136,5 +94,4 @@
       });
     });
   </script>
-</body>
-</html>
+{% endblock %}
