@@ -34,7 +34,7 @@ from .forms import OrderForm, OrderItemFormSet
 
 def create_order(request):
     cart = request.session.get("cart", {})
-    selected_keys = request.POST.getlist("selected_items")  # Lấy danh sách được chọn
+    selected_keys = request.POST.getlist("selected_items") if request.method == 'POST' else list(cart.keys())
     selected_cart = {}
     total = 0
 
@@ -45,13 +45,24 @@ def create_order(request):
             item["subtotal"] = subtotal
             selected_cart[key] = item
             total += subtotal
-            # return redirect('order_success')  # Chuyển hướng đến trang thành công
+
+    if request.method == 'POST' and selected_cart:
+        # Lưu đơn hàng
+        order = Order.objects.create(customer=request.user, note=request.POST.get('note', ''))
+        for key, item in selected_cart.items():
+            OrderItem.objects.create(
+                order=order,
+                book_id=key,
+                quantity=item['quantity'],
+                price=item['price']
+            )
+        request.session['cart'] = {}
+        return redirect('order_success')
 
     form = OrderForm()
-
     return render(request, "orders/create_order.html", {
         "form": form,
-        "cart": selected_cart,  # Chỉ truyền các item đã chọn
+        "cart": selected_cart,
         "total": total,
     })
 
@@ -107,4 +118,7 @@ def checkout(request):
 
     # Xóa giỏ hàng sau khi thanh toán
     request.session['cart'] = {}
-    return render(request, 'orders/order_success.html', {'order': order})
+    return redirect('home')
+
+def order_success(request):
+    return render(request, 'orders/order_success.html')

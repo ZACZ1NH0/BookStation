@@ -7,7 +7,69 @@
 <h2 style="text-align:center; margin-top: 20px;">🛒 Giỏ hàng của bạn</h2>
 
 <link rel="stylesheet" href="{% static 'css/home/style.css' %}" />
+<style>
+  /* Bảng giỏ hàng */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  font-size: 16px;
+}
 
+th, td {
+  padding: 15px;
+  text-align: center;
+}
+
+thead {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+/* Checkbox */
+input[type="checkbox"] {
+  transform: scale(1.2);
+  accent-color: #007bff;
+}
+
+/* Ô nhập số lượng */
+.item-quantity {
+  padding: 5px;
+  font-size: 16px;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Tổng cộng */
+.cart-summary {
+  text-align: right;
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  padding-right: 40px;
+}
+
+/* Nút đặt hàng */
+.checkout-btn {
+  background-color: #ff4da6;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.checkout-btn:hover {
+  background-color: #e60073;
+}
+</style>
 {% if cart %}
   <form method="post" action="{% url 'create_order' %}">
     {% csrf_token %}
