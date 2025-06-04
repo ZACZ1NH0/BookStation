@@ -6,6 +6,14 @@
 <body>
     <h1>📋 Danh sách người dùng</h1>
 
+    <!-- Form tìm kiếm -->
+    <form method="get" action="">
+        <input type="text" name="q" placeholder="Tìm kiếm..." value="{{ query|default:'' }}">
+        <button type="submit">🔍 Tìm kiếm</button>
+    </form>
+
+    <br>
+
     <table border="1">
         <tr>
             <th>ID</th>
@@ -28,6 +36,8 @@
                 {% endif %}
             </td>
         </tr>
+        {% empty %}
+        <tr><td colspan="5">Không tìm thấy người dùng nào.</td></tr>
         {% endfor %}
     </table>
 
