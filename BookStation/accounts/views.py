@@ -77,3 +77,5 @@ def edit_profile_view(request):
                     'password_form': password_form})
 
 
+
+
