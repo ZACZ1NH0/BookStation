@@ -76,7 +76,7 @@
                         {{ author.name }}{% if not forloop.last %}, {% endif %}
                         {% endfor %}
                     </p>
-                    <p class="card-text"><strong>{{ book.price|floatformat:2 }} VNĐ</strong></p>
+                    <p class="card-text"><strong>{{ book.price|floatformat:2 }} $</strong></p>
                     <div class="d-flex justify-content-between align-items-center">
                         <a href="{% url 'book_detail' book.pk %}" class="btn btn-outline-primary">
                             Chi tiết
