@@ -21,6 +21,7 @@ def staff_dashboard(request):
     can_add_category  = request.user.has_perm('books.add_category')
     can_add_publisher = request.user.has_perm('books.add_publishers')
     can_add_author = request.user.has_perm('books.add_authors')
+    can_delete_book = request.user.has_perm('books.delete_books')
     return render(request, 'staff/dashboard_staff.html', {
         'can_add_user': can_add_user,
         'can_change_user': can_change_user,
@@ -30,7 +31,7 @@ def staff_dashboard(request):
         'can_add_category': can_add_category,
         'can_add_publisher': can_add_publisher,
         'can_add_author': can_add_author,
-
+        'can_delete_book' : can_delete_book,
     })
 
 
@@ -103,16 +104,28 @@ def list_user_view(request):
         'can_change_user': can_change_user,
     })
 
+
+
+
 @login_required
-@permission_required('books.add_book', raise_exception=True)
-def add_book_view(request):
-    if request.method == 'POST':
-        return
+@permission_required('books.view_book', raise_exception=True)
+def list_book_view(request):
+    query = request.GET.get('q', '').strip().lower()
+    all_books = Book.objects.all()
+    filtered_books = []
 
+    if query:
+        normalized_query = unidecode(query)
+        for book in all_books:
+            if any(
+                normalized_query in unidecode((getattr(book, field) or '').lower())
+                for field in ['title', 'author']
+            ):
+                filtered_books.append(book)
+    else:
+        filtered_books = all_books
 
-
-
-
-def add_order_view(request):
-   return
+    return render(request, 'staff/books/view_book.html', {
+        'books': all_books,
+    })
 

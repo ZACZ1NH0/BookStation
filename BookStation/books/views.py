@@ -26,7 +26,7 @@ def book_search(request):
 
 
 
-@user_passes_test(lambda u: u.is_superuser)
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def book_add(request):
     if request.method == 'POST':
         form = BookForm(request.POST, request.FILES)
@@ -34,12 +34,12 @@ def book_add(request):
             book = form.save()
             # Lưu categories ManyToMany
             form.save_m2m()
-            return redirect('books:book_list')
+            return redirect('book_list')
     else:
         form = BookForm()
     return render(request, 'books/book_form.html', {'form': form, 'title': 'Add Book'})
 
-@user_passes_test(lambda u: u.is_superuser)
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def book_edit(request, pk):
     book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
@@ -47,18 +47,19 @@ def book_edit(request, pk):
         if form.is_valid():
             form.save()
             form.save_m2m()
-            return redirect('books:book_list')
+            return redirect('book_list')
     else:
         form = BookForm(instance=book)
     return render(request, 'books/book_form.html', {'form': form, 'title': 'Edit Book'})
 
-@user_passes_test(lambda u: u.is_superuser)
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def book_delete(request, pk):
     book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
         book.delete()
-        return redirect('books:book_list')
-    return render(request, 'books/book_confirm_delete.html', {'book': book})
+        # return redirect('view_list_book')
+        return render(request, 'books/book_confirm_delete.html', {'book': book})
+    return redirect('view_list_book')
 
 def author_list(request):
     authors = Author.objects.all()
@@ -69,7 +70,7 @@ def author_detail(request, pk):
     books = Book.objects.filter(author=author)
     return render(request, 'authors/author_detail.html', {'author': author, 'books': books})
 
-@user_passes_test(lambda u: u.is_superuser)
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def author_add(request):
     if request.method == 'POST':
         form = AuthorForm(request.POST, request.FILES)
@@ -80,7 +81,7 @@ def author_add(request):
         form = AuthorForm()
     return render(request, 'authors/author_form.html', {'form': form, 'title': 'Add Author'})
 
-@user_passes_test(lambda u: u.is_superuser)
+@user_passes_test(lambda u: u.is_superuser or u.is_staff)
 def author_edit(request, pk):
     author = get_object_or_404(Author, pk=pk)
     if request.method == 'POST':
