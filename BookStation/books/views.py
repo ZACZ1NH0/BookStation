@@ -9,8 +9,14 @@ def book_list(request):
     paginator = Paginator(books, 20)  # 20 sách mỗi trang
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'page_obj': page_obj,
+        'is_paginated': page_obj.has_other_pages(),
+        'books': page_obj.object_list  # Thêm books vào context
+    }
 
-    return render(request, 'books/book_list.html', {'page_obj': page_obj})
+    return render(request, 'books/book_list.html', context)
 
 def book_detail(request, pk):
     book = get_object_or_404(Book, pk=pk)
