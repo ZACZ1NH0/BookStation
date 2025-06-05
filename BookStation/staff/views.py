@@ -32,6 +32,7 @@ def staff_dashboard(request):
         'can_add_publisher': can_add_publisher,
         'can_add_author': can_add_author,
         'can_delete_book' : can_delete_book,
+        'books':Book.objects.all(),
     })
 
 
@@ -128,4 +129,43 @@ def list_book_view(request):
     return render(request, 'staff/books/view_book.html', {
         'books': all_books,
     })
+
+@login_required
+@permission_required('books.add_book', raise_exception=True)
+def book_add(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST, request.FILES)
+        if form.is_valid():
+            book = form.save()
+            # Lưu categories ManyToMany
+            form.save_m2m()
+            return redirect('book_list')
+    else:
+        form = BookForm()
+    return render(request, 'books/book_form.html', {'form': form, 'title': 'Add Book'})
+
+@login_required
+@permission_required('books.edit_book', raise_exception=True)
+def book_edit(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    if request.method == 'POST':
+        form = BookForm(request.POST, request.FILES, instance=book)
+        if form.is_valid():
+            form.save()
+            form.save_m2m()
+            return redirect('book_list')
+    else:
+        form = BookForm(instance=book)
+    return render(request, 'books/book_form.html', {'form': form, 'title': 'Edit Book'})
+
+@login_required
+@permission_required('books.delete_book', raise_exception=True)
+def book_delete(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    
+    if request.method == 'POST':
+        book.delete()
+        return redirect('view_list_book')  
+    
+    return render(request, 'books/book_confirm_delete.html', {'book': book})
 
