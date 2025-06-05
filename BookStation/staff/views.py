@@ -2,13 +2,15 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect, get_object_or_404
 from accounts.forms import CustomUserCreationForm
 from accounts.forms import EditProfile
-from books.forms import BookForm
-from books.models import Book
+from books.forms import BookForm, AuthorForm
+from books.models import Book, Author
 from accounts.models import Users
 from django.contrib import messages
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth import update_session_auth_hash
 from unidecode import unidecode
+from orders.forms import OrderForm
+from orders.models import Order
 
 
 @login_required
@@ -16,13 +18,18 @@ def staff_dashboard(request):
     can_add_user = request.user.has_perm('accounts.add_users')
     can_change_user = request.user.has_perm('accounts.change_users')
     can_view_user = request.user.has_perm('accounts.view_users')
-    can_add_order = request.user.has_perm('orders.add_orders')
-    can_add_book = request.user.has_perm('books.add_books')
+    can_add_order = request.user.has_perm('orders.add_order')
+    can_add_book = request.user.has_perm('books.add_book')
     can_add_category  = request.user.has_perm('books.add_category')
-    can_add_publisher = request.user.has_perm('books.add_publishers')
-    can_add_author = request.user.has_perm('books.add_authors')
-    can_delete_book = request.user.has_perm('books.delete_books')
-    can_edit_book = request.user.has_perm('books.edit_books')
+    can_add_publisher = request.user.has_perm('books.add_publisher')
+    can_add_author = request.user.has_perm('books.add_author')
+    can_delete_book = request.user.has_perm('books.delete_book')
+    can_change_book = request.user.has_perm('books.change_book')
+    can_view_author = request.user.has_perm('books.view_authors')
+    can_change_author = request.user.has_perm('books.change_author')
+    can_delete_author = request.user.has_perm('books.delete_author')
+    can_view_category = request.user.has_perm('books.view_category')
+    can_delete_category = request.user.has_perm('books.delete_category')
     return render(request, 'staff/dashboard_staff.html', {
         'can_add_user': can_add_user,
         'can_change_user': can_change_user,
@@ -33,8 +40,11 @@ def staff_dashboard(request):
         'can_add_publisher': can_add_publisher,
         'can_add_author': can_add_author,
         'can_delete_book' : can_delete_book,
-        'can_edit_book' : can_edit_book,
-        'books':Book.objects.all(),
+        'can_change_book' : can_change_book,
+        'can_view_author': can_view_author,
+        'can_delete_author': can_delete_author,
+        'can_view_category': can_view_category,
+        # 'books':Book.objects.all(),
     })
 
 
@@ -138,36 +148,57 @@ def book_add(request):
     if request.method == 'POST':
         form = BookForm(request.POST, request.FILES)
         if form.is_valid():
+            book = form.save(commit=False)
             book = form.save()
-            # Lưu categories ManyToMany
             form.save_m2m()
             return redirect('view_list_book')
     else:
         form = BookForm()
-    return render(request, 'books/book_form.html', {'form': form, 'title': 'Add Book'})
+    return render(request, 'staff/books/add_book.html', {'form': form, 'title': 'Add Book'})
+
 
 @login_required
-@permission_required('books.edit_book', raise_exception=True)
-def book_edit(request, pk):
+@permission_required('books.change_book', raise_exception=True)
+def book_change(request, pk):
     book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
         form = BookForm(request.POST, request.FILES, instance=book)
         if form.is_valid():
+            book = form.save(commit=False)
             form.save()
             form.save_m2m()
             return redirect('view_list_book')
     else:
         form = BookForm(instance=book)
-    return render(request, 'books/book_form.html', {'form': form, 'title': 'Edit Book'})
+    return render(request, 'staff/books/change_book.html', {'form': form, 'title': 'Change Book'})
 
 @login_required
 @permission_required('books.delete_book', raise_exception=True)
 def book_delete(request, pk):
     book = get_object_or_404(Book, pk=pk)
-    
     if request.method == 'POST':
         book.delete()
-        return redirect('view_list_book')  
-    
-    return render(request, 'books/book_confirm_delete.html', {'book': book})
+        return redirect('view_list_book')
+    return render(request, "", {'book': book})
 
+@login_required
+@permission_required('books.view_author', raise_exception=True)
+def view_list_author(request):
+    authors = Author.objects.all()
+    return render(request, 'staff/books/view_author.html', {'authors': authors})
+
+
+@login_required
+@permission_required('books.change_author', raise_exception=True)
+def edit_author(request):
+    author = get_object_or_404(Author, pk=request.POST.get('author_id'))
+    if request.method == 'POST':
+        form = AuthorForm(request.POST, instance=author)
+        if form.is_valid():
+            author = form.save(commit=False)
+            form.save()
+            form.save_m2m()
+            return redirect('view_list_author')
+    else :
+        form = AuthorForm(instance=author)
+    return render(request,'staff/books/change_author.html',{'form': form})
