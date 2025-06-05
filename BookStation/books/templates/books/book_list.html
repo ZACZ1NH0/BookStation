@@ -6,48 +6,19 @@
 
 
 {% block content %}
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-    {% load i18n %}
-    <!-- Bootstrap CSS -->
-    <!-- Dùng bản mới hơn (ví dụ Font Awesome 6) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Load CSS của bạn sau để ghi đè -->
     <link rel="stylesheet" href="{% static 'css/home/style.css' %}" />
     <link rel="stylesheet" href="{% static 'css/home/slide.css' %}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    {% load i18n %}
+
     <style>
         body {
             margin: 0;
             font-family: 'Poppins', 'Roboto', sans-serif;
             background-color: #fffdf7;
             color: #333;
-        }
-
-        .featured-book {
-            background-color: #fff3d4;
-            padding: 40px 0;
-            margin-bottom: 40px;
-        }
-
-        .book-card {
-            border: none;
-            transition: transform 0.3s;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .book-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .book-card img {
-            height: 300px;
-            object-fit: cover;
-        }
-
-        .heart-icon {
-            color: #ff4081;
-            margin-left: 10px;
         }
 
         .pagination {
@@ -88,208 +59,138 @@
             box-shadow: none;
             outline: none;
         }
-
-        .card a {
-            text-decoration: none;
-            color: inherit;
-        }
-        
-        .book-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .book-heading {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 24px;
-        }
-
-        .book-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-        }
-
-        .book-item {
-            background-color: #fff;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: transform 0.3s;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .book-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .book-image {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-        }
-
-        .book-info {
-            padding: 16px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .book-title {
-            font-size: 16px;
-            margin-bottom: 8px;
-        }
-
-        .book-title-link {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-        }
-
-        .book-title-link:hover {
-            color: #007bff;
-        }
-
-        .book-price {
-            font-weight: bold;
-            color: #555;
-            margin-bottom: 10px;
-        }
-
-        .book-add-btn {
-            background-color: #ffc107;
-            border: none;
-            padding: 10px;
-            color: #000;
-            font-weight: 600;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .book-add-btn:hover {
-            background-color: #e0a800;
-        }
-
-        .page-item {
-        }
-
-        .page-link {
-            display: block;
-            padding: 8px 14px;
-            background-color: #f1f1f1;
-            color: #007bff;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 500;
-            transition: background-color 0.3s, color 0.3s;
-        }
-
-        .page-item.active .page-link {
-            background-color: #007bff;
-            color: #fff;
-            font-weight: bold;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-        }
-
-        .page-link:hover {
-            background-color: #007bff;
-            color: #fff;
-        }
-        .pagination {
-            list-style: none;
-            padding-left: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .pagination li {
-            list-style: none !important; 
-        }
-
-
     </style>
 
-    <!-- Main Content -->
-    <div class="book-container">
-        <h2 class="book-heading">Sách trong cửa hàng</h2>
-        <div class="book-grid">
-            {% for book in page_obj %}
-            <div class="book-item">
-                <a href="{% url 'book_detail' book.pk %}">
-                    <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-image">
-                </a>
-                <div class="book-info">
-                    <h5 class="book-title">
-                        <a href="{% url 'book_detail' book.pk %}" class="book-title-link">
-                            {{ book.title }}
-                        </a>
-                    </h5>
-                    <p class="book-price">${{ book.price }}</p>
-                    <button class="book-add-btn">Thêm vào giỏ hàng</button>
+    <section class="section">
+        <h3><i class="fas fa-book"></i> Danh sách sách</h3>        <div class="book-list">
+            {% for book in books %}
+                <div class="book">
+                    <div class="book-badges">
+                        {% if book.old_price %}
+                            <span class="discount-badge">-{{ book.discount_percent }}%</span>
+                        {% endif %}
+                        {% if book.is_new %}
+                            <span class="new-badge">New</span>
+                        {% endif %}
+                    </div>
+                    <a href="{% url 'book_detail' book.pk %}" class="logo-link">
+                        <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" />
+                    </a>
+                    <div class="book-info">
+                        <h4>{{ book.title }}</h4>
+                        <p class="author">{{ book.author }}</p>
+                        <div class="price-container">
+                            <p>${{ book.price }}
+                                {% if book.old_price %}
+                                    <span class="old-price">${{ book.old_price }}</span>
+                                {% endif %}
+                            </p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <span>{{ book.rating|default:"4.5" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <form action="{% url 'add_to_cart' book.id %}" method="post">
+                        {% csrf_token %}
+                        <div class="quantity-container">
+                            <button type="button" class="quantity-btn decrease-btn" onclick="decreaseQuantity(this)"><i class="fas fa-minus"></i></button>
+                            <input type="number" name="quantity" value="1" min="1" class="quantity-input" />
+                            <button type="button" class="quantity-btn increase-btn" onclick="increaseQuantity(this)"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <button type="submit" class="add_button"><i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng</button>
+                    </form>
                 </div>
-            </div>
-            {% empty %}
-            <p>Không có sách nào.</p>
             {% endfor %}
         </div>
-    </div>
+    </section>    {% if is_paginated %}
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <span class="page-item">
+                <a class="page-link" href="?page=1">&laquo; Trang đầu</a>
+            </span>
+            <span class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+            </span>
+        {% endif %}
 
-    <!-- Phân trang -->
-    <nav aria-label="Page navigation" class="mt-4">
-        <ul class="pagination justify-content-center">
+        {% if not page_obj.has_previous %}
+            <span class="page-item active">
+                <span class="page-link">1</span>
+            </span>
+        {% endif %}
 
-            <!-- Nút về Trang đầu -->
-            {% if page_obj.number != 1 %}
-            <li class="page-item">
-            <a class="page-link" href="?page=1">Trang đầu</a>
-            </li>
-            {% endif %}
-    
-            <!-- Nút về trang trước -->
-            {% if page_obj.has_previous %}
-            <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
-            </li>
-            {% endif %}
-
-            <!-- Số trang -->
-            {% for num in page_obj.paginator.page_range %}
-                {% if num == 1 and page_obj.number != 1 %}
-                    {# Bỏ qua số 1 nếu đã có nút "Trang đầu" #}
-                {% elif num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %}
-                <li class="page-item {% if num == page_obj.number %}active{% endif %}">
-                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                </li>
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                {% if num != 1 and num != page_obj.paginator.num_pages %}
+                    <span class="page-item active">
+                        <span class="page-link">{{ num }}</span>
+                    </span>
                 {% endif %}
-            {% endfor %}
-
-            <!-- Nút tới trang sau -->
-            {% if page_obj.has_next %}
-            <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
-            </li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                {% if num != 1 and num != page_obj.paginator.num_pages %}
+                    <span class="page-item">
+                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    </span>
+                {% endif %}
             {% endif %}
+        {% endfor %}
 
-            <!-- Nút tới Trang cuối -->
-            {% if page_obj.number != page_obj.paginator.num_pages %}
-            <li class="page-item">
-            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Trang cuối</a>
-            </li>
-            {% endif %}
+        {% if not page_obj.has_next %}
+            <span class="page-item active">
+                <span class="page-link">{{ page_obj.paginator.num_pages }}</span>
+            </span>
+        {% endif %}
 
-        </ul>
-    </nav>
+        {% if page_obj.has_next %}
+            <span class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+            </span>
+            <span class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Trang cuối &raquo;</a>
+            </span>
+        {% endif %}
+    </div>
+    {% endif %}
 
-
+    <script src="{% static 'js/home/script.js' %}"></script>
     
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Inline JavaScript cho nút tăng giảm số lượng -->
+    <script>
+        // Chức năng giảm số lượng
+        function decreaseQuantity(button) {
+            const input = button.nextElementSibling;
+            let value = parseInt(input.value);
+            if (value > 1) {
+                value--;
+                input.value = value;
+                
+                // Hiệu ứng
+                input.classList.add('pulse', 'decrease');
+                button.style.transform = 'scale(0.95)';
+                
+                setTimeout(() => {
+                    input.classList.remove('pulse', 'decrease');
+                    button.style.transform = 'scale(1)';
+                }, 300);
+            }
+        }
+        
+        // Chức năng tăng số lượng
+        function increaseQuantity(button) {
+            const input = button.previousElementSibling;
+            let value = parseInt(input.value);
+            value++;
+            input.value = value;
+            
+            // Hiệu ứng
+            input.classList.add('pulse', 'increase');
+            button.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                input.classList.remove('pulse', 'increase');
+                button.style.transform = 'scale(1)';
+            }, 300);
+        }
+    </script>
 {% endblock %}
