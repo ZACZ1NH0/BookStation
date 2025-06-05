@@ -22,6 +22,7 @@ def staff_dashboard(request):
     can_add_publisher = request.user.has_perm('books.add_publishers')
     can_add_author = request.user.has_perm('books.add_authors')
     can_delete_book = request.user.has_perm('books.delete_books')
+    can_edit_book = request.user.has_perm('books.edit_books')
     return render(request, 'staff/dashboard_staff.html', {
         'can_add_user': can_add_user,
         'can_change_user': can_change_user,
@@ -32,6 +33,7 @@ def staff_dashboard(request):
         'can_add_publisher': can_add_publisher,
         'can_add_author': can_add_author,
         'can_delete_book' : can_delete_book,
+        'can_edit_book' : can_edit_book,
         'books':Book.objects.all(),
     })
 
@@ -139,7 +141,7 @@ def book_add(request):
             book = form.save()
             # Lưu categories ManyToMany
             form.save_m2m()
-            return redirect('book_list')
+            return redirect('view_list_book')
     else:
         form = BookForm()
     return render(request, 'books/book_form.html', {'form': form, 'title': 'Add Book'})
@@ -153,7 +155,7 @@ def book_edit(request, pk):
         if form.is_valid():
             form.save()
             form.save_m2m()
-            return redirect('book_list')
+            return redirect('view_list_book')
     else:
         form = BookForm(instance=book)
     return render(request, 'books/book_form.html', {'form': form, 'title': 'Edit Book'})
