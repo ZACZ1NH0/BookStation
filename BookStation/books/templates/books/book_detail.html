@@ -1,95 +1,328 @@
 {% extends 'base.html'%}
 {% load static %}
+{% load i18n %}
 
-{% block title %} Chi tiết sách - BookStation{% endblock %}
+{% block title %}Chi tiết sách - BookStation{% endblock %}
 
 {% block content %}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-    {% load i18n %}
-    <!-- Bootstrap CSS -->
-    <!-- Dùng bản mới hơn (ví dụ Font Awesome 6) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/home/style.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/home/slide.css' %}" />
-    <style>
-        .quantity-input {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            max-width: 150px;
-        }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/home/style.css' %}" />
+<link rel="stylesheet" href="{% static 'css/home/slide.css' %}" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-        .quantity-input button {
-            width: 32px;
-            height: 32px;
-            font-size: 18px;
-            border: 1px solid #ccc;
-            background: #f8f9fa;
-            cursor: pointer;
-        }
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #f8f9fa;
+        color: #333;
+    }
 
-        .quantity-input input {
-            text-align: center;
-            width: 50px;
-            height: 32px;
-            border: 1px solid #ccc;
-        }
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
 
-        .badge {
-            margin-right: 5px;
+    .book-detail-card {
+        background: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        margin-top: 20px;
+    }
+
+    .book-image {
+        width: 100%;
+        max-width: 350px;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .book-title {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+
+    .book-author {
+        font-size: 1.2rem;
+        color: #7f8c8d;
+        margin-bottom: 20px;
+    }
+
+    .book-info {
+        background: #f1f3f4;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+    }
+
+    .info-item {
+        padding: 8px 0;
+        color: #495057;
+    }
+
+    .info-item strong {
+        color: #212529;
+    }
+
+    .price {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #e74c3c;
+        margin: 20px 0;
+    }
+
+    .description {
+        background: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        line-height: 1.6;
+    }
+
+    .categories {
+        margin: 20px 0;
+    }
+
+    .category-tag {
+        display: inline-block;
+        background: #6c757d;
+        color: white;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        margin: 3px;
+    }
+
+    .cart-section {
+        background: #f8f9fa;
+        padding: 25px;
+        border-radius: 8px;
+        margin-top: 30px;
+        border: 1px solid #dee2e6;
+    }
+
+    .quantity-controls {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 20px 0;
+    }
+
+    .qty-btn {
+        background: #6c757d;
+        color: white;
+        border: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .qty-btn:hover {
+        background: #5a6268;
+    }
+
+    .qty-btn:disabled {
+        background: #adb5bd;
+        cursor: not-allowed;
+    }
+
+    .qty-input {
+        width: 60px;
+        height: 40px;
+        text-align: center;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        margin: 0 10px;
+        font-size: 16px;
+        font-weight: 500;
+    }
+
+    .add-to-cart {
+        background: #28a745;
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 5px;
+        font-size: 1.1rem;
+        font-weight: 500;
+        cursor: pointer;
+        width: 100%;
+        transition: background 0.2s;
+    }
+
+    .add-to-cart:hover {
+        background: #218838;
+    }
+
+    .add-to-cart:disabled {
+        background: #6c757d;
+        cursor: not-allowed;
+    }
+
+    .warning-text {
+        color: #dc3545;
+        text-align: center;
+        margin-top: 10px;
+        font-weight: 500;
+        display: none;
+    }
+
+    @media (max-width: 768px) {
+        .book-detail-card {
+            padding: 20px;
         }
-    </style>
-    <div class="container mt-5">
+        
+        .book-title {
+            font-size: 1.5rem;
+        }
+        
+        .price {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="book-detail-card">
         <div class="row">
-            <!-- Ảnh bìa sách -->
-            <div class="col-md-4">
-                <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="img-fluid rounded shadow">
+            <!-- Ảnh sách -->
+            <div class="col-md-4 text-center">
+                <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-image">
             </div>
 
             <!-- Thông tin sách -->
             <div class="col-md-8">
-                <h2>{{ book.title }}</h2>
-                <h5 class="text-muted">Tác giả: {{ book.author.name }}</h5>
-                <p><strong>Nhà xuất bản:</strong> {{ book.publisher.name }}</p>
-                <p><strong>Ngày xuất bản:</strong> {{ book.publication_date|date:"d/m/Y" }}</p>
-                <p><strong>Còn lại:</strong> {{ book.stock }} quyển</p>
-                <p><strong>Giá:</strong> <span class="text-danger fs-4">${{ book.price }}</span></p>
-                <p>{{ book.description }}</p>
-
-                <!-- Danh mục -->
-                <p><strong>Thể loại:</strong>
-                    {% for category in book.categories.all %}
-                        <span class="badge bg-secondary">{{ category.name }}</span>
-                    {% endfor %}
-                </p>
-
-                <!-- Form thêm vào giỏ hàng -->
-                <form method="post" action="{% url 'add_to_cart' book.id %}">
-                    {% csrf_token %}
-                    <div class="quantity-input my-3">
-                        <button type="button" onclick="updateQuantity(-1)">−</button>
-                        <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ book.stock }}">
-                        <button type="button" onclick="updateQuantity(1)">+</button>
+                <h1 class="book-title">{{ book.title }}</h1>
+                <p class="book-author">Tác giả: {{ book.author.name }}</p>
+                
+                <div class="book-info">
+                    <div class="info-item">
+                        <strong>Nhà xuất bản:</strong> {{ book.publisher.name }}
                     </div>
-                    <button type="submit" class="btn btn-warning">Thêm vào giỏ hàng</button>
-                </form>
+                    <div class="info-item">
+                        <strong>Ngày xuất bản:</strong> {{ book.publication_date|date:"d/m/Y" }}
+                    </div>
+                    <div class="info-item">
+                        <strong>Tồn kho:</strong> {{ book.stock }} quyển
+                    </div>
+                </div>
+
+                <div class="price">Giá: ${{ book.price }}</div>
+
+                <!-- Mô tả -->
+                {% if book.description %}
+                <div class="description">
+                    <strong>Mô tả:</strong><br>
+                    {{ book.description }}
+                </div>
+                {% endif %}
+
+                <!-- Thể loại -->
+                <div class="categories">
+                    <strong>Thể loại:</strong><br>
+                    {% for category in book.categories.all %}
+                        <span class="category-tag">{{ category.name }}</span>
+                    {% endfor %}
+                </div>
+
+                <!-- Giỏ hàng -->
+                <div class="cart-section">
+                    <form method="post" action="{% url 'add_to_cart' book.id %}" id="cart-form">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="text-left">
+                                    <label><strong>Số lượng:</strong></label>
+                                </div>
+                                
+                                <div class="quantity-controls" style="justify-content: flex-start;">
+                                    <button type="button" class="qty-btn" onclick="decreaseQty()" id="decrease-btn">-</button>
+                                    <input type="number" name="quantity" id="quantity" value="1" 
+                                           class="qty-input" min="1" max="{{ book.stock }}" readonly>
+                                    <button type="button" class="qty-btn" onclick="increaseQty()" id="increase-btn">+</button>
+                                </div>
+                                
+                                <div class="warning-text" id="warning" style="text-align: left;">
+                                    Số lượng không hợp lệ!
+                                </div>
+                                
+                                <button type="submit" class="add-to-cart" id="add-btn" 
+                                        style="width: auto; padding: 12px 20px;"
+                                        {% if book.stock == 0 %}disabled{% endif %}>
+                                    <i class="fas fa-cart-plus"></i>
+                                    {% if book.stock == 0 %}
+                                        Hết hàng
+                                    {% else %}
+                                        Thêm vào giỏ hàng
+                                    {% endif %}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
+</div>
 
-<!-- Script tăng giảm số lượng -->
 <script>
-    function updateQuantity(change) {
-        const input = document.getElementById("quantity");
-        const max = parseInt(input.max);
-        let current = parseInt(input.value);
-        current += change;
-        if (current < 1) current = 1;
-        if (current > max) current = max;
-        input.value = current;
+    const maxStock = {{ book.stock }};
+    
+    function updateButtons() {
+        const qty = parseInt(document.getElementById('quantity').value);
+        const decreaseBtn = document.getElementById('decrease-btn');
+        const increaseBtn = document.getElementById('increase-btn');
+        const warning = document.getElementById('warning');
+        
+        decreaseBtn.disabled = qty <= 1;
+        increaseBtn.disabled = qty >= maxStock;
+        
+        if (qty > maxStock || qty < 1) {
+            warning.style.display = 'block';
+        } else {
+            warning.style.display = 'none';
+        }
     }
+    
+    function increaseQty() {
+        const input = document.getElementById('quantity');
+        const current = parseInt(input.value);
+        if (current < maxStock) {
+            input.value = current + 1;
+            updateButtons();
+        }
+    }
+    
+    function decreaseQty() {
+        const input = document.getElementById('quantity');
+        const current = parseInt(input.value);
+        if (current > 1) {
+            input.value = current - 1;
+            updateButtons();
+        }
+    }
+    
+    // Kiểm tra khi submit
+    document.getElementById('cart-form').addEventListener('submit', function(e) {
+        const qty = parseInt(document.getElementById('quantity').value);
+        if (qty > maxStock || qty < 1) {
+            e.preventDefault();
+            alert('Số lượng không hợp lệ!');
+        }
+    });
+    
+    // Khởi tạo
+    updateButtons();
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
