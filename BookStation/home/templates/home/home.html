@@ -117,7 +117,12 @@
             {% endif %}
           </div>
           <a href="{% url 'book_detail' book.pk %}" class="logo-link">
-            <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" />
+{#            <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" />#}
+              {% if book.cover_image and book.cover_image.url %}
+                <img src="{{ book.cover_image.url }}" alt="{{ book.title }}">
+              {% else %}
+                  <img src="{% static 'image/default-book.jpg' %}" alt="Không có ảnh">
+              {% endif %}
           </a>
           {% comment %} <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" /> {% endcomment %}
           <div class="book-info">

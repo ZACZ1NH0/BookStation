@@ -1,3 +1,71 @@
+{#<!DOCTYPE html>#}
+{#<html lang="vi">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>📚 Danh sách sách</title>#}
+{#    <style>#}
+{#        table {#}
+{#            width: 80%;#}
+{#            border-collapse: collapse;#}
+{#            margin: 20px auto;#}
+{#        }#}
+{#        th, td {#}
+{#            border: 1px solid #333;#}
+{#            padding: 8px 12px;#}
+{#            text-align: left;#}
+{#        }#}
+{#        th {#}
+{#            background-color: #f2f2f2;#}
+{#        }#}
+{#        .actions {#}
+{#            display: flex;#}
+{#            gap: 10px;#}
+{#        }#}
+{#        .actions form {#}
+{#            display: inline;#}
+{#        }#}
+{#        h1 {#}
+{#            text-align: center;#}
+{#        }#}
+{#    </style>#}
+{#</head>#}
+{#<body>#}
+{#    <h1>📚 Danh sách sách</h1>#}
+{##}
+{#    {% if books %}#}
+{#    <table>#}
+{#        <thead>#}
+{#            <tr>#}
+{#                <th>ID</th>#}
+{#                <th>Tiêu đề</th>#}
+{#                <th>Tác giả</th>#}
+{#                <th>Thao tác</th>#}
+{#            </tr>#}
+{#        </thead>#}
+{#        <tbody>#}
+{#            {% for b in books %}#}
+{#            <tr>#}
+{#                <td>{{ b.id }}</td>#}
+{#                <td>{{ b.title }}</td>#}
+{#                <td>{{ b.author }}</td>#}
+{#                <td class="actions">#}
+{#                    <form action="{% url 'book_delete' b.id %}" method="post" onsubmit="#}
+{#                    return confirm('Bạn có chắc chắn muốn xoá sách này không?')">#}
+{#                     {% csrf_token %}#}
+{#                        <button type="submit">🗑️ Xoá</button>#}
+{#                    </form>#}
+{##}
+{#                    <a href="{% url 'book_change' b.id %}">✏️ Sửa</a>#}
+{#                </td>#}
+{#            </tr>#}
+{#            {% endfor %}#}
+{#        </tbody>#}
+{#    </table>#}
+{#    {% else %}#}
+{#        <p style="text-align: center;">Không có sách nào trong hệ thống.</p>#}
+{#    {% endif %}#}
+{#</body>#}
+{#</html>#}
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -36,7 +104,7 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th>
+                <th>STT</th> <!-- Số thứ tự -->
                 <th>Tiêu đề</th>
                 <th>Tác giả</th>
                 <th>Thao tác</th>
@@ -45,15 +113,15 @@
         <tbody>
             {% for b in books %}
             <tr>
-                <td>{{ b.id }}</td>
+                <td>{{ forloop.counter }}</td>
                 <td>{{ b.title }}</td>
                 <td>{{ b.author }}</td>
                 <td class="actions">
-                    <form action="{% url 'book_delete' b.id %}" method="post">
+                    <form action="{% url 'book_delete' b.id %}" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xoá sách này không?')">
                         {% csrf_token %}
                         <button type="submit">🗑️ Xoá</button>
                     </form>
-                    <a href="{% url 'book_edit' b.id %}">✏️ Sửa</a>
+                    <a href="{% url 'book_change' b.id %}">✏️ Sửa</a>
                 </td>
             </tr>
             {% endfor %}

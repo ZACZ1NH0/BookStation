@@ -87,25 +87,25 @@ def author_add(request):
         form = AuthorForm()
     return render(request, 'authors/author_form.html', {'form': form, 'title': 'Add Author'})
 
-@user_passes_test(lambda u: u.is_superuser or u.is_staff)
-def author_edit(request, pk):
-    author = get_object_or_404(Author, pk=pk)
-    if request.method == 'POST':
-        form = AuthorForm(request.POST, request.FILES, instance=author)
-        if form.is_valid():
-            form.save()
-            return redirect('authors:author_list')
-    else:
-        form = AuthorForm(instance=author)
-    return render(request, 'authors/author_form.html', {'form': form, 'title': 'Edit Author'})
-
-@user_passes_test(lambda u: u.is_superuser)
-def author_delete(request, pk):
-    author = get_object_or_404(Author, pk=pk)
-    if request.method == 'POST':
-        author.delete()
-        return redirect('authors:author_list')
-    return render(request, 'authors/author_confirm_delete.html', {'author': author})
+# @user_passes_test(lambda u: u.is_superuser or u.is_staff)
+# def author_edit(request, pk):
+#     author = get_object_or_404(Author, pk=pk)
+#     if request.method == 'POST':
+#         form = AuthorForm(request.POST, request.FILES, instance=author)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('authors:author_list')
+#     else:
+#         form = AuthorForm(instance=author)
+#     return render(request, 'authors/author_form.html', {'form': form, 'title': 'Edit Author'})
+#
+# @user_passes_test(lambda u: u.is_superuser)
+# def author_delete(request, pk):
+#     author = get_object_or_404(Author, pk=pk)
+#     if request.method == 'POST':
+#         author.delete()
+#         return redirect('authors:author_list')
+#     return render(request, 'authors/author_confirm_delete.html', {'author': author})
 
 def publisher_list(request):
     publishers = Publisher.objects.all()
@@ -119,16 +119,16 @@ def publisher_detail(request, pk):
         'books': books
     })
 
-@user_passes_test(lambda u: u.is_superuser)
-def publisher_add(request):
-    if request.method == 'POST':
-        form = PublisherForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('publishers:publisher_list')
-    else:
-        form = PublisherForm()
-    return render(request, 'publishers/publisher_form.html', {'form': form, 'title': 'Add Publisher'})
+# @user_passes_test(lambda u: u.is_superuser)
+# def publisher_add(request):
+#     if request.method == 'POST':
+#         form = PublisherForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('publishers:publisher_list')
+#     else:
+#         form = PublisherForm()
+#     return render(request, 'publishers/publisher_form.html', {'form': form, 'title': 'Add Publisher'})
 
 @user_passes_test(lambda u: u.is_superuser)
 def publisher_edit(request, pk):

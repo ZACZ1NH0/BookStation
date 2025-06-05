@@ -1,10 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% load static %}
 
-</body>
-</html>
+{% block title %}Danh sách tác giả - BookStation{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Danh sách tác giả</h2>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Ảnh</th>
+                <th>Tên tác giả</th>
+                <th>Quốc tịch</th>
+                <th>Ngày sinh</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for author in authors %}
+            <tr>
+                <td>
+                    {% if author.image %}
+                        <img src="{{ author.image.url }}" alt="{{ author.name }}" width="60" class="img-thumbnail">
+                    {% else %}
+                        <span class="text-muted">Không có ảnh</span>
+                    {% endif %}
+                </td>
+                <td>{{ author.name }}</td>
+                <td>{{ author.nationality }}</td>
+                <td>{{ author.birth_date|date:"d/m/Y" }}</td>
+                <td>
+                    <a href="{% url 'change_author' author.id %}" class="btn btn-sm btn-primary">✏️ Sửa</a>
+                    <form action="{% url 'delete_author' author.id %}" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc muốn xoá tác giả này?');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-danger">🗑️ Xoá</button>
+                    </form>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">Không có tác giả nào.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
