@@ -1,17 +1,110 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-    <title>Trang nhân viên</title>
+    <meta charset="UTF-8">
+    <title>📊 Trang nhân viên</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding: 30px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+
+        p {
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 800px;
+            margin: 30px auto;
+        }
+
+        .card {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+        }
+
+        .card a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            font-size: 1em;
+        }
+
+        .card a:hover {
+            text-decoration: underline;
+        }
+
+        .emoji {
+            font-size: 1.5em;
+            display: block;
+            margin-bottom: 8px;
+        }
+    </style>
 </head>
 <body>
     <h1>Chào {{ request.user.username }}!</h1>
     <p>Đây là trang dashboard của nhân viên.</p>
-    <a href="{% url 'add_user' %}">➕ Thêm người dùng mới</a>
-    <a href="{% url 'list_user' %}">📋 Xem danh sách người dùng</a>
-    <a href={% url 'book_add' %}>Thêm sách </a>
-    <a href={% url 'list_authors' %}>Xem danh sách tác giả </a>
-    <a href="{% url 'view_list_book' %}">📚 Xem danh sách sách</a>
 
-
+    <div class="dashboard">
+        <div class="card">
+            <span class="emoji">➕</span>
+            <a href="{% url 'add_user' %}">Thêm người dùng mới</a>
+        </div>
+        <div class="card">
+            <span class="emoji">📋</span>
+            <a href="{% url 'list_user' %}">Xem danh sách người dùng</a>
+        </div>
+        <div class="card">
+            <span class="emoji">➕</span>
+            <a href="{% url 'book_add' %}">Thêm sách mới</a>
+        </div>
+        <div class="card">
+            <span class="emoji">📚</span>
+            <a href="{% url 'view_list_book' %}">Xem danh sách sách</a>
+        </div>
+        <div class="card">
+            <span class="emoji">➕</span>
+            <a href="{% url 'add_author' %}">Thêm tác giả mới</a>
+        </div>
+        <div class="card">
+            <span class="emoji">📖</span>
+            <a href="{% url 'list_authors' %}">Xem danh sách tác giả</a>
+        </div>
+        <div class="card">
+            <span class="emoji">➕</span>
+            <a href="{% url 'add_category' %}">Thêm danh mục mới</a>
+        </div>
+        <div class="card">
+            <span class="emoji">📂</span>
+            <a href="{% url 'list_category' %}">Xem danh sách danh mục</a>
+        </div>
+        <div class="card">
+            <span class="emoji">➕</span>
+            <a href="{% url 'add_publisher' %}">Thêm nhà xuất bản mới</a>
+        </div>
+        <div class="card">
+            <span class="emoji">🏢</span>
+            <a href="{% url 'list_publisher' %}">Xem danh sách nhà xuất bản</a>
+        </div>
+    </div>
 </body>
 </html>

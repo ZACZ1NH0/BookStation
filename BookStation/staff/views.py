@@ -2,8 +2,8 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect, get_object_or_404
 from accounts.forms import CustomUserCreationForm
 from accounts.forms import EditProfile
-from books.forms import BookForm, AuthorForm
-from books.models import Book, Author
+from books.forms import BookForm, AuthorForm, CategoryForm, PublisherForm
+from books.models import Book, Author , Category, Publisher
 from accounts.models import Users
 from django.contrib import messages
 from django.contrib.auth.forms import SetPasswordForm
@@ -11,6 +11,7 @@ from django.contrib.auth import update_session_auth_hash
 from unidecode import unidecode
 from orders.forms import OrderForm
 from orders.models import Order
+
 
 
 @login_required
@@ -80,7 +81,7 @@ def edit_user_view(request, user_id):
         elif 'change_password' in request.POST:
             if password_form.is_valid():
                 password_form.save()
-                update_session_auth_hash(request, user)  # giữ login sau khi đổi mật khẩu
+                update_session_auth_hash(request, user)
                 messages.success(request, 'Đổi mật khẩu thành công!')
                 return redirect('staff_dashboard')
 
@@ -116,7 +117,6 @@ def list_user_view(request):
         'users': filtered_users,
         'can_change_user': can_change_user,
     })
-
 
 
 
@@ -178,8 +178,8 @@ def book_delete(request, pk):
     book = get_object_or_404(Book, pk=pk)
     if request.method == 'POST':
         book.delete()
-        return redirect('view_list_book')
-    return render(request, "", {'book': book})
+    return redirect('view_list_book')
+
 
 @login_required
 @permission_required('books.view_author', raise_exception=True)
@@ -189,16 +189,128 @@ def view_list_author(request):
 
 
 @login_required
-@permission_required('books.change_author', raise_exception=True)
-def edit_author(request):
-    author = get_object_or_404(Author, pk=request.POST.get('author_id'))
+@permission_required('books.add_author', raise_exception=True)
+def add_author(request):
     if request.method == 'POST':
-        form = AuthorForm(request.POST, instance=author)
+        form = AuthorForm(request.POST, request.FILES)
         if form.is_valid():
-            author = form.save(commit=False)
             form.save()
-            form.save_m2m()
-            return redirect('view_list_author')
+            return redirect('list_authors')
+    else:
+        form = AuthorForm()
+    return render(request, 'staff/books/add_author.html', {'form': form})
+
+
+@login_required
+@permission_required('books.change_author', raise_exception=True)
+def edit_author(request,pk):
+    author = get_object_or_404(Author, pk=pk)
+    if request.method == 'POST':
+        form = AuthorForm(request.POST, request.FILES, instance=author)
+        if form.is_valid():
+            form.save()
+            return redirect('list_authors')
     else :
         form = AuthorForm(instance=author)
     return render(request,'staff/books/change_author.html',{'form': form})
+
+
+@login_required
+@permission_required('books.delete_author', raise_exception=True)
+def delete_author(request,pk):
+    author = get_object_or_404(Author, pk=pk)
+    if request.method == 'POST':
+        author.delete()
+        return redirect('list_authors')
+    else :
+        return render(request,'staff/books/view_author.html',{'author': author})
+
+
+@login_required
+@permission_required('books.view_category', raise_exception=True)
+def list_category(request):
+    categories = Category.objects.all()
+    return render(request, 'staff/books/view_category.html', {'categories': categories})
+
+
+@login_required
+@permission_required('books.change_category', raise_exception=True)
+def edit_category(request, pk):
+    category = get_object_or_404(Category, pk=pk)
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('list_category')
+    else:
+        form = CategoryForm(instance=category)
+    return render(request, 'staff/books/change_category.html', {'form': form, 'title': 'Edit Category'})
+
+
+
+@login_required
+@permission_required('books.add_category', raise_exception=True)
+def add_category(request):
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('list_category')
+    else:
+        form = CategoryForm()
+    return render(request, 'staff/books/add_category.html', {'form': form, 'title': 'Add Category'})
+
+
+@login_required
+@permission_required('books.delete_category', raise_exception=True)
+def delete_category(request, pk):
+    category = get_object_or_404(Category, pk=pk)
+    if request.method == 'POST':
+        category.delete()
+        return redirect('list_category')
+    return render(request, 'staff/books/view_category.html', {'categories': category})
+
+
+@login_required
+@permission_required('books.view_publisher', raise_exception=True)
+def list_publisher(request):
+    publishers = Publisher.objects.all()
+    return render(request, 'staff/books/view_publisher.html', {'publishers': publishers})
+
+
+@login_required
+@permission_required('books.delete_publisher', raise_exception=True)
+def delete_publisher(request, pk):
+    publisher = get_object_or_404(Publisher, pk=pk)
+    if request.method == 'POST':
+        publisher.delete()
+        return redirect('list_publisher')
+    return render(request, 'staff/books/view_publisher.html', {'publisher': publisher})
+
+
+@login_required
+@permission_required('books.add_publisher', raise_exception=True)
+def add_publisher(request):
+    if request.method == 'POST':
+        form = PublisherForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('list_publisher')
+    else:
+        form = PublisherForm()
+    return render(request, 'staff/books/add_publisher.html', {'form': form, 'title': 'Add Publisher'})
+
+
+@login_required
+@permission_required('books.change_publisher', raise_exception=True)
+def edit_publisher(request, pk):
+    publisher = get_object_or_404(Publisher, pk=pk)
+    if request.method == 'POST':
+        form = PublisherForm(request.POST, instance=publisher)
+        if form.is_valid():
+            form.save()
+            return redirect('list_publisher')
+    else:
+        form = PublisherForm(instance=publisher)
+    return render(request, 'staff/books/change_publisher.html', {'form': form, 'title': 'Edit Publisher'})
+

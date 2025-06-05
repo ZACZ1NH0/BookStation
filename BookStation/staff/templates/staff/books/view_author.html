@@ -30,8 +30,8 @@
                 <td>{{ author.nationality }}</td>
                 <td>{{ author.birth_date|date:"d/m/Y" }}</td>
                 <td>
-                    <a href="{% url 'author_edit' author.id %}" class="btn btn-sm btn-primary">✏️ Sửa</a>
-                    <form action="{% url 'author_delete' author.id %}" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc muốn xoá tác giả này?');">
+                    <a href="{% url 'change_author' author.id %}" class="btn btn-sm btn-primary">✏️ Sửa</a>
+                    <form action="{% url 'delete_author' author.id %}" method="post" style="display:inline;" onsubmit="return confirm('Bạn có chắc muốn xoá tác giả này?');">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-sm btn-danger">🗑️ Xoá</button>
                     </form>
