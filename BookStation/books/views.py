@@ -32,7 +32,6 @@ def book_add(request):
         form = BookForm(request.POST, request.FILES)
         if form.is_valid():
             book = form.save()
-            # Lưu categories ManyToMany
             form.save_m2m()
             return redirect('book_list')
     else:
