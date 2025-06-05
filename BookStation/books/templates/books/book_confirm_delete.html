@@ -1,44 +1,11 @@
-
-{% load static %}
-
-
-
-
-{#<div class="container mt-4">#}
-{#    <nav aria-label="breadcrumb">#}
-{#        <ol class="breadcrumb">#}
-{#            <li class="breadcrumb-item"><a href="{% url 'book_list' %}">Sách</a></li>#}
-{#            <li class="breadcrumb-item"><a href="{% url 'book_detail' book.pk %}">{{ book.title }}</a></li>#}
-{#            <li class="breadcrumb-item active">Xóa sách</li>#}
-{#        </ol>#}
-{#    </nav>#}
-
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow">
-                <div class="card-body text-center">
-                    <h2 class="card-title mb-4">Xác nhận xóa sách</h2>
-                    
-                    {% if book.cover %}
-                    <img src="{{ book.cover.url }}" alt="{{ book.title }}" class="img-thumbnail mb-3" style="max-height: 200px;">
-                    {% endif %}
-                    
-                    <p class="lead">Bạn có chắc chắn muốn xóa sách "{{ book.title }}" không?</p>
-                    <p class="text-danger">Lưu ý: Hành động này không thể hoàn tác!</p>
-                    
-                    <form method="post">
-                        {% csrf_token %}
-                        <div class="d-grid gap-2">
-                            <a href="{% url 'view_list_book' %}" class="btn btn-outline-secondary">
-                                <i class="fas fa-trash me-2"></i>Xác nhận xóa
-                            </a>
-                            <a href="{% url 'view_list_book' %}" class="btn btn-outline-secondary">
-                                <i class="fas fa-times me-2"></i>Hủy
-                            </a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+<form method="post">
+    {% csrf_token %}
+    <div class="d-grid gap-2">
+        <button type="submit" class="btn btn-danger">
+            <i class="fas fa-trash me-2"></i>Xác nhận xóa
+        </button>
+        <a href="{% url 'staff_dashboard' %}" class="btn btn-outline-secondary">
+            <i class="fas fa-times me-2"></i>Hủy
+        </a>
     </div>
-</div>
+</form>

@@ -17,31 +17,32 @@
     {% else %}
     <p>Bạn không có quyền xem danh sách người dùng.</p>
     {% endif %}
-{#    <a href={% url 'book_add' %}>Thêm sách </a>#}
+    <a href={% url 'book_add' %}>Thêm sách </a>
 {#    <a href="{% url 'book_list' %}">📚 Xem danh sách sách</a>#}
 <a href="{% url 'view_list_book' %}">📚 Xem danh sách sách</a>
-{#    <table border="1">#}
-{#    <tr>#}
-{#        <th>ID</th>#}
-{#        <th>Tiêu đề</th>#}
-{#        <th>Tác giả</th>#}
-{#        <th>Thao tác</th>#}
-{#    </tr>#}
-{#    {% for b in book %}#}
-{#    <tr>#}
-{#        <td>{{ b.id }}</td>#}
-{#        <td>{{ b.title }}</td>#}
-{#        <td>{{ b.author }}</td>#}
-{#        <td>#}
-{#            <form action="{% url 'book_delete' b.pk %}" method="post" style="display:inline;">#}
-{#                {% csrf_token %}#}
-{#                <button type="submit">🗑️ Xoá</button>#}
-{#            </form>#}
-{#            <a href="{% url 'book_edit' b.pk %}">✏️ Sửa</a>#}
-{#        </td>#}
-{#    </tr>#}
-{#    {% endfor %}#}
-{#</table>#}
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Tiêu đề</th>
+        <th>Tác giả</th>
+        <th>Thao tác</th>
+    </tr>
+    {% for b in books %}
+    <tr>
+        <td>{{ b.id }}</td>
+        <td>{{ b.title }}</td>
+        <td>{{ b.author }}</td>
+        <td>
+            <form action="{% url 'book_delete' b.pk %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">🗑️ Xoá</button>
+            </form>
+            <a href="{% url 'book_edit' b.pk %}">✏️ Sửa</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
 
 </body>
 </html>
