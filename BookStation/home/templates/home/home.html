@@ -9,28 +9,13 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-
-<div class="container mt-5">
-    {% if is_superuser %}
-        <h1>Chào admin {{ request.user.username }}!</h1>
-        <a href="/admin/" class="btn btn-sm btn-primary">Vào trang quản trị (Admin)</a>
-    {% elif is_staff %}
-        <h1>Chào nhân viên {{ request.user.last_name }} {{ request.user.first_name }}!</h1>
-
-        <a href="staff/staff_dashboard/" class="btn btn-sm btn-success">Vào trang nhân viên</a>
-
-    {% else %}
-        <h1>Chào {{ request.user.last_name }} {{ request.user.first_name }}!</h1>
-    {% endif %} 
-
-</div>
   <section class="banner-slider">
     <div class="slide">
       <div class="text">
         <span class="badge">Mới nhất</span>
         <h2>📚 Sách mới phát hành!</h2>
         <p>Khám phá cuốn <strong>"Dế Mèn Phiêu Lưu Ký"</strong> - tác phẩm kinh điển dành cho mọi lứa tuổi.</p>
-        <a href="/books/123"><button>Mua ngay <i class="fas fa-arrow-right"></i></button></a>
+        <a href="/books/books/4"><button>Mua ngay <i class="fas fa-arrow-right"></i></button></a>
       </div>
       <img src="{% static 'image/demen1.jpg' %}" alt="Dế Mèn Phiêu Lưu Ký" />
     </div>
@@ -162,7 +147,7 @@
         <a href="#" class="btn-explore">Khám phá ngay <i class="fas fa-long-arrow-alt-right"></i></a>
       </div>
       <div class="featured-image">
-        <img src="{% static 'image/yourname.gif' %}" alt="Sách bán chạy">
+        <img src="{% static 'image/demen1.jpg' %}" alt="Sách bán chạy">
       </div>
     </div>
   </section>

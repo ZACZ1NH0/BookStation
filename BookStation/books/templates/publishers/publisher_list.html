@@ -10,60 +10,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     {% load static %}
     <link href="{% static 'css/books/style.css' %}" rel="stylesheet">    <style>
-        body {
-            margin: 0;
-            font-family: 'Roboto', sans-serif;
-            background-color: #fffdf7;
-            color: #333;
-        }
-
-        header {
-            background-color: #ffe082;
-            padding: 10px 20px;
-        }
-
-        .navbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .search-box {
-            padding: 10px;
-            border: none;
-            border-radius: 20px;
-            width: 300px;
-            font-size: 14px;
-        }
-
-        .icons {
-            display: flex;
-            align-items: center;
-        }
-
-        .login, .register {
-            padding: 8px 20px;
-            border: none;
-            border-radius: 20px;
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-        }
-
-        .login {
-            background-color: #4CAF50;
-            margin-right: 10px;
-        }
-
-        .register {
-            background-color: #2196F3;
-        }
-
+        
         .publisher-card {
             border: none;
             transition: transform 0.3s;
@@ -87,11 +34,6 @@
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Nhà xuất bản</h2>
-            {% if user.is_staff %}
-            <a href="{% url 'publisher_add' %}" class="btn btn-primary">
-                <i class="fas fa-plus me-2"></i>Thêm nhà xuất bản mới
-            </a>
-            {% endif %}
         </div>
 
         <div class="row">
@@ -117,16 +59,6 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center">
                             <a href="{% url 'publisher_detail' publisher.pk %}" class="btn btn-outline-primary">Chi tiết</a>
-                            {% if user.is_staff %}
-                            <div class="btn-group">
-                                <a href="{% url 'publisher_edit' publisher.pk %}" class="btn btn-outline-secondary">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <a href="{% url 'publisher_delete' publisher.pk %}" class="btn btn-outline-danger">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                            </div>
-                            {% endif %}
                         </div>
                     </div>
                 </div>

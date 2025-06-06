@@ -14,43 +14,66 @@
 <body>
   <header>
     <div class="navbar">
-      <a href="{% url 'home' %}" class="logo-link">
-        <div class="logo"><i class="fas fa-book-open"></i> BookStation</div>
-      </a>
-      <form method="get" action="{% url 'book_search' %}">
-        <div class="search-container">
-          <input type="text" name = "q" placeholder="Bạn đang tìm gì?" class="search-box" />
-          <button class="search-btn"><i class="fas fa-search"></i></button>
+      <div class="navbar-left">
+        <div class= 'icons'>
+          <div class="mini-menu-wrapper" style="margin-left: 0; padding-left: 5px;">
+              <a href="javascript:void(0);" class="nav-icon mini-icon" id="miniMenuToggle" title="Menu">
+                <i class="fas fa-bars"></i>
+              </a>
+              <div class="dropdown-menu right-dropdown">
+                  <a href="{% url 'book_list' %}" class="mini-menu-item"><i class="fas fa-book"></i> Sách</a>
+                  <a href="{% url 'category_list' %}" class="mini-menu-item"><i class="fas fa-tag"></i> Thể loại</a>
+                  <a href="{% url 'publisher_list' %}" class="mini-menu-item"><i class="fas fa-building"></i> NXB</a>
+                  <a href="{% url 'author_list' %}" class="mini-menu-item"><i class="fas fa-user"></i> Tác giả</a>
+              </div>
+          </div>
         </div>
-      </form>
-      <div class="icons">
-        <a href="{%url 'book_list'%}" class="nav-icon" title="Danh sách sách"><i class="fas fa-book"></i></a>
-        <a href="{%url 'category_list'%}" class="nav-icon" title="Danh sách thể loại"><i class="fas fa-tag"></i></a>
-        <a href="{%url 'publisher_list'%}" class="nav-icon" title="Nhà xuất bản"><i class="fas fa-building"></i></a>
-        <a href="{%url 'author_list'%}" class="nav-icon" title="Tác giả"><i class="fa-solid fa-at"></i></a>
-        <a href="{%url 'view_cart' %}" class="nav-icon" title="Giỏ hàng"><i class="fas fa-shopping-cart"></i></a>
-        <a href="#" class="nav-icon" title="Yêu thích"><i class="fas fa-heart"></i></a>
-        
-        {% if user.is_authenticated %}
-          <div class="user-menu">
-            <a href="javascript:void(0);" class="nav-icon user-icon" title="{{ user.username }}">
-              <i class="fas fa-user-circle"></i>
-            </a>
-            <div class="dropdown-menu">
-              <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Tài khoản của tôi</a>
-              <a href="{% url 'view_cart'%}"><i class="fas fa-list"></i> Đơn hàng</a>
-              <form action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                <button type="submit"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
-              </form>
+     </div>   
+        <a href="{% url 'home' %}" class="logo-link">
+          <div class="logo"><i class="fas fa-book-open"></i> BookStation</div>
+        </a>
+    
+      <div class="navbar-center">
+        <form method="get" action="{% url 'book_search' %}">
+          <div class="search-container">
+            <input type="text" name = "q" placeholder="Bạn đang tìm gì?" class="search-box" />
+            <button class="search-btn"><i class="fas fa-search"></i></button>
+          </div>
+        </form>
+      </div>
+      <div class="navbar-right">
+        <div class="icons">
+          {% if user.is_authenticated %}
+            <div class="user-menu">
+              <a href="javascript:void(0);" class="nav-icon user-icon" title="{{ user.username }}">
+                <i class="fas fa-user-circle"></i>
+              </a>
+              <div class="dropdown-menu left-dropdown">
+                
+                <div class="container mt-5">
+                 {% if is_superuser %}
+                     <a href="/admin/" ><i class="fas fa-user"></i> Quản trị website</a>
+                 {% elif is_staff %}
+                     <a href="staff/staff_dashboard/"><i class="fas fa-user"></i>Quản lý</a>
+                  {% else %}
+                      <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Tài khoản của tôi</a>
+                   {% endif %} 
+                </div>
+                <a href="{% url 'view_cart'%}"><i class="fas fa-list"></i> Đơn hàng</a>
+                <a href="{% url 'view_cart' %}" class="mini-menu-item"><i class="fas fa-shopping-cart"></i> Giỏ hàng</a>
+                <form action="{% url 'logout' %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
+                </form>
+              </div>
             </div>
-          </div>
-        {% else %}
-          <div class="auth-buttons">
-            <a href="{% url 'login' %}"><button class="login">Đăng nhập</button></a>
-            <a href="{% url 'register' %}"><button class="register">Đăng ký</button></a>
-          </div>
-        {% endif %}
+          {% else %}
+            <div class="auth-buttons">
+              <a href="{% url 'login' %}"><button class="login">Đăng nhập</button></a>
+              <a href="{% url 'register' %}"><button class="register">Đăng ký</button></a>
+            </div>
+          {% endif %}
+        </div>
       </div>
     </div>
   </header>
@@ -144,27 +167,43 @@
       }, 300);
     }
     
-    // Toggle user dropdown menu
-    document.addEventListener('DOMContentLoaded', function() {
-      const userIcon = document.querySelector('.user-icon');
-      if (userIcon) {
-        userIcon.addEventListener('click', function(e) {
-          e.preventDefault();
-          const dropdown = document.querySelector('.dropdown-menu');
-          dropdown.classList.toggle('show');
-        });
-        
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(e) {
-          if (!e.target.closest('.user-menu')) {
-            const dropdown = document.querySelector('.dropdown-menu');
-            if (dropdown && dropdown.classList.contains('show')) {
-              dropdown.classList.remove('show');
-            }
-          }
-        });
+      document.addEventListener('DOMContentLoaded', function () {
+    // Toggle user dropdown (trái)
+    const userIcon = document.querySelector('.user-icon');
+    const userDropdown = document.querySelector('.left-dropdown');
+
+    // Toggle mini menu dropdown (phải)
+    const miniIcon = document.querySelector('.mini-icon');  // Sửa lại đúng ID
+    const miniDropdown = document.querySelector('.right-dropdown');
+
+    // Khi click user icon
+    if (userIcon && userDropdown) {
+      userIcon.addEventListener('click', function (e) {
+        e.stopPropagation();
+        userDropdown.classList.toggle('show');
+        miniDropdown?.classList.remove('show'); // đóng menu phải nếu đang mở
+      });
+    }
+
+    // Khi click mini menu icon
+    if (miniIcon && miniDropdown) {
+      miniIcon.addEventListener('click', function (e) {
+        e.stopPropagation();
+        miniDropdown.classList.toggle('show');
+        userDropdown?.classList.remove('show'); // đóng menu trái nếu đang mở
+      });
+    }
+
+    // Click ra ngoài thì đóng cả 2 menu
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.user-menu')) {
+        userDropdown?.classList.remove('show');
+      }
+      if (!e.target.closest('.mini-menu-wrapper')) {
+        miniDropdown?.classList.remove('show');
       }
     });
+  });
   </script>
 {% endblock %}
 </body>
