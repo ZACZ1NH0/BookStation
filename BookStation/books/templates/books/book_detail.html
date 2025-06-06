@@ -227,12 +227,19 @@
                 {% endif %}
 
                 <!-- Thể loại -->
-                <div class="categories">
+                {% comment %} <div class="categories">
                     <strong>Thể loại:</strong><br>
                     {% for category in book.categories.all %}
                         <span class="category-tag">{{ category.name }}</span>
                     {% endfor %}
+                </div> {% endcomment %}
+                <div class="categories">
+                    <strong>Thể loại:</strong><br>
+                    {% for category in book.categories.all %}
+                        <a href="{% url 'category_detail' category.id %}" class="category-tag">{{ category.name }}</a>
+                    {% endfor %}
                 </div>
+
 
                 <!-- Giỏ hàng -->
                 <div class="cart-section">
