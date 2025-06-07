@@ -9,28 +9,13 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-
-<div class="container mt-5">
-    {% if is_superuser %}
-        <h1>Chào admin {{ request.user.username }}!</h1>
-        <a href="/admin/" class="btn btn-sm btn-primary">Vào trang quản trị (Admin)</a>
-    {% elif is_staff %}
-        <h1>Chào nhân viên {{ request.user.last_name }} {{ request.user.first_name }}!</h1>
-
-        <a href="staff/staff_dashboard/" class="btn btn-sm btn-success">Vào trang nhân viên</a>
-
-    {% else %}
-        <h1>Chào {{ request.user.last_name }} {{ request.user.first_name }}!</h1>
-    {% endif %} 
-
-</div>
   <section class="banner-slider">
     <div class="slide">
       <div class="text">
         <span class="badge">Mới nhất</span>
         <h2>📚 Sách mới phát hành!</h2>
         <p>Khám phá cuốn <strong>"Dế Mèn Phiêu Lưu Ký"</strong> - tác phẩm kinh điển dành cho mọi lứa tuổi.</p>
-        <a href="/books/123"><button>Mua ngay <i class="fas fa-arrow-right"></i></button></a>
+        <a href="/books/books/4"><button>Mua ngay <i class="fas fa-arrow-right"></i></button></a>
       </div>
       <img src="{% static 'image/demen1.jpg' %}" alt="Dế Mèn Phiêu Lưu Ký" />
     </div>
@@ -69,39 +54,6 @@
 
     <div class="dots"></div>
   </section>
-
-  <div class="categories-bar">
-    <div class="category-container">
-      <a href="#" class="category-item">
-        <i class="fas fa-book"></i>
-        <span>Văn học</span>
-      </a>
-      <a href="#" class="category-item">
-        <i class="fas fa-graduation-cap"></i>
-        <span>Giáo dục</span>
-      </a>
-      <a href="#" class="category-item">
-        <i class="fas fa-child"></i>
-        <span>Thiếu nhi</span>
-      </a>
-      <a href="#" class="category-item">
-        <i class="fas fa-landmark"></i>
-        <span>Lịch sử</span>
-      </a>
-      <a href="#" class="category-item">
-        <i class="fas fa-chart-line"></i>
-        <span>Kinh tế</span>
-      </a>
-      <a href="#" class="category-item">
-        <i class="fas fa-globe-asia"></i>
-        <span>Kỹ năng sống</span>
-      </a>
-      <a href="#" class="category-item">
-        <i class="fas fa-laptop-code"></i>
-        <span>Công nghệ</span>
-      </a>
-    </div>
-  </div>
 
   <section class="section">
     <h3><i class="fas fa-star"></i> Sách nổi bật</h3>
@@ -162,7 +114,7 @@
         <a href="#" class="btn-explore">Khám phá ngay <i class="fas fa-long-arrow-alt-right"></i></a>
       </div>
       <div class="featured-image">
-        <img src="{% static 'image/yourname.gif' %}" alt="Sách bán chạy">
+        <img src="{% static 'image/demen1.jpg' %}" alt="Sách bán chạy">
       </div>
     </div>
   </section>
@@ -172,64 +124,5 @@
   <script src="{% static 'js/home/script.js' %}"></script>
   <script src="{% static 'js/home/banner_slider.js' %}"></script>
   
-  <!-- Inline JavaScript cho nút tăng giảm số lượng -->
-  <script>
-    // Chức năng giảm số lượng
-    function decreaseQuantity(button) {
-      const input = button.nextElementSibling;
-      let value = parseInt(input.value);
-      if (value > 1) {
-        value--;
-        input.value = value;
-        
-        // Hiệu ứng
-        input.classList.add('pulse', 'decrease');
-        button.style.transform = 'scale(0.95)';
-        
-        setTimeout(() => {
-          input.classList.remove('pulse', 'decrease');
-          button.style.transform = 'scale(1)';
-        }, 300);
-      }
-    }
-    
-    // Chức năng tăng số lượng
-    function increaseQuantity(button) {
-      const input = button.previousElementSibling;
-      let value = parseInt(input.value);
-      value++;
-      input.value = value;
-      
-      // Hiệu ứng
-      input.classList.add('pulse', 'increase');
-      button.style.transform = 'scale(0.95)';
-      
-      setTimeout(() => {
-        input.classList.remove('pulse', 'increase');
-        button.style.transform = 'scale(1)';
-      }, 300);
-    }
-    
-    // Toggle user dropdown menu
-    document.addEventListener('DOMContentLoaded', function() {
-      const userIcon = document.querySelector('.user-icon');
-      if (userIcon) {
-        userIcon.addEventListener('click', function(e) {
-          e.preventDefault();
-          const dropdown = document.querySelector('.dropdown-menu');
-          dropdown.classList.toggle('show');
-        });
-        
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(e) {
-          if (!e.target.closest('.user-menu')) {
-            const dropdown = document.querySelector('.dropdown-menu');
-            if (dropdown && dropdown.classList.contains('show')) {
-              dropdown.classList.remove('show');
-            }
-          }
-        });
-      }
-    });
-  </script>
+
 {% endblock %}

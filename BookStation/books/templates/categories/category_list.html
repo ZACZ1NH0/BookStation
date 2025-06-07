@@ -11,60 +11,6 @@
     {% load static %}
     <link href="{% static 'css/books/style.css' %}" rel="stylesheet">
     <style>
-        body {
-            margin: 0;
-            font-family: 'Roboto', sans-serif;
-            background-color: #fffdf7;
-            color: #333;
-        }
-
-        header {
-            background-color: #ffe082;
-            padding: 10px 20px;
-        }
-
-        .navbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .search-box {
-            padding: 10px;
-            border: none;
-            border-radius: 20px;
-            width: 300px;
-            font-size: 14px;
-        }
-
-        .icons {
-            display: flex;
-            align-items: center;
-        }
-
-        .login, .register {
-            padding: 8px 20px;
-            border: none;
-            border-radius: 20px;
-            color: white;
-            font-weight: 500;
-            cursor: pointer;
-        }
-
-        .login {
-            background-color: #4CAF50;
-            margin-right: 10px;
-        }
-
-        .register {
-            background-color: #2196F3;
-        }
-
         .category-card {
             border: none;
             transition: transform 0.3s;
@@ -80,11 +26,6 @@
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Thể loại sách</h2>
-            {% if user.is_staff %}
-            <a href="{% url 'category_add' %}" class="btn btn-primary">
-                <i class="fas fa-plus me-2"></i>Thêm thể loại mới
-            </a>
-            {% endif %}
         </div>
 
         <div class="row">
@@ -96,16 +37,6 @@
                         <p class="card-text">{{ category.description|truncatewords:30 }}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             <a href="{% url 'category_detail' category.pk %}" class="btn btn-outline-primary">Chi tiết</a>
-                            {% if user.is_staff %}
-                            <div class="btn-group">
-                                <a href="{% url 'category_edit' category.pk %}" class="btn btn-outline-secondary">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <a href="{% url 'category_delete' category.pk %}" class="btn btn-outline-danger">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                            </div>
-                            {% endif %}
                         </div>
                     </div>
                 </div>
