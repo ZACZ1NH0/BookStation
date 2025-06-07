@@ -3,27 +3,48 @@ from .models import Book, Author, Category, Publisher
 from .forms import BookForm, AuthorForm, CategoryForm, PublisherForm
 from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator
+from django.db.models import Q
+
 def book_list(request):
     Book.cover_image.field.upload_to = 'book_covers/'  # Đảm bảo đường dẫn đúng
     books = Book.objects.all()
     paginator = Paginator(books, 20)  # 20 sách mỗi trang
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'page_obj': page_obj,
+        'is_paginated': page_obj.has_other_pages(),
+        'books': page_obj.object_list  # Thêm books vào context
+    }
 
-    return render(request, 'books/book_list.html', {'page_obj': page_obj})
+    return render(request, 'books/book_list.html', context)
 
 def book_detail(request, pk):
     book = get_object_or_404(Book, pk=pk)
     return render(request, 'books/book_detail.html', {'book': book})
 
+# def book_search(request):
+#     query = request.GET.get('q','')
+#     results = Book.objects.filter(title__icontains = query ) if query else []
+#     return render(request, 'books/search_results.html', {
+#         'query': query,
+#         'results': results
+#     })
 def book_search(request):
-    query = request.GET.get('q','')
-    results = Book.objects.filter(title__icontains = query) if query else []
+    query = request.GET.get('q', '')
+    results = []
+
+    if query:
+        results = Book.objects.filter(
+            Q(title__icontains=query) |
+            Q(author__name__icontains=query)  # thay 'name' bằng field thực tế của Author
+        ).distinct()
+
     return render(request, 'books/search_results.html', {
         'query': query,
         'results': results
     })
-
 
 
 # @user_passes_test(lambda u: u.is_superuser or u.is_staff)
@@ -81,25 +102,25 @@ def author_add(request):
         form = AuthorForm()
     return render(request, 'authors/author_form.html', {'form': form, 'title': 'Add Author'})
 
-@user_passes_test(lambda u: u.is_superuser or u.is_staff)
-def author_edit(request, pk):
-    author = get_object_or_404(Author, pk=pk)
-    if request.method == 'POST':
-        form = AuthorForm(request.POST, request.FILES, instance=author)
-        if form.is_valid():
-            form.save()
-            return redirect('authors:author_list')
-    else:
-        form = AuthorForm(instance=author)
-    return render(request, 'authors/author_form.html', {'form': form, 'title': 'Edit Author'})
-
-@user_passes_test(lambda u: u.is_superuser)
-def author_delete(request, pk):
-    author = get_object_or_404(Author, pk=pk)
-    if request.method == 'POST':
-        author.delete()
-        return redirect('authors:author_list')
-    return render(request, 'authors/author_confirm_delete.html', {'author': author})
+# @user_passes_test(lambda u: u.is_superuser or u.is_staff)
+# def author_edit(request, pk):
+#     author = get_object_or_404(Author, pk=pk)
+#     if request.method == 'POST':
+#         form = AuthorForm(request.POST, request.FILES, instance=author)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('authors:author_list')
+#     else:
+#         form = AuthorForm(instance=author)
+#     return render(request, 'authors/author_form.html', {'form': form, 'title': 'Edit Author'})
+#
+# @user_passes_test(lambda u: u.is_superuser)
+# def author_delete(request, pk):
+#     author = get_object_or_404(Author, pk=pk)
+#     if request.method == 'POST':
+#         author.delete()
+#         return redirect('authors:author_list')
+#     return render(request, 'authors/author_confirm_delete.html', {'author': author})
 
 def publisher_list(request):
     publishers = Publisher.objects.all()
@@ -113,16 +134,16 @@ def publisher_detail(request, pk):
         'books': books
     })
 
-@user_passes_test(lambda u: u.is_superuser)
-def publisher_add(request):
-    if request.method == 'POST':
-        form = PublisherForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('publishers:publisher_list')
-    else:
-        form = PublisherForm()
-    return render(request, 'publishers/publisher_form.html', {'form': form, 'title': 'Add Publisher'})
+# @user_passes_test(lambda u: u.is_superuser)
+# def publisher_add(request):
+#     if request.method == 'POST':
+#         form = PublisherForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('publishers:publisher_list')
+#     else:
+#         form = PublisherForm()
+#     return render(request, 'publishers/publisher_form.html', {'form': form, 'title': 'Add Publisher'})
 
 @user_passes_test(lambda u: u.is_superuser)
 def publisher_edit(request, pk):

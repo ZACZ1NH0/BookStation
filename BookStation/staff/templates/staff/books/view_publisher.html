@@ -1,10 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>🏢 Danh sách nhà xuất bản</title>
+    <style>
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+        .actions form {
+            display: inline;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
+    <h1>🏢 Danh sách nhà xuất bản</h1>
 
+    {% if publishers %}
+    <table>
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Tên nhà xuất bản</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in publishers %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ p.name }}</td>
+                <td class="actions">
+                    <form action="{% url 'delete_publisher' p.id %}" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xoá nhà xuất bản này không?')">
+                        {% csrf_token %}
+                        <button type="submit">🗑️ Xoá</button>
+                    </form>
+                    <a href="{% url 'change_publisher' p.id %}">✏️ Sửa</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p style="text-align: center;">Không có nhà xuất bản nào trong hệ thống.</p>
+    {% endif %}
 </body>
 </html>
