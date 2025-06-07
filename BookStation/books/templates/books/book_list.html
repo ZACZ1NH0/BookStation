@@ -232,8 +232,16 @@
                             {{ book.title }}
                         </a>
                     </h5>
+                    <div style="margin-bottom: 6px; text-align:left;">
+                        <span style="font-size:0.97rem; color:#555; font-weight:500;">
+                            Còn lại: {{ book.stock }}
+                        </span>
+                        {% if book.stock == 0 %}
+                            <span class="badge bg-danger" style="margin-left:8px; font-size:0.97rem;">Tạm thời hết hàng</span>
+                        {% endif %}
+                    </div>
                     <p class="book-price">${{ book.price }}</p>
-                    <button class="book-add-btn">Thêm vào giỏ hàng</button>
+                    <button class="book-add-btn" {% if book.stock == 0 %}disabled style="opacity:0.5;cursor:not-allowed;"{% endif %}>Thêm vào giỏ hàng</button>
                 </div>
             </div>
             {% empty %}

@@ -54,7 +54,11 @@
                 <h5 class="text-muted">Tác giả: {{ book.author.name }}</h5>
                 <p><strong>Nhà xuất bản:</strong> {{ book.publisher.name }}</p>
                 <p><strong>Ngày xuất bản:</strong> {{ book.publication_date|date:"d/m/Y" }}</p>
-                <p><strong>Còn lại:</strong> {{ book.stock }} quyển</p>
+                <p><strong>Còn lại:</strong> {{ book.stock }} quyển
+                {% if book.stock == 0 %}
+                    <span class="badge bg-danger" style="margin-left:10px; font-size:1rem;">Tạm thời hết hàng</span>
+                {% endif %}
+                </p>
                 <p><strong>Giá:</strong> <span class="text-danger fs-4">${{ book.price }}</span></p>
                 <p>{{ book.description }}</p>
 
@@ -69,11 +73,18 @@
                 <form method="post" action="{% url 'add_to_cart' book.id %}">
                     {% csrf_token %}
                     <div class="quantity-input my-3">
-                        <button type="button" onclick="updateQuantity(-1)">−</button>
-                        <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ book.stock }}">
-                        <button type="button" onclick="updateQuantity(1)">+</button>
+                        <button type="button" onclick="updateQuantity(-1)" {% if book.stock == 0 %}disabled style="opacity:0.5;cursor:not-allowed;"{% endif %}>−</button>
+                        <input type="number" name="quantity" id="quantity" value="1" min="1" max="{{ book.stock }}" {% if book.stock == 0 %}disabled style="background:#f8d7da;"{% endif %}>
+                        <button type="button" onclick="updateQuantity(1)" {% if book.stock == 0 %}disabled style="opacity:0.5;cursor:not-allowed;"{% endif %}>+</button>
                     </div>
-                    <button type="submit" class="btn btn-warning">Thêm vào giỏ hàng</button>
+                    {% comment %} <div style="margin-bottom: 16px; text-align:center; font-size:1.08rem;">
+                        <i class="fas fa-box-open" style="color:#ffc107;"></i>
+                        <span style="color:#333; font-weight:500;">Còn lại: {{ book.stock }} quyển</span>
+                        {% if book.stock == 0 %}
+                            <span class="badge bg-danger" style="margin-left:10px; font-size:1rem;">Tạm thời hết hàng</span>
+                        {% endif %}
+                    </div> {% endcomment %}
+                    <button type="submit" class="btn btn-warning" {% if book.stock == 0 %}disabled style="opacity:0.6;cursor:not-allowed;"{% endif %}>Thêm vào giỏ hàng</button>
                 </form>
             </div>
         </div>

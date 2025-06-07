@@ -38,7 +38,7 @@
             </a>
             <div class="dropdown-menu">
               <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Tài khoản của tôi</a>
-              <a href="#"><i class="fas fa-list"></i> Đơn hàng</a>
+              <a href="{% url 'order_list' %}"><i class="fas fa-list"></i> Đơn hàng</a>
               <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
                 <button type="submit"><i class="fas fa-sign-out-alt"></i> Đăng xuất</button>
