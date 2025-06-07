@@ -136,5 +136,5 @@ def order_success(request):
 
 @login_required
 def order_list(request):
-    orders = Order.objects.filter(customer=request.user).order_by('-created_at')
+    orders = Order.objects.filter(customer=request.user).prefetch_related('items__book').order_by('-created_at')
     return render(request, 'orders/order_list.html', {'orders': orders})

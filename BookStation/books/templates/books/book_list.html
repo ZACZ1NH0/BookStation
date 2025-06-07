@@ -75,18 +75,20 @@
                             {{ book.title }}
                         </a>
                     </h5>
-                    <div style="margin-bottom: 6px; text-align:left;">
+                    {% comment %} <div style="margin-bottom: 6px; text-align:left;">
                         <span style="font-size:0.97rem; color:#555; font-weight:500;">
                             Còn lại: {{ book.stock }}
                         </span>
                         {% if book.stock == 0 %}
                             <span class="badge bg-danger" style="margin-left:8px; font-size:0.97rem;">Tạm thời hết hàng</span>
                         {% endif %}
-                    </div>
+                    </div> {% endcomment %}
                     <p class="book-price">${{ book.price }}</p>
-                    <button class="book-add-btn" {% if book.stock == 0 %}disabled style="opacity:0.5;cursor:not-allowed;"{% endif %}>Thêm vào giỏ hàng</button>
+                    {% comment %} <button class="book-add-btn" {% if book.stock == 0 %}disabled style="opacity:0.5;cursor:not-allowed;"{% endif %}>Thêm vào giỏ hàng</button> {% endcomment %}
+                    <button type="submit" class="add_button"><i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng</button>
     <section class="section">
-        <h3><i class="fas fa-book"></i> Danh sách sách</h3>        <div class="book-list">
+        <h3><i class="fas fa-book"></i> Danh sách sách</h3>        
+        <div class="book-list">
             {% for book in books %}
                 <div class="book">
                     <div class="book-badges">
@@ -122,7 +124,7 @@
                             <input type="number" name="quantity" value="1" min="1" class="quantity-input" />
                             <button type="button" class="quantity-btn increase-btn" onclick="increaseQuantity(this)"><i class="fas fa-plus"></i></button>
                         </div>
-                        <button type="submit" class="add_button"><i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng</button>
+                        {% comment %} <button type="submit" class="add_button"><i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng</button> {% endcomment %}
                     </form>
                 </div>
             {% endfor %}

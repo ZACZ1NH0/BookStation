@@ -201,7 +201,7 @@
 
             <!-- Thông tin sách -->
             <div class="col-md-8">
-                <h2>{{ book.title }}</h2>
+                {% comment %} <h2>{{ book.title }}</h2>
                 <h5 class="text-muted">Tác giả: {{ book.author.name }}</h5>
                 <p><strong>Nhà xuất bản:</strong> {{ book.publisher.name }}</p>
                 <p><strong>Ngày xuất bản:</strong> {{ book.publication_date|date:"d/m/Y" }}</p>
@@ -211,8 +211,42 @@
                 {% endif %}
                 </p>
                 <p><strong>Giá:</strong> <span class="text-danger fs-4">${{ book.price }}</span></p>
-                <p>{{ book.description }}</p>
+                <p>{{ book.description }}</p> {% endcomment %}
+                <h1 class="book-title">{{ book.title }}</h1>
+                <p class="book-author">Tác giả: {{ book.author.name }}</p>
+                
+                <div class="book-info">
+                    <div class="info-item">
+                        <strong>Nhà xuất bản:</strong> {{ book.publisher.name }}
+                    </div>
+                    <div class="info-item">
+                        <strong>Ngày xuất bản:</strong> {{ book.publication_date|date:"d/m/Y" }}
+                    </div>
+                    {% comment %} <div class="info-item">
+                        <strong>Tồn kho:</strong> {{ book.stock }} quyển
+                    </div> {% endcomment %}
+                    <div class = "info-item">
+                        <p><strong>Còn lại:</strong> {{ book.stock }} quyển
+                        {% if book.stock == 0 %}
+                        <span class="badge bg-danger" style="margin-left:10px; font-size:1rem;">Tạm thời hết hàng</span>
+                        {% endif %}
+                        </p>
+                    </div>
+                </div>
 
+                <div class="price">Giá: ${{ book.price }}</div>
+
+                <!-- Mô tả -->
+                {% if book.description %}
+                <div class="description">
+                    <strong>Mô tả:</strong><br>
+                    {{ book.description }}
+                </div>
+                {% endif %}
+
+                <!-- Thể loại -->
+                {% comment %} <div class="categories">
+                    <strong>Thể loại:</strong><br>
                 <!-- Danh mục -->
                 <p><strong>Thể loại:</strong>
                     {% for category in book.categories.all %}

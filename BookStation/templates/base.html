@@ -59,7 +59,7 @@
                       <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Tài khoản của tôi</a>
                    {% endif %} 
                 </div>
-                <a href="{% url 'view_cart'%}"><i class="fas fa-list"></i> Đơn hàng</a>
+                <a href="{% url 'order_list'%}"><i class="fas fa-list"></i> Đơn hàng</a>
                 <a href="{% url 'view_cart' %}" class="mini-menu-item"><i class="fas fa-shopping-cart"></i> Giỏ hàng</a>
                 <form action="{% url 'logout' %}" method="post">
                   {% csrf_token %}
@@ -74,16 +74,16 @@
             </div>
           {% endif %}
         </div>
-      <a href="{% url 'home' %}" class="logo-link">
+      {% comment %} <a href="{% url 'home' %}" class="logo-link">
         <div class="logo"><i class="fas fa-book-open"></i> BookStation</div>
-      </a>
-      <form method="get" action="{% url 'book_search' %}">
+      </a> {% endcomment %}
+      {% comment %} <form method="get" action="{% url 'book_search' %}">
         <div class="search-container">
           <input type="text" name = "q" placeholder="Bạn đang tìm gì?" class="search-box" />
           <button class="search-btn"><i class="fas fa-search"></i></button>
         </div>
-      </form>
-      <div class="icons">
+      </form> {% endcomment %}
+      {% comment %} <div class="icons">
         <a href="{%url 'book_list'%}" class="nav-icon" title="Danh sách sách"><i class="fas fa-book"></i></a>
         <a href="{%url 'category_list'%}" class="nav-icon" title="Danh sách thể loại"><i class="fas fa-tag"></i></a>
         <a href="{%url 'publisher_list'%}" class="nav-icon" title="Nhà xuất bản"><i class="fas fa-building"></i></a>
@@ -109,8 +109,8 @@
           <div class="auth-buttons">
             <a href="{% url 'login' %}"><button class="login">Đăng nhập</button></a>
             <a href="{% url 'register' %}"><button class="register">Đăng ký</button></a>
-          </div>
-        {% endif %}
+          </div> {% endcomment %}
+        {% comment %} {% endif %} {% endcomment %}
       </div>
     </div>
   </header>
