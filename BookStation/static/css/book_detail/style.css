@@ -249,3 +249,75 @@
         margin-bottom: 16px;
     }
 }
+
+.review-buttons .btn {
+        padding: 12px 25px;
+        border-radius: 25px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        min-width: 180px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .review-buttons .btn-primary {
+        background: linear-gradient(45deg, #4CAF50, #45a049);
+        border: none;
+        box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    }
+
+    .review-buttons .btn-primary:hover {
+        background: linear-gradient(45deg, #45a049, #388E3C);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+    }
+
+    .review-buttons .btn-secondary {
+        background: linear-gradient(45deg, #2196F3, #1976D2);
+        border: none;
+        box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+    }
+
+    .review-buttons .btn-secondary:hover {
+        background: linear-gradient(45deg, #1976D2, #1565C0);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
+    }
+
+    @media (max-width: 768px) {
+        .review-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .book-detail-card {
+            padding: 20px;
+        }
+        
+        .book-title {
+            font-size: 1.5rem;
+        }
+        
+        .price {
+            font-size: 1.5rem;
+        }
+    }
+
+    .warning-text {
+        color: #dc3545;
+        text-align: center;
+        margin-top: 10px;
+        font-weight: 500;
+        display: none;
+    }    .review-buttons {
+        margin-top: 20px;
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+    }

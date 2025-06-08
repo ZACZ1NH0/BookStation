@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Viết đánh giá - {{ book.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="review-container">
+        <h2 class="text-center mb-4">
+            <i class="fas fa-book text-primary me-2"></i>
+            Viết đánh giá cho: <strong class="text-primary">{{ book.title }}</strong>
+        </h2>
+
+        <div class="card review-card">
+            <div class="card-body">
+                <form method="post" class="review-form">
+                    {% csrf_token %}
+                    
+                    <h4 class="form-section-label mb-3">
+                        <i class="fas fa-star me-2"></i>Đánh giá của bạn
+                    </h4>
+                    <div class="rating-section mb-4">
+                        <div class="star-rating">
+                            {% for i in "12345" %}
+                            <input type="radio" id="star{{i}}" name="rating" value="{{i}}" {% if form.rating.value == i %}checked{% endif %} required>
+                            <label for="star{{i}}" title="{{i}} sao">★</label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <h4 class="form-section-label mb-3">
+                        <i class="fas fa-comment-alt me-2"></i>Nhận xét của bạn
+                    </h4>                    <div class="comment-section mb-4">
+                        <textarea 
+                            name="comment" 
+                            id="comment" 
+                            class="form-control" 
+                            rows="5" 
+                            placeholder="Chia sẻ trải nghiệm đọc sách của bạn..." 
+                            required></textarea>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-submit">
+                            <i class="fas fa-paper-plane me-2"></i>Gửi đánh giá
+                        </button>
+                        <a href="{% url 'book_detail' book.id %}" class="btn-back">
+                            <i class="fas fa-arrow-left me-2"></i>Quay lại
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.review-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.review-card {
+    border: none;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    border-radius: 15px;
+    background: linear-gradient(to bottom right, #ffffff, #ffffff, #fafafa);
+}
+
+.review-form {
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.form-section-label {
+    font-weight: 600;
+    color: #2c3e50;
+    font-size: 1.2rem;
+    border-bottom: 2px solid #4a90e2;
+    padding-bottom: 8px;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+justify-content: center;
+    gap: 0.5rem;
+    margin: 0 auto;
+}
+
+.star-rating input {
+    display: none;
+}
+
+.star-rating label {
+    font-size: 2.5rem;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+}
+
+.star-rating input:checked ~ label {
+    color: #ffd700;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #ffd700;
+}
+
+textarea.form-control {
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 1rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+textarea.form-control:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2rem;
+    width: 100%;
+    align-items: center;
+}
+
+.button-group > * {
+    width: 350px;
+    height: 40px;
+    margin: 0 auto;
+}
+
+.btn-submit {
+    background: linear-gradient(45deg, #2196F3, #1976D2);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 2px 4px rgba(33, 150, 243, 0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(33, 150, 243, 0.4);
+    background: linear-gradient(45deg, #1976D2, #1565C0);
+    color: white;
+}
+
+.btn-back {
+    text-align: center;
+    font-size: 1.1rem;
+    color:rgb(114, 131, 142);
+    background: transparent;
+    border: 2px solid rgb(151, 162, 170);
+    border-radius: 8px;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-back:hover {
+    background: #6c757d;
+    color: white;
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    .review-container {
+        padding: 0 15px;
+    }
+    
+    .star-rating label {
+        font-size: 1.5rem;
+    }
+}
+</style>
+{% endblock %}
