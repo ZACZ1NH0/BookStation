@@ -8,7 +8,7 @@ from django.db.models import Q
 def book_list(request):
     Book.cover_image.field.upload_to = 'book_covers/'  # Đảm bảo đường dẫn đúng
     books = Book.objects.all()
-    paginator = Paginator(books, 20)  # 20 sách mỗi trang
+    paginator = Paginator(books, 10)  
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     
@@ -84,7 +84,16 @@ def book_search(request):
 
 def author_list(request):
     authors = Author.objects.all()
-    return render(request, 'authors/author_list.html', {'authors': authors})
+    paginator = Paginator(authors, 5)  
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'page_obj': page_obj,
+        'is_paginated': page_obj.has_other_pages(),
+        'authors': page_obj.object_list  
+    }
+    return render(request, 'authors/author_list.html', context)
 
 def author_detail(request, pk):
     author = get_object_or_404(Author, pk=pk)
@@ -124,7 +133,16 @@ def author_add(request):
 
 def publisher_list(request):
     publishers = Publisher.objects.all()
-    return render(request, 'publishers/publisher_list.html', {'publishers': publishers})
+    paginator = Paginator(publishers, 5)  
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'page_obj': page_obj,
+        'is_paginated': page_obj.has_other_pages(),
+        'publishers': page_obj.object_list  
+    }
+    return render(request, 'publishers/publisher_list.html', context)
 
 def publisher_detail(request, pk):
     publisher = get_object_or_404(Publisher, pk=pk)
@@ -167,7 +185,16 @@ def publisher_delete(request, pk):
 
 def category_list(request):
     categories = Category.objects.all()
-    return render(request, 'categories/category_list.html', {'categories': categories})
+    paginator = Paginator(categories, 5)  
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'page_obj': page_obj,
+        'is_paginated': page_obj.has_other_pages(),
+        'categories': page_obj.object_list  
+    }
+    return render(request, 'categories/category_list.html', context)
 
 def category_detail(request, pk):
     category = get_object_or_404(Category, pk=pk)

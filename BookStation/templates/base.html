@@ -56,8 +56,9 @@
                  {% elif is_staff %}
                      <a href="staff/staff_dashboard/"><i class="fas fa-user"></i>Quản lý</a>
                   {% else %}
-                      <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Tài khoản của tôi</a>
+                      
                    {% endif %} 
+                  <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Tài khoản của tôi</a>
                 </div>
                 <a href="{% url 'order_list'%}"><i class="fas fa-list"></i> Đơn hàng</a>
                 <a href="{% url 'view_cart' %}" class="mini-menu-item"><i class="fas fa-shopping-cart"></i> Giỏ hàng</a>
