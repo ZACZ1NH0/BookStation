@@ -97,9 +97,76 @@ h2 {
 
 /* Pagination styling */
 .pagination {
-    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    flex-wrap: wrap;
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
 }
 
+.pagination .page-item {
+    margin: 0 4px;
+}
+
+.pagination .page-link {
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    background-color: #f1f1f1;
+    color: #007bff;
+    font-weight: 500;
+    transition: background-color 0.3s, color 0.3s;
+    text-decoration: none;
+}
+
+.pagination .page-link:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.pagination .page-link:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.page-item {
+  margin: 0 3px; /* khoảng cách giữa các nút */
+}
+
+.page-item .page-link {
+    color: #007bff;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    margin: 0 5px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+.page-item .page-link:hover {
+    background-color: #e9f7ff;
+    border-color: #007bff;
+    color: #0056b3;
+}
+
+.page-item .page-link i {
+    font-size: 0.85rem;
+}
 .page-item .page-link {
     font-family: 'Roboto', sans-serif;
     color: #007bff;
