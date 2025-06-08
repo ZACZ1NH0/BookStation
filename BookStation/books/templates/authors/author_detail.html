@@ -4,7 +4,7 @@
 {% block title %}{{ author.name }} - BookStation{% endblock %}
 
 {% block content %}
-
+<link rel="stylesheet" href="{% static 'css/author_detail/style.css' %}" />
 <div class="container mt-4">
     <div class="author-profile">
         <div class="row">
@@ -57,103 +57,4 @@
         </div>
     </div>
 </div>
-
-<style>
-    header {
-        background-color: #ffe082;
-        padding: 10px 20px;
-        margin-bottom: 2rem;
-    }
-
-    .navbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .search-box {
-        padding: 12px 20px;
-        border-radius: 50px;
-        border: none;
-        width: 300px;
-    }
-
-    .auth-buttons button {
-        padding: 8px 20px;
-        margin-left: 10px;
-        border-radius: 50px;
-        border: none;
-        cursor: pointer;
-    }
-
-    .login-btn {
-        background-color: transparent;
-        border: 2px solid #333 !important;
-    }
-
-    .register-btn {
-        background-color: #333;
-        color: white;
-    }
-
-    .author-profile {
-        background: white;
-        padding: 2rem;
-        border-radius: 10px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .author-image {
-        width: 100%;
-        border-radius: 10px;
-    }
-
-    .author-name {
-        color: #333;
-        margin-bottom: 1rem;
-    }
-
-    .author-info {
-        color: #666;
-        margin-bottom: 0.5rem;
-    }
-
-    .author-description {
-        margin-top: 1.5rem;
-        line-height: 1.6;
-    }
-
-    .book-card {
-        border: none;
-        transition: transform 0.3s;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        border-radius: 10px;
-        overflow: hidden;
-    }
-
-    .book-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-    }
-
-    .book-card a {
-        text-decoration: none;
-        color: inherit;
-    }
-
-    .book-card img {
-        height: 250px;
-        object-fit: cover;
-    }
-
-    .card-title {
-        font-size: 1.1rem;
-        margin-bottom: 0.5rem;
-        color: #333;
-    }
-
-    .card-text {
-        font-size: 0.9rem;
-    }
-</style>
 {% endblock %}

@@ -11,15 +11,9 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
-    {% load i18n %}
+    {% load i18n %} 
 
     <style>
-        body {
-            margin: 0;
-            font-family: 'Poppins', 'Roboto', sans-serif;
-            background-color: #fffdf7;
-            color: #333;
-        }
 
         .pagination {
             display: flex;
@@ -60,32 +54,6 @@
             outline: none;
         }
     </style>
-    <!-- Main Content -->
-    <div class="book-container">
-        <h2 class="book-heading">Sách trong cửa hàng</h2>
-        <div class="book-grid">
-            {% for book in page_obj %}
-            <div class="book-item">
-                <a href="{% url 'book_detail' book.pk %}">
-                    <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-image">
-                </a>
-                <div class="book-info">
-                    <h5 class="book-title">
-                        <a href="{% url 'book_detail' book.pk %}" class="book-title-link">
-                            {{ book.title }}
-                        </a>
-                    </h5>
-                    {% comment %} <div style="margin-bottom: 6px; text-align:left;">
-                        <span style="font-size:0.97rem; color:#555; font-weight:500;">
-                            Còn lại: {{ book.stock }}
-                        </span>
-                        {% if book.stock == 0 %}
-                            <span class="badge bg-danger" style="margin-left:8px; font-size:0.97rem;">Tạm thời hết hàng</span>
-                        {% endif %}
-                    </div> {% endcomment %}
-                    <p class="book-price">${{ book.price }}</p>
-                    {% comment %} <button class="book-add-btn" {% if book.stock == 0 %}disabled style="opacity:0.5;cursor:not-allowed;"{% endif %}>Thêm vào giỏ hàng</button> {% endcomment %}
-                    <button type="submit" class="add_button"><i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng</button>
     <section class="section">
         <h3><i class="fas fa-book"></i> Danh sách sách</h3>        
         <div class="book-list">
@@ -124,7 +92,7 @@
                             <input type="number" name="quantity" value="1" min="1" class="quantity-input" />
                             <button type="button" class="quantity-btn increase-btn" onclick="increaseQuantity(this)"><i class="fas fa-plus"></i></button>
                         </div>
-                        {% comment %} <button type="submit" class="add_button"><i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng</button> {% endcomment %}
+                         <button type="submit" class="add_button"><i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng</button> 
                     </form>
                 </div>
             {% endfor %}

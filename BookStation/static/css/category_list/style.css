@@ -1,0 +1,151 @@
+/* Header styling for the title section */
+h2 {
+    color: #2c3e50;
+    font-weight: 600;
+    font-size: 1.75rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #007bff;
+}
+
+/* Flex container for header alignment */
+.d-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Card styling for category items */
+.category-card {
+    border: none;
+    border-radius: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card-title {
+    color: #2c3e50;
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 10px encouraging;
+}
+
+.card-text {
+    color: #6c757d;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    min-height: 60px; /* Ensures consistent height for descriptions */
+}
+
+/* Button styling */
+.btn-outline-primary {
+    border-color: #007bff;
+    color: #007bff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+/* Alert styling for empty state */
+.alert-info {
+    background-color: #e9f7ff;
+    color: #004085;
+    border-color: #b8daff;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+/* Pagination styling */
+.pagination {
+    margin-top: 20px;
+}
+
+.page-item .page-link {
+    color: #007bff;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    margin: 0 5px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+.page-item .page-link:hover {
+    background-color: #e9f7ff;
+    border-color: #007bff;
+    color: #0056b3;
+}
+
+.page-item .page-link i {
+    font-size: 0.85rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .col-md-4 {
+        flex: 1 0 50%;
+        max-width: 50%;
+    }
+    
+    .card-body {
+        padding: 15px;
+    }
+    
+    .card-title {
+        font-size: 1.1rem;
+    }
+    
+    .btn-outline-primary {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .col-md-4 {
+        flex: 1 0 100%;
+        max-width: 100%;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    .page-link {
+        padding: 6px 10px;
+    }
+}
