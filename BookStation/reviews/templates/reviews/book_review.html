@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Đánh giá - {{ book.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="title-container text-center position-relative">
+        <h2 class="mb-4 display-5">Đánh giá cho sách: <strong class="text-primary">{{ book.title }}</strong></h2>
+    </div>
+
+    <div class="reviews-container">
+        {% if reviews %}
+            {% for review in reviews %}
+                <div class="review-card">
+                    <div class="card h-100 shadow">
+                        <div class="card-body">
+                            <div class="user-info">
+                                <i class="fas fa-user-circle text-primary me-2"></i>
+                                <h5 class="card-title mb-0">{{ review.user.username }}</h5>
+                            </div>
+                            <div class="rating-display mt-3">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= review.rating %}
+                                        <i class="fas fa-star star-filled"></i>
+                                    {% else %}
+                                        <i class="far fa-star star-empty"></i>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <div class="review-content mt-3">
+                                <p class="card-text">{{ review.comment }}</p>
+                            </div>
+                            <div class="review-footer">
+                                <small class="text-muted">
+                                    <i class="far fa-calendar me-1"></i>
+                                    {{ review.created_at|date:"d/m/Y" }}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-center">Chưa có đánh giá nào cho sách này.</p>
+        {% endif %}
+    </div>
+
+    <div class="write-review-container">
+        <a href="{% url 'book_detail' book.id %}" class="btn back-btn">
+            <i class="fas fa-arrow-left me-2"></i>Quay lại
+        </a>
+        <a href="{% url 'reviews:add_reviews' book.id %}" class="btn write-review-btn">
+            <i class="fas fa-pen-fancy me-2"></i>Viết đánh giá
+        </a>
+    </div>
+</div>
+
+<style>
+.title-container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #eee;
+    position: relative;
+}
+
+.title-container::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(45deg, #2196F3, #1976D2);
+}
+
+.reviews-container {
+    max-width: 700px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 0 1rem;
+}
+
+.review-card {
+    width: 100%;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.rating-display {
+    font-size: 1.2rem;
+    display: flex;
+    gap: 0.3rem;
+}
+
+.star-filled {
+    color: #FFD700;
+}
+
+.star-empty {
+    color: #D1D1D1;
+}
+
+.review-content {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 10px;
+    margin: 1rem 0;
+}
+
+.review-footer {
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+
+.write-review-container {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* Cả hai nút dùng chung min-width để bằng nhau */
+.write-review-btn,
+.back-btn {
+    min-width: 180px;
+    font-size: 1.1rem;
+    padding: 0.8rem 2.5rem;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: white;
+    text-decoration: none;
+}
+
+/* Nút viết đánh giá */
+.write-review-btn {
+    background: linear-gradient(45deg, #4CAF50, #45a049);
+}
+
+.write-review-btn:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(45deg, #45a049, #388E3C);
+}
+
+/* Nút quay lại */
+.back-btn {
+    background: linear-gradient(45deg, #9E9E9E, #757575);
+}
+
+.back-btn:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(45deg, #757575, #616161);
+}
+
+@media (max-width: 768px) {
+    .reviews-container {
+        padding: 0 0.5rem;
+    }
+    .card-body {
+        padding: 1rem;
+    }
+    .write-review-btn,
+    .back-btn {
+        font-size: 1rem;
+        padding: 0.7rem 2rem;
+    }
+}
+</style>
+{% endblock %}
