@@ -78,6 +78,14 @@
                     </div>
                     <button type="submit" class="btn btn-warning" {% if book.stock == 0 %}disabled style="opacity:0.6;cursor:not-allowed;"{% endif %}><i class="fas fa-shopping-cart"></i>Thêm vào giỏ hàng</button>
                 </form>
+                <div class="review-buttons">
+                    <a href="{% url 'reviews:add_reviews' book.id %}" class="btn btn-primary">
+                        <i class="fas fa-pen-fancy"></i>Viết Đánh Giá
+                    </a>
+                    <a href="{% url 'reviews:book_review' book.id %}" class="btn btn-secondary">
+                        <i class="fas fa-eye"></i>Xem Đánh Giá
+                    </a>
+                </div>
             </div>
         </div>
     </div>
