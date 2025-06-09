@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'home',
     'staff',
     'reviews',
-
+    'analytics',
 ]
 AUTH_USER_MODEL = 'accounts.Users'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
