@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/analytics/analytics.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="analytics-container">
+    <div class="stats-header">
+        <h1>Thống Kê BookStation</h1>
+        
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <a href="{% url 'analytics:dashboard' %}" class="nav-button active">
+                Dashboard
+            </a>
+            <a href="{% url 'analytics:book_inventory_detail' %}" class="nav-button">
+                Thống Kê Kho Sách
+            </a>
+        </div>
+    </div>
+
+    <!-- Thống kê doanh thu -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Doanh Thu & Đơn Hàng</h2>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Tổng Doanh Thu</div>
+                <div class="stat-number">${{ total_revenue|floatformat:2 }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Tổng Đơn Hàng</div>
+                <div class="stat-number">{{ total_orders }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Khách Hàng Mới (30 ngày)</div>
+                <div class="stat-number">{{ new_customers }}</div>
+            </div>
+        </div>
+
+        <!-- Biểu đồ doanh thu -->
+        <div class="chart-container">
+            <canvas id="revenueChart"></canvas>
+        </div>
+
+        <!-- Bảng chi tiết -->
+        <div class="data-table-container">
+            <h3>Chi Tiết Doanh Thu Theo Tháng</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Tháng</th>
+                        <th>Doanh Thu</th>
+                        <th>Số Đơn Hàng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for month in revenue_by_month %}
+                    <tr>
+                        <td>{{ month.month|date:"m/Y" }}</td>
+                        <td>${{ month.revenue|floatformat:2 }}</td>
+                        <td>{{ month.order_count }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Thống kê sách -->
+    <div class="section">
+        <div class="section-header">
+            <h2>Kho Sách</h2>
+            <a href="{% url 'analytics:book_inventory_detail' %}" class="nav-button">
+                Xem Chi Tiết Kho Sách →
+            </a>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Tổng Số Sách</div>
+                <div class="stat-number">{{ total_books }}</div>
+            </div>
+            <div class="stat-card {% if out_of_stock_books.count > 0 %}alert-danger{% endif %}">
+                <div class="stat-label">Sách Hết Hàng</div>
+                <div class="stat-number">{{ out_of_stock_books.count }}</div>
+            </div>
+            <div class="stat-card {% if low_stock_books.count > 0 %}alert-warning{% endif %}">
+                <div class="stat-label">Sách Sắp Hết</div>
+                <div class="stat-number">{{ low_stock_books.count }}</div>
+            </div>
+        </div>
+
+        <!-- Top sách bán chạy -->
+        <div class="chart-container">
+            <h3>Top 10 Sách Bán Chạy</h3>
+            <canvas id="bestSellingChart"></canvas>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+// ...existing chart.js code...
+{% endblock %}
+{% endblock %}

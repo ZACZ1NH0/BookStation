@@ -25,7 +25,9 @@
                 <span class="new-badge">New</span>
               {% endif %}
             </div>
-            <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" />
+              <a href="{% url 'book_detail' book.pk %}" class="logo-link">
+                <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" />
+              </a>
             <div class="book-info">
               <h4>{{ book.title }}</h4>
               <p class="author">{{ book.author }}</p>
