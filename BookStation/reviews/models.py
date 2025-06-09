@@ -8,4 +8,5 @@ from books.models import Book
 class Review(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     content = models.TextField()
+    rating = models.IntegerField(default=0)  
     created_at = models.DateTimeField(auto_now_add=True)
