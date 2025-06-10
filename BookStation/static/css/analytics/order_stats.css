@@ -1,0 +1,407 @@
+/* Thống kê chung */
+.stats-container {
+    padding: 20px;
+}
+
+/* Card styles */
+.card {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+}
+
+/* Order Status Badges */
+.badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.badge-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.badge-processing {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.badge-shipping {
+    background: #d1ecf1;
+    color: #0c5460;
+}
+
+.badge-completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.badge-cancelled {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Recent Orders Table */
+.order-table {
+    width: 100%;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.order-table th {
+    background: #f8f9fa;
+    color: #2c3e50;
+    font-weight: 600;
+    padding: 1rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.order-table td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-top: 1px solid #e9ecef;
+}
+
+.order-id {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.order-customer {
+    display: flex;
+    flex-direction: column;
+}
+
+.order-customer h6 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 0.9rem;
+}
+
+.order-customer p {
+    margin: 0;
+    color: #7f8c8d;
+    font-size: 0.8rem;
+}
+
+/* Payment Methods */
+.payment-method {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.payment-cash {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.payment-bank {
+    background: #e3f2fd;
+    color: #1565c0;
+}
+
+.payment-card {
+    background: #f3e5f5;
+    color: #7b1fa2;
+}
+
+.payment-momo {
+    background: #fce4ec;
+    color: #c2185b;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.card-header h6 {
+    margin: 0;
+    color: #333;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Icon styles */
+.icon-shape {
+    width: 48px;
+    height: 48px;
+    background-position: center;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon i {
+    font-size: 20px;
+    color: #fff;
+}
+
+/* Gradient backgrounds */
+.bg-gradient-primary {
+    background: linear-gradient(45deg, #4e73df 0%, #224abe 100%);
+}
+
+.bg-gradient-success {
+    background: linear-gradient(45deg, #1cc88a 0%, #13855c 100%);
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(45deg, #f6c23e 0%, #dda20a 100%);
+}
+
+.bg-gradient-info {
+    background: linear-gradient(45deg, #36b9cc 0%, #258391 100%);
+}
+
+/* Chart containers */
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin: 20px 0;
+}
+
+/* Enhanced chart styles */
+.chart-container {
+    background: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
+}
+
+.chart-container canvas {
+    max-height: 400px;
+}
+
+/* Table styles */
+.table-responsive {
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.05);
+}
+
+.table thead th {
+    background: #f8f9fa;
+    color: #333;
+    font-weight: 600;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.table > tbody > tr {
+    transition: background-color 0.2s ease;
+}
+
+.table > tbody > tr:hover {
+    background-color: #f8faff;
+}
+
+.table td, .table th {
+    padding: 1rem 1.5rem;
+    vertical-align: middle;
+}
+
+/* Status badges */
+.badge {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+}
+
+.badge-pending {
+    background-color: #f6c23e;
+    color: #fff;
+}
+
+.badge-processing {
+    background-color: #4e73df;
+    color: #fff;
+}
+
+.badge-shipping {
+    background-color: #36b9cc;
+    color: #fff;
+}
+
+.badge-completed {
+    background-color: #1cc88a;
+    color: #fff;
+}
+
+.badge-cancelled {
+    background-color: #e74a3b;
+    color: #fff;
+}
+
+/* Enhanced status badges */
+.badge-pending {
+    background: linear-gradient(45deg, #f6c23e 0%, #dda20a 100%);
+    color: #fff;
+}
+
+.badge-processing {
+    background: linear-gradient(45deg, #4e73df 0%, #224abe 100%);
+    color: #fff;
+}
+
+.badge-shipping {
+    background: linear-gradient(45deg, #36b9cc 0%, #258391 100%);
+    color: #fff;
+}
+
+.badge-completed {
+    background: linear-gradient(45deg, #1cc88a 0%, #13855c 100%);
+    color: #fff;
+}
+
+.badge-cancelled {
+    background: linear-gradient(45deg, #e74a3b 0%, #be2617 100%);
+    color: #fff;
+}
+
+/* Utility classes */
+.loading {
+    position: relative;
+    min-height: 200px;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Grid system improvements */
+.row {
+    margin-right: -15px;
+    margin-left: -15px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+[class*="col-"] {
+    padding-right: 15px;
+    padding-left: 15px;
+    position: relative;
+    width: 100%;
+}
+
+/* Additional responsive breakpoints */
+@media (max-width: 576px) {
+    .container-fluid {
+        padding: 10px;
+    }
+    
+    .card-body {
+        padding: 15px;
+    }
+    
+    .numbers h5 {
+        font-size: 1.25rem;
+    }
+    
+    .icon-shape {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* Print styles */
+@media print {
+    .chart-container {
+        break-inside: avoid;
+    }
+    
+    .card {
+        break-inside: avoid;
+        box-shadow: none;
+    }
+    
+    .badge {
+        border: 1px solid #000;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .card {
+        background: #1a1a1a;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .numbers h5, .card-header h6 {
+        color: #fff;
+    }
+    
+    .table thead th {
+        background: #2a2a2a;
+        color: #fff;
+    }
+    
+    .table tbody tr:hover {
+        background-color: #2a2a2a;
+    }
+    
+    .table td, .table th {
+        color: #fff;
+        border-color: #333;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 20px;
+    }
+    
+    .chart-container {
+        height: 250px;
+    }
+    
+    .table-responsive {
+        margin-bottom: 20px;
+    }
+    
+    .chart-container {
+        min-height: 300px;
+    }
+    
+    .table td, .table th {
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+    }
+    
+    .badge {
+        padding: 0.35rem 0.65rem;
+        font-size: 0.75rem;
+    }
+}

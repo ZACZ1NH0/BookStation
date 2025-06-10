@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Thống kê đơn hàng{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/analytics/order_stats.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Thống kê tổng quan về đơn hàng -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Tổng đơn hàng</p>
+                                <h5 class="font-weight-bolder mb-0">{{ total_orders }}</h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-primary shadow text-center rounded-circle">
+                                <i class="fas fa-shopping-cart opacity-10"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Đơn hàng mới</p>
+                                <h5 class="font-weight-bolder mb-0">{{ new_orders }}</h5>
+                                <p class="text-xs text-muted mb-0">7 ngày qua</p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-success shadow text-center rounded-circle">
+                                <i class="fas fa-file-invoice opacity-10"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Tổng doanh thu</p>
+                                <h5 class="font-weight-bolder mb-0">{{ total_revenue|floatformat:0 }}₫</h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-warning shadow text-center rounded-circle">
+                                <i class="fas fa-money-bill-wave opacity-10"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Giá trị trung bình</p>
+                                <h5 class="font-weight-bolder mb-0">{{ avg_order_value|floatformat:0 }}₫</h5>
+                                <p class="text-xs text-muted mb-0">Mỗi đơn hàng</p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-info shadow text-center rounded-circle">
+                                <i class="fas fa-chart-line opacity-10"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Biểu đồ và phân tích -->
+    <div class="row mb-4">
+        <!-- Biểu đồ doanh thu theo thời gian -->
+        <div class="col-lg-8 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Doanh thu theo thời gian</h6>
+                    <p class="text-sm mb-0">Thống kê 12 tháng gần nhất</p>
+                </div>
+                <div class="card-body">
+                    <canvas id="revenueChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trạng thái đơn hàng -->
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Trạng thái đơn hàng</h6>
+                    <p class="text-sm mb-0">Phân bố theo trạng thái</p>
+                </div>
+                <div class="card-body">
+                    <canvas id="orderStatusChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chi tiết đơn hàng -->
+    <div class="row">
+        <!-- Đơn hàng gần đây -->
+        <div class="col-lg-8 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Đơn hàng gần đây</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Mã đơn</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Khách hàng</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tổng tiền</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Trạng thái</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Ngày đặt</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in recent_orders %}
+                                <tr>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">#{{ order.id }}</p>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex px-2 py-1">
+                                            <div class="d-flex flex-column justify-content-center">
+                                                <h6 class="mb-0 text-sm">{{ order.customer.username }}</h6>
+                                                <p class="text-xs text-secondary mb-0">{{ order.customer.email }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">{{ order.total_amount|floatformat:0 }}₫</p>
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-sm bg-gradient-{{ order.status_class }}">{{ order.get_status_display }}</span>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">{{ order.created_at|date:"d/m/Y H:i" }}</p>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phương thức thanh toán -->
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Phương thức thanh toán</h6>
+                    <p class="text-sm mb-0">Tỷ lệ sử dụng</p>
+                </div>
+                <div class="card-body">
+                    <canvas id="paymentMethodChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden script tags to store chart data -->
+<script id="revenue-data" type="application/json">
+    {{ revenue_by_month|safe }}
+</script>
+<script id="order-status-data" type="application/json">
+    {{ order_status|safe }}
+</script>
+<script id="payment-method-data" type="application/json">
+    {{ payment_methods|safe }}
+</script>
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/analytics/order_stats.js' %}"></script>
+{% endblock %}
+{% endblock %}
