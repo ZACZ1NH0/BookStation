@@ -21,7 +21,10 @@ def get_revenue_stats():
     ).aggregate(
         total=Sum(F('quantity') * F('price'), output_field=DecimalField())
     )['total'] or 0
-
+    revenue_data = OrderItem.objects.aggregate(
+        total_revenue=Sum(F('quantity') * F('price'), output_field=DecimalField()),
+    )
+    total_revenue = revenue_data['total_revenue'] or 0
     # Thống kê doanh thu theo tháng
     revenue_by_month = OrderItem.objects.filter(
         order__status='completed'
