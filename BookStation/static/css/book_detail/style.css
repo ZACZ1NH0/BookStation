@@ -1,323 +1,269 @@
-/* Reset default margins and paddings for consistency */
-/* * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-} */
-
-/* Container styling */
 .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
 }
 
-/* Book detail card styling */
 .book-detail-card {
-    background: white;
-    border-radius: 10px;
+    background-color: #fff;
     padding: 30px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    margin-top: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-/* Book image styling */
 .book-image {
-    width: 100%;
-    max-width: 350px;
+    max-width: 100%;
     height: auto;
+    width: 100%; /* full width của cột */
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    object-fit: cover;
 }
 
-/* Book title styling */
+
 .book-title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 2rem;
-    font-weight: 600;
-    color: #2c3e50;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1e293b;
     margin-bottom: 10px;
 }
 
-/* Book author styling */
 .book-author {
-    font-family: 'Roboto', sans-serif;
     font-size: 1.2rem;
-    color: #7f8c8d;
+    margin-bottom: 20px;
+    color: #4b5563;
+}
+
+.book-author a {
+    color: #64748b;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.book-info {
+    background-color: #f1f3f5;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    color: #334155;
+}
+
+.info-item {
+    margin-bottom: 8px;
+}
+
+.price {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #e53935;
     margin-bottom: 20px;
 }
 
-/* Book info section */
-.book-info {
-    background: #f1f3f4;
-    padding: 20px;
-    border-radius: 8px;
-    margin: 20px 0;
-}
-
-/* Info item styling */
-.info-item {
-    padding: 8px 0;
-    color: #495057;
-}
-
-.info-item strong {
-    color: #212529;
-}
-
-/* Price styling */
-.price {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #e74c3c;
-    margin: 20px 0;
-}
-
-/* Description styling */
 .description {
-    background: #f8f9fa;
-    padding: 20px;
-    border-radius: 8px;
-    margin: 20px 0;
-    line-height: 1.6;
+    background-color: #f1f3f5;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    color: #374151;
+    font-size: 1rem;
 }
 
-/* Categories styling */
 .categories {
-    margin: 20px 0;
+    margin-bottom: 20px;
 }
 
 .category-tag {
-    display: inline-block;
-    background: #6c757d;
+    background-color: #64748b;
     color: white;
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-family: 'Roboto', sans-serif;
-    font-size: 0.9rem;
-    margin: 3px;
+    padding: 6px 12px;
+    border-radius: 999px;
     text-decoration: none;
-    transition: background 0.2s;
+    font-size: 0.9rem;
+    margin-right: 6px;
+    display: inline-block;
 }
 
-.category-tag:hover {
-    background: #5a6268;
-}
-
-/* Quantity container styling */
 .quantity-container {
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin: 15px auto;
-    border-radius: 50px;
-    overflow: hidden;
-    background: #f5f5f5;
-    padding: 5px;
-    max-width: 150px;
-    transition: all 0.3s ease;
-    border: 1px solid #eee;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    margin-bottom: 12px;
 }
 
-/* Hover effect for quantity container */
-.book-detail-card:hover .quantity-container {
-    background: #fff3e0;
-    box-shadow: 0 5px 15px rgba(255, 152, 0, 0.2);
-    border-color: #ffcc80;
-}
-
-/* Quantity input styling */
-.quantity-input {
-    width: 45px;
-    text-align: center;
-    border: none;
-    background: transparent;
-    font-family: 'Roboto', sans-serif;
-    font-size: 16px;
-    font-weight: bold;
-    color: #333;
-    padding: 8px 0;
-    -moz-appearance: textfield;
-    transition: all 0.3s ease;
-}
-
-.book-detail-card:hover .quantity-input {
-    color: #ff5722;
-}
-
-.quantity-input::-webkit-outer-spin-button,
-.quantity-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-/* Quantity button styling */
 .quantity-btn {
-    width: 35px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     border: none;
-    background: transparent;
+    background-color: #f8f9fa;
+    color: #333;
+    font-size: 20px;
+    font-weight: 500;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: all 0.3s ease;
-    position: relative;
-    color: #666;
-    font-size: 14px;
-    border-radius: 50%;
+    margin: 0 8px;
 }
 
-.quantity-btn:hover {
-    background-color: rgba(255, 152, 0, 0.2);
-    color: #ff5722;
-    transform: scale(1.1);
+.quantity-btn:hover:not(:disabled) {
+    background-color: #ff5722; /* Màu cam đồng bộ khi hover */
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(255, 87, 34, 0.4);
 }
 
-.quantity-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle, rgba(255,152,0,0.2) 0%, rgba(255,152,0,0) 70%);
-    opacity: 0;
-    border-radius: 50%;
-    transform: scale(0);
-    transition: transform 0.4s ease, opacity 0.4s ease;
-}
-
-.quantity-btn:active::before {
-    transform: scale(3);
-    opacity: 1;
-}
-
-.decrease-btn {
-    margin-right: 5px;
-}
-
-.increase-btn {
-    margin-left: 5px;
-}
-
-/* Add to cart button styling */
-.btn-warning {
-    background: #28a745;
-    color: white;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 5px;
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 500;
-    cursor: pointer;
-    width: 100%;
-    transition: background 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
-
-.btn-warning:hover {
-    background: #218838;
-}
-
-.btn-warning:disabled {
-    background: #6c757d;
+.quantity-btn:disabled {
     cursor: not-allowed;
+    opacity: 0.6;
+    box-shadow: none;
+    background-color: #e0e0e0;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .book-detail-card {
-        padding: 20px;
-    }
-    
-    .book-title {
-        font-size: 1.5rem;
-    }
-    
-    .price {
-        font-size: 1.5rem;
-    }
-    
-    .book-image {
-        margin-bottom: 16px;
-    }
+.quantity-input {
+    width: 70px;
+    height: 40px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    border: 2px solid #ff5722; /* Viền cam đồng bộ */
+    border-radius: 8px;
+    background-color: #fff;
+    user-select: none;
+    pointer-events: none;
+    margin: 0 8px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.quantity-input:focus {
+    border-color: #e64a19; /* Cam đậm hơn khi focus */
+    outline: none;
+    background-color: #fff;
+}
+
+.btn-warning {
+    background-color: #ff5722;
+    border: none;
+    color: #000;
+    padding: 10px 16px;
+    font-weight: 600;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.review-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
 }
 
 .review-buttons .btn {
-        padding: 12px 25px;
-        border-radius: 25px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        transition: all 0.3s ease;
-        min-width: 180px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-    }
+    padding: 10px 16px;
+    font-weight: 500;
+    border-radius: 6px;
+    font-size: 0.95rem;
+}
 
-    .review-buttons .btn-primary {
-        background: linear-gradient(45deg, #4CAF50, #45a049);
-        border: none;
-        box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-    }
+.book-detail-card .row {
+    display: flex;
+    align-items: flex-start; /* hoặc center nếu bạn muốn canh giữa theo chiều dọc */
+    flex-wrap: wrap;
+    gap: 20px;
+}
 
-    .review-buttons .btn-primary:hover {
-        background: linear-gradient(45deg, #45a049, #388E3C);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
-    }
+.book-detail-card .col-md-4 {
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+}
 
-    .review-buttons .btn-secondary {
-        background: linear-gradient(45deg, #2196F3, #1976D2);
-        border: none;
-        box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
-    }
 
-    .review-buttons .btn-secondary:hover {
-        background: linear-gradient(45deg, #1976D2, #1565C0);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(33, 150, 243, 0.4);
-    }
+.book-detail-card .col-md-8 {
+    width: 60%;
+}
 
-    @media (max-width: 768px) {
-        .review-buttons {
-            flex-direction: column;
-            align-items: center;
-        }
-    }
+.review-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
 
-    @media (max-width: 768px) {
-        .book-detail-card {
-            padding: 20px;
-        }
-        
-        .book-title {
-            font-size: 1.5rem;
-        }
-        
-        .price {
-            font-size: 1.5rem;
-        }
-    }
+.review-buttons .btn {
+    padding: 10px 18px;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
 
-    .warning-text {
-        color: #dc3545;
-        text-align: center;
-        margin-top: 10px;
-        font-weight: 500;
-        display: none;
-    }    .review-buttons {
-        margin-top: 20px;
-        display: flex;
-        gap: 15px;
-        justify-content: center;
-    }
+.review-buttons .btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.review-buttons .btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.review-buttons .btn-secondary {
+    background-color: #28a745; /* xanh lá */
+    border: none;
+    color: white;
+}
+
+.review-buttons .btn-secondary:hover {
+    background-color: #218838;
+}
+
+.btn-cart {
+    background-color: #ff5722; /* Màu cam đồng bộ */
+    border: none;
+    color: #fff;
+    padding: 12px 24px;
+    font-weight: 600;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-cart:hover {
+    background-color: #e64a19; /* Cam đậm hơn khi hover */
+    transform: translateY(-2px); /* Hiệu ứng nâng lên */
+    color: #fff;
+    text-decoration: none;
+}
+
+.btn-cart:disabled {
+    background-color: #ffab91;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.book-stock {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px; 
+  margin-top: 10px;
+  margin-left: 0; 
+  padding-left: 0;
+  font-size: 20px;
+}
+
+.book-stock i {
+  color: #ffc107;
+}
+
+.book-stock .quantity {
+  color: #333;
+  font-weight: 500;
+}
