@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Book Store{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/home/style.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="{% url 'home' %}" class="logo-button">📚 BookStation</a>
+            <input type="text" placeholder="Bạn đang tìm gì?" class="search-box">
+            <div class="icons">
+                <a href="{% url 'profile' %}">👤</a>
+                <a href="#">❤️</a>
+                <a href="{% url 'view_cart' %}">🛒</a>
+            </div>
+        </div>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2025 BookStation. All rights reserved.</p>
+    </footer>
+</body>
+</html>

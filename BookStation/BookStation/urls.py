@@ -28,6 +28,8 @@ urlpatterns = [
     path('orders/', include('orders.urls')),
     path('',include('home.urls')),
     path('staff/', include('staff.urls')),
+    path('reviews/', include('reviews.urls')),
+    path('analytics/', include('analytics.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

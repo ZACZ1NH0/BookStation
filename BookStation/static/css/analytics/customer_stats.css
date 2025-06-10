@@ -1,0 +1,238 @@
+/* Card styles */
+.card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+    padding: 18px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #f9f9f9;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.card-header h6 {
+    margin: 0;
+    color: #212529;
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Icon styles */
+.icon-shape {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-position: center;
+    transition: background 0.3s ease;
+}
+
+.icon i {
+    font-size: 22px;
+    color: #fff;
+}
+
+/* Gradient backgrounds */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #4e73df, #2c45aa);
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg, #1cc88a, #0f7d5d);
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(135deg, #f6c23e, #d49506);
+}
+
+.bg-gradient-info {
+    background: linear-gradient(135deg, #36b9cc, #2b728c);
+}
+
+/* Chart containers */
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin-top: 10px;
+}
+
+/* ========== Top Customer Table ========== */
+
+/* Container */
+.table-responsive {
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* Table head */
+.table thead th {
+    background-color: #f5f7fa;
+    color: #1e293b;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* Table rows */
+.table tbody tr {
+    transition: background-color 0.25s ease;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+/* Table cells */
+.table td {
+    padding: 16px 20px;
+    font-size: 0.87rem;
+    color: #334155;
+    vertical-align: middle;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* Customer name and email */
+.table td h6 {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.table td p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+/* Amount and order count */
+.table td .font-weight-bold {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+/* Highlight Top 1 */
+.table tbody tr:first-child {
+    background-color: #e0f2fe;
+    position: relative;
+}
+
+.table tbody tr:first-child::before {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+}
+
+/* Responsive improvement */
+@media (max-width: 768px) {
+    .table td,
+    .table thead th {
+        padding: 12px;
+        font-size: 0.78rem;
+    }
+
+    .table td h6 {
+        font-size: 0.82rem;
+    }
+
+    .table td p {
+        font-size: 0.72rem;
+    }
+}
+
+
+/* Customer spending categories */
+.spending-category {
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.spending-low {
+    background-color: #e6f4ea;
+    color: #2e7d32;
+}
+
+.spending-medium {
+    background-color: #fff4e5;
+    color: #ef6c00;
+}
+
+.spending-high {
+    background-color: #fbe9e7;
+    color: #d84315;
+}
+
+/* Activity status indicators */
+.activity-status {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+
+.status-active {
+    background-color: #4caf50;
+}
+
+.status-inactive {
+    background-color: #e53935;
+}
+
+/* Typography improvements */
+.text-sm {
+    font-size: 0.9rem;
+}
+
+.text-xs {
+    font-size: 0.75rem;
+}
+
+.font-weight-bold {
+    font-weight: 600;
+}
+
+.font-weight-bolder {
+    font-weight: 700;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 20px;
+    }
+
+    .chart-container {
+        height: 240px;
+    }
+
+    .table-responsive {
+        margin-bottom: 20px;
+    }
+}

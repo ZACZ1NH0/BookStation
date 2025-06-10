@@ -49,6 +49,7 @@ def create_order(request):
     if request.method == 'POST' and selected_cart:
         # Lưu đơn hàng
         order = Order.objects.create(customer=request.user, note=request.POST.get('note', ''))
+        from books.models import Book
         for key, item in selected_cart.items():
             OrderItem.objects.create(
                 order=order,
@@ -56,6 +57,13 @@ def create_order(request):
                 quantity=item['quantity'],
                 price=item['price']
             )
+            # Giảm tồn kho sách
+            try:
+                book = Book.objects.get(pk=key)
+                book.stock = max(0, book.stock - int(item['quantity']))
+                book.save()
+            except Book.DoesNotExist:
+                pass
         request.session['cart'] = {}
         return redirect('order_success')
 
@@ -69,9 +77,12 @@ def create_order(request):
 
 @login_required
 def add_to_cart(request, pk):
+    from django.contrib import messages
     book = get_object_or_404(Book, pk=pk)
+    if book.stock == 0:
+        messages.error(request, 'Sách này tạm thời hết hàng, không thể thêm vào giỏ.')
+        return redirect('book_detail', pk=pk)
     cart = request.session.get('cart', {})
-
     quantity = int(request.POST.get('quantity', 1))
     if str(pk) in cart:
         cart[str(pk)]['quantity'] += quantity
@@ -122,3 +133,8 @@ def checkout(request):
 
 def order_success(request):
     return render(request, 'orders/order_success.html')
+
+@login_required
+def order_list(request):
+    orders = Order.objects.filter(customer=request.user).prefetch_related('items__book').order_by('-created_at')
+    return render(request, 'orders/order_list.html', {'orders': orders})
