@@ -37,6 +37,3 @@ class CategoryForm(forms.ModelForm):
         model = Category
         fields = ['name', 'description']
 
-class BookImportForm(forms.Form):
-    json_file = forms.FileField(label="File JSON chứa thông tin sách", required=True)
-    image_zip = forms.FileField(label="File ZIP chứa ảnh bìa sách", required=True)

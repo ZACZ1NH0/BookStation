@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from accounts.forms import CustomUserCreationForm
 from accounts.forms import EditProfile
-from books.forms import BookForm, AuthorForm, CategoryForm, PublisherForm, BookImportForm
+from books.forms import BookForm, AuthorForm, CategoryForm, PublisherForm
 from books.models import Book, Author , Category, Publisher
 from accounts.models import Users
 from django.contrib import messages
@@ -16,7 +16,12 @@ from django.forms import modelformset_factory
 from django.forms import inlineformset_factory
 from django.core.files.base import ContentFile
 import json, zipfile, os
+from django.utils.dateparse import parse_date
 from django.conf import settings
+from .forms import BookImportForm
+from django.http import HttpResponse
+from pathlib import Path
+
 
 
 @login_required
@@ -81,48 +86,68 @@ def staff_dashboard(request):
     })
 
 
-def import_books(request):
-    if request.method == "POST":
-        form = BookImportForm(request.POST, request.FILES)
-        if form.is_valid():
-            # Lấy file JSON và ZIP
-            json_file = request.FILES['json_file']
-            zip_file = request.FILES['image_zip']
+def import_books_json(request):
+    if request.method == 'POST' and request.FILES.get('json_file'):
+        json_file = request.FILES['json_file']
+        try:
+            data = json.load(json_file)
 
-            # Đọc nội dung JSON
-            books_data = json.load(json_file)
+            for book_data in data:
+                # Tạo hoặc lấy Author
+                author_name = book_data.get('author', 'Unknown')
+                author_obj, _ = Author.objects.get_or_create(name=author_name)
 
-            # Giải nén file ảnh vào bộ nhớ tạm
+                # Tạo hoặc lấy Publisher
+                publisher_name = book_data.get('publisher', 'Unknown')
+                publisher_obj, _ = Publisher.objects.get_or_create(name=publisher_name)
+
+                # Tạo sách
+                book = Book.objects.create(
+                    title=book_data['title'],
+                    price=book_data['price'],
+                    description=book_data.get('description', ''),
+                    stock=book_data.get('stock', 0),
+                    cover_image=book_data.get('cover_image', ''),
+                    publication_date=book_data.get('publication_date', None),
+                    author=author_obj,
+                    publisher=publisher_obj,
+                )
+
+                # Gán Category (theo tên thay vì ID)
+                for cat_name in book_data.get('categories', []):
+                    category_obj, _ = Category.objects.get_or_create(name=cat_name)
+                    book.categories.add(category_obj)
+
+                book.save()
+
+            messages.success(request, " Đã import dữ liệu thành công!")
+            return redirect('')
+        except json.JSONDecodeError:
+            messages.error(request, " File JSON không hợp lệ.")
+        except Exception as e:
+            messages.error(request, f"⚠ Có lỗi xảy ra: {str(e)}")
+
+    return render(request, 'staff/books/add_book.html')
+
+
+
+def import_book_images(request):
+    if request.method == 'POST' and request.FILES.get('image_zip'):
+        zip_file = request.FILES['image_zip']
+        try:
             with zipfile.ZipFile(zip_file) as zf:
-                for book_item in books_data:
-                    title = book_item.get("title")
-                    author_name = book_item.get("author")
-                    category_name = book_item.get("category")
-                    publisher_name = book_item.get("publisher")
-                    image_name = book_item.get("image")  # ví dụ "book123.jpg"
+                for filename in zf.namelist():
+                    name = Path(filename).name  # VD: "book_1.jpg"
 
-                    # Tạo hoặc lấy các liên kết
-                    author, _ = Author.objects.get_or_create(name=author_name)
-                    category, _ = Category.objects.get_or_create(name=category_name)
-                    publisher, _ = Publisher.objects.get_or_create(name=publisher_name)
-
-                    # Lấy ảnh từ zip
-                    image_file = zf.read(image_name)
-
-                    # Tạo book và gán ảnh
-                    book = Book(
-                        title=title,
-                        author=author,
-                        category=category,
-                        publisher=publisher,
-                    )
-                    book.cover.save(image_name, ContentFile(image_file), save=True)
-
-            return redirect('view_list_book')
-    else:
-        form = BookImportForm()
-    return  redirect('book_add')
-
+                    # Tìm sách theo tên ảnh đã lưu trong DB
+                    book = Book.objects.filter(cover_image=name).first()
+                    if book:
+                        with zf.open(filename) as f:
+                            book.cover_image.save(name, ContentFile(f.read()), save=True)
+                messages.success(request, "✔️ Đã nhập ảnh sách thành công.")
+        except Exception as e:
+            messages.error(request, f"❌ Lỗi khi xử lý ZIP: {e}")
+    return render(request, 'staff/books/add_book.html')
 @login_required
 @permission_required('accounts.add_users', raise_exception=True)
 def add_user_view(request):
@@ -269,13 +294,16 @@ def book_add(request):
     if request.method == 'POST':
         form = BookForm(request.POST, request.FILES)
         if form.is_valid():
-            book = form.save(commit=False)
             book = form.save()
-            form.save_m2m()
+            messages.success(request, f"✔️ Đã thêm sách: {book.title}")
             return redirect('view_list_book')
+        else:
+            messages.error(request, '❌ Form không hợp lệ.')
     else:
-        form = BookForm()
-    return render(request, 'staff/books/add_book.html', {'form': form, 'title': 'Add Book'})
+        form = BookForm()  # ✅ phải có phần này
+
+    return render(request, 'staff/books/add_book.html', {'form': form})
+
 
 
 @login_required

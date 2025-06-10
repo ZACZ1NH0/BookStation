@@ -8,6 +8,11 @@ from orders.models import Order
 from orders.forms import OrderItemFormSet as BaseOrderItemFormSet
 
 
+class BookImportForm(forms.Form):
+    json_file = forms.FileField(label="File JSON chứa thông tin sách", required=True)
+    image_zip = forms.FileField(label="File ZIP chứa ảnh bìa sách", required=True)
+
+
 class StaffOrderForm(OrderForm):
     class Meta(OrderForm.Meta):
         fields = ['status', 'note']  # Thêm status
