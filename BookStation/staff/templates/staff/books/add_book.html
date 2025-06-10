@@ -1,70 +1,95 @@
+{% extends 'staff/dashboard_staff.html' %} {# Giả định bạn có một base template chung #}
 {% load static %}
+{% load widget_tweaks %} {# Vẫn cần nếu các trường khác dùng render_field #}
 
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Thêm sách mới - BookStation</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-</head>
-<body>
-<div class="container mt-4">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'book_list' %}">Sách</a></li>
-            <li class="breadcrumb-item active">Thêm sách mới</li>
-        </ol>
-    </nav>
+{% block content %}
+    <div class="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto my-8">
+        <h2 class="text-3xl font-extrabold text-gray-900 mb-6 text-center flex items-center justify-center">
+            <i class="fas fa-book mr-3 text-blue-600"></i> Thêm sách mới
+        </h2>
 
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow">
-                <div class="card-body">
-                    <h2 class="card-title text-center mb-4">📘 Thêm sách mới</h2>
+        <form method="post" enctype="multipart/form-data" novalidate class="space-y-6">
+            {% csrf_token %}
 
-                    <form method="post" enctype="multipart/form-data" novalidate>
-                        {% csrf_token %}
-                        {% for field in form %}
-                        <div class="mb-3">
-                            <label for="{{ field.id_for_label }}" class="form-label">
+            {% for field in form %}
+                <div class="mb-4">
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                        {{ field.label }}
+                        {% if field.field.required %}
+                            <span class="text-red-500">*</span>
+                        {% endif %}
+                    </label>
+
+                    {# ĐIỀU CHỈNH LẠI DÒNG NÀY: Xử lý riêng trường 'categories' bằng cách render thủ công từng checkbox #}
+                    {% if field.name == 'categories' %}
+                        <div class="mt-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                            {% for choice in field %}
+                                <div class="flex items-center">
+                                    {# RENDER THỦ CÔNG THẺ INPUT CHECKBOX VÀ GÁN CLASS TRỰC TIẾP #}
+                                    <input type="checkbox"
+                                           name="{{ choice.name }}"
+                                           value="{{ choice.value }}"
+                                           id="{{ choice.id_for_label }}"
+                                           {% if choice.selected %}checked{% endif %} {# Giữ trạng thái đã chọn nếu có #}
+                                           class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                                    <label for="{{ choice.id_for_label }}" class="ml-2 text-sm text-gray-700 cursor-pointer">
+                                        {{ choice.choice_label }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% elif field.field.widget.input_type == 'checkbox' %} {# Xử lý các checkbox thông thường khác (không phải categories) #}
+                        <div class="flex items-center mt-2">
+                            {% render_field field class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" %}
+                            <label for="{{ field.id_for_label }}" class="ml-2 block text-sm text-gray-900">
                                 {{ field.label }}
-                                {% if field.field.required %}
-                                <span class="text-danger">*</span>
-                                {% endif %}
                             </label>
-
-                            {{ field }}
-
-                            {% if field.help_text %}
-                            <div class="form-text">{{ field.help_text }}</div>
-                            {% endif %}
-
-                            {% if field.errors %}
-                            <div class="invalid-feedback d-block">
-                                {% for error in field.errors %}
-                                {{ error }}
-                                {% endfor %}
-                            </div>
-                            {% endif %}
                         </div>
-                        {% endfor %}
+                    {% else %} {# Xử lý các trường input/textarea/select thông thường #}
+                        {% render_field field class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %}
+                    {% endif %}
 
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-plus me-2"></i>Thêm sách
-                            </button>
-                            <a href="{% url 'staff_dashboard' %}" class="btn btn-outline-secondary">
-                                <i class="fas fa-times me-2"></i>Hủy
-                            </a>
+                    {% if field.help_text %}
+                        <p class="mt-1 text-sm text-gray-500">{{ field.help_text }}</p>
+                    {% endif %}
+
+                    {% if field.errors %}
+                        <div class="mt-2 text-sm text-red-600">
+                            {% for error in field.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
                         </div>
-                    </form>
+                    {% endif %}
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
+            {% endfor %}
 
-<!-- Thêm Bootstrap JS nếu cần -->
-<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
-</body>
-</html>
+            <div class="flex justify-end space-x-4 mt-6">
+                <a href="{% url 'view_list_book' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-200">
+                    <i class="fas fa-times mr-2"></i> Hủy
+                </a>
+                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200">
+                    <i class="fas fa-plus mr-2"></i> Thêm sách
+                </button>
+            </div>
+         <form method="post" enctype="multipart/form-data" action="{% url 'import_books' %}" class="space-y-4 border p-4 rounded-md bg-gray-50 mb-8">
+        {% csrf_token %}
+        <div>
+            <label for="id_json_file" class="block text-sm font-medium text-gray-700">Tệp JSON</label>
+            <input type="file" name="json_file" id="id_json_file" required accept=".json"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300 sm:text-sm">
+        </div>
+        <div>
+            <label for="id_image_zip" class="block text-sm font-medium text-gray-700">Tệp ZIP chứa ảnh</label>
+            <input type="file" name="image_zip" id="id_image_zip" required accept=".zip"
+                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-300 focus:border-blue-300 sm:text-sm">
+        </div>
+        <div class="flex justify-end">
+            <button type="submit"
+                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                <i class="fas fa-file-import mr-2"></i> Nhập sách
+            </button>
+        </div>
+    </form>
+        </form>
+    </div>
+{% endblock content %}

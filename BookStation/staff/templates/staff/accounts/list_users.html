@@ -1,47 +1,106 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Danh sách người dùng</title>
-</head>
-<body>
-    <h1>📋 Danh sách người dùng</h1>
+{% extends 'staff/dashboard_staff.html' %}
+{% load static %}
 
-    <!-- Form tìm kiếm -->
-    <form method="get" action="">
-        <input type="text" name="q" placeholder="Tìm kiếm..." value="{{ query|default:'' }}">
-        <button type="submit">🔍 Tìm kiếm</button>
-    </form>
+{% block content %}
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+            <i class="fas fa-users mr-3"></i> 📋 Danh sách người dùng
+        </h2>
 
-    <br>
+        {# Đã sửa action của form để trỏ đúng URL #}
+        <form method="get" action="{% url 'list_user' %}" class="mb-6 flex items-center space-x-3">
+            <div class="relative flex-grow">
+                {# Giữ nguyên input HTML gốc của bạn. 'name="q"' là quan trọng để tìm kiếm hoạt động. #}
+                <input type="text" name="q" placeholder="Tìm kiếm người dùng..."
+                       value="{{ query|default:'' }}"
+                       class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-search text-gray-400"></i>
+                </div>
+            </div>
+            <button type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200">
+                🔍 Tìm kiếm
+            </button>
+        </form>
 
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>Họ tên</th>
-            <th>Email</th>
-            <th>Thao tác</th>
-        </tr>
-        {% for u in users %}
-        <tr>
-            <td>{{ u.id }}</td>
-            <td>{{ u.username }}</td>
-            <td>{{ u.first_name }} {{ u.last_name }}</td>
-            <td>{{ u.email }}</td>
-            <td>
-                {% if can_change_user %}
-                    <a href="{% url 'change_user' user_id=u.id %}">✏️ Sửa</a>
+        <div class="overflow-x-auto rounded-lg shadow-sm border border-gray-200">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Họ tên</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for u in users %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ u.id }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ u.username }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ u.first_name }} {{ u.last_name }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ u.email }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                            {% if can_change_user %} {# Giữ nguyên biến 'can_change_user' như trong code gốc của bạn #}
+                                <a href="{% url 'change_user' user_id=u.id %}" {# Cập nhật URL để khớp với tên hàm view trong views.py #}
+                                   class="text-indigo-600 hover:text-indigo-900 mr-4 transition duration-200">
+                                    ✏️ Sửa
+                                </a>
+                            {% else %}
+                                <span class="text-gray-400">❌</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
+                            Không tìm thấy người dùng nào.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {# Pagination (phân trang) #}
+        {# ĐÃ BỎ ĐIỀU KIỆN 'if users.has_other_pages' ĐỂ LUÔN HIỆN THÔNG TIN TRANG #}
+        <div class="flex justify-between items-center mt-6">
+            <div>
+                {% if users.has_previous %}
+                    <a href="?page={{ users.previous_page_number }}{% if query %}&q={{ query }}{% endif %}"
+                       class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l transition duration-200">
+                        <i class="fas fa-arrow-left mr-2"></i> Trước
+                    </a>
                 {% else %}
-                    ❌
+                    <span class="bg-gray-200 text-gray-500 font-bold py-2 px-4 rounded-l cursor-not-allowed">
+                        <i class="fas fa-arrow-left mr-2"></i> Trước
+                    </span>
                 {% endif %}
-            </td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="5">Không tìm thấy người dùng nào.</td></tr>
-        {% endfor %}
-    </table>
+            </div>
 
-    <br>
-    <a href="{% url 'staff_dashboard' %}">⬅️ Về dashboard</a>
-</body>
-</html>
+            <div class="text-gray-700">
+                Trang {{ users.number }} trên {{ users.paginator.num_pages }}
+            </div>
+
+            <div>
+                {% if users.has_next %}
+                    <a href="?page={{ users.next_page_number }}{% if query %}&q={{ query }}{% endif %}"
+                       class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r transition duration-200">
+                        Tiếp <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                {% else %}
+                    <span class="bg-gray-200 text-gray-500 font-bold py-2 px-4 rounded-r cursor-not-allowed">
+                        Tiếp <i class="fas fa-arrow-right ml-2"></i>
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+        {# Kết thúc phần phân trang #}
+
+{#        <a href="{% url 'staff_dashboard' %}" class="mt-6 inline-block bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg transition duration-200">#}
+{#            ⬅️ Về dashboard#}
+{#        </a>#}
+    </div>
+{% endblock content %}

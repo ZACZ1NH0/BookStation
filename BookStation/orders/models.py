@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from books.models import Book
+from decimal import Decimal
 
 class Order(models.Model):
     STATUS_CHOICES = [
@@ -41,4 +42,6 @@ class OrderItem(models.Model):
         return f"{self.quantity} x {self.book.title}"
 
     def subtotal(self):
+        if self.price is None:
+            return Decimal('0.00')  # Trả về 0 nếu price là None
         return self.quantity * self.price
