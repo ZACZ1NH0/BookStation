@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/analytics/analytics.css' %}">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="{% static 'css/analytics/analytics.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -19,6 +19,12 @@
             <a href="{% url 'analytics:book_inventory_detail' %}" class="nav-button">
                 Thống Kê Kho Sách
             </a>
+            <a href="{% url 'analytics:customer_stats' %}" class="nav-button">
+                Thống Kê Khách hàng
+            </a>
+            <a href="{% url 'analytics:order_stats' %}" class="nav-button">
+                Thống Kê Đơn Hàng
+            </a>
         </div>
     </div>
 
@@ -30,40 +36,42 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-label">Tổng Doanh Thu</div>
-                <div class="stat-number">${{ total_revenue }}</div>
+                <div class="stat-number animate-number" data-value="{{ total_revenue }}">
+                    {{ total_revenue|floatformat:2 }} $
+                </div>
             </div>
             <div class="stat-card">
                 <div class="stat-label">Tổng Đơn Hàng</div>
-                <div class="stat-number">{{ total_orders }}</div>
+                <div class="stat-number animate-number" data-value="{{ total_orders }}">{{ total_orders }}</div>
             </div>
             <div class="stat-card">
                 <div class="stat-label">Khách Hàng Mới (30 ngày)</div>
-                <div class="stat-number">{{ new_customers }}</div>
-            </div>
-        </div>
-
-        <!-- Biểu đồ doanh thu -->
-        <div class="chart-container">
-            <canvas id="revenueChart"></canvas>
-        </div>
+                <div class="stat-number animate-number" data-value="{{ new_customers }}">{{ new_customers }}</div>
+            </div>        </div>
 
         <!-- Bảng chi tiết -->
         <div class="data-table-container">
-            <h3>Chi Tiết Doanh Thu Theo Tháng</h3>
+            <h3>Chi Tiết Doanh Thu Theo Tháng và Trạng Thái</h3>
             <table class="data-table">
                 <thead>
                     <tr>
                         <th>Tháng</th>
+                        <th>Trạng Thái</th>
                         <th>Doanh Thu</th>
                         <th>Số Đơn Hàng</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for month in revenue_by_month %}
+                    {% for item in revenue_by_month_status %}
                     <tr>
-                        <td>{{ month.month|date:"m/Y" }}</td>
-                        <td>${{ month.revenue|floatformat:2 }}</td>
-                        <td>{{ month.order_count }}</td>
+                        <td>{{ item.month|date:"m/Y" }}</td>
+                        <td>{{ item.order__status }}</td>
+                        <td>{{ item.revenue|floatformat:2 }} $</td>
+                        <td>{{ item.order_count }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">Không có dữ liệu</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -83,27 +91,75 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-label">Tổng Số Sách</div>
-                <div class="stat-number">{{ total_books }}</div>
+                <div class="stat-number animate-number" data-value="{{ total_books }}">{{ total_books }}</div>
             </div>
             <div class="stat-card {% if out_of_stock_books.count > 0 %}alert-danger{% endif %}">
                 <div class="stat-label">Sách Hết Hàng</div>
-                <div class="stat-number">{{ out_of_stock_books.count }}</div>
+                <div class="stat-number animate-number" data-value="{{ out_of_stock_books.count }}">{{ out_of_stock_books.count }}</div>
             </div>
             <div class="stat-card {% if low_stock_books.count > 0 %}alert-warning{% endif %}">
                 <div class="stat-label">Sách Sắp Hết</div>
-                <div class="stat-number">{{ low_stock_books.count }}</div>
+                <div class="stat-number animate-number" data-value="{{ low_stock_books.count }}">{{ low_stock_books.count }}</div>
             </div>
-        </div>
-
-        <!-- Top sách bán chạy -->
-        <div class="chart-container">
-            <h3>Top 10 Sách Bán Chạy</h3>
-            <canvas id="bestSellingChart"></canvas>
+        </div>        <!-- Top sách bán chạy -->
+        <div class="section" style="margin-bottom: 30px;">
+            <h3 style="text-align: center; margin-bottom: 20px;">Top 10 Sách Bán Chạy</h3>
+            <div style="display: flex; justify-content: center;">
+                <table class="data-table" style="width: 80%; max-width: 1000px;">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên Sách</th>
+                            <th>Đơn Giá</th>
+                            <th>Số Lượng Bán</th>
+                            <th>Tổng Tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for book in best_selling_books %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ book.book__title }}</td>
+                            <td>{{ book.price|floatformat:2|intcomma }} $</td>
+                            <td>{{ book.total_sold }}</td>
+                            <td>{{ book.total_revenue|floatformat:2|intcomma }} $</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" style="text-align: center;">Không có dữ liệu</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
+{% endblock %}
 
 {% block extra_js %}
-// ...existing chart.js code...
-{% endblock %}
+<script>
+window.onload = function() {
+    // Animate numbers
+    document.querySelectorAll('.animate-number').forEach(element => {
+        const value = parseFloat(element.dataset.value) || 0;
+        const duration = 1000;
+        const start = 0;
+        const increment = value / (duration / 16);
+        let current = start;
+
+        const animate = () => {
+            current += increment;
+            if (current < value) {
+                element.textContent = Math.floor(current).toLocaleString('vi-VN');
+                requestAnimationFrame(animate);
+            } else {
+                element.textContent = value.toLocaleString('vi-VN');
+            }
+        };
+        
+        animate();
+    });
+};
+</script>
 {% endblock %}

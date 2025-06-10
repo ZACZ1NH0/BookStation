@@ -6,9 +6,29 @@
 {% block extra_css %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <link rel="stylesheet" href="{% static 'css/analytics/customer_stats.css' %}">
+<link rel="stylesheet" href="{% static 'css/analytics/analytics.css' %}">
 {% endblock %}
 
 {% block content %}
+<div class="stats-header">
+    <h1>Thống Kê BookStation</h1>
+    
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <a href="{% url 'analytics:dashboard' %}" class="nav-button active">
+            Dashboard
+        </a>
+        <a href="{% url 'analytics:book_inventory_detail' %}" class="nav-button">
+            Thống Kê Kho Sách
+        </a>
+        <a href="{% url 'analytics:customer_stats' %}" class="nav-button">
+            Thống Kê Khách hàng
+        </a>
+        <a href="{% url 'analytics:order_stats' %}" class="nav-button">
+            Thống Kê Đơn Hàng   
+        </a>
+    </div>
+</div>
 <div class="container-fluid py-4">
     <!-- Thống kê tổng quan về khách hàng -->
     <div class="row mb-4">
@@ -116,7 +136,7 @@
         <div class="col-lg-5 mb-4">
             <div class="card">
                 <div class="card-header">
-                    <h6 class="mb-0">Top khách hàng</h6>
+                    <h6 class="mb-0">Top 10 khách hàng</h6>
                     <p class="text-sm mb-0">Theo tổng chi tiêu</p>
                 </div>
                 <div class="card-body">
@@ -128,7 +148,7 @@
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Số điện thoại</th>                                    
                                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tổng chi tiêu</th>
-                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Số đơn</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Số đơn hàng</th>
                                 </tr>
                             </thead>
                             <tbody>

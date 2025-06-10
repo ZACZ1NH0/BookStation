@@ -12,43 +12,55 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 import json
 from django.core.serializers.json import DjangoJSONEncoder
+from django.db.models import Sum, F, DecimalField, Count
+from django.db.models.functions import TruncMonth
+import openpyxl
 
 def get_revenue_stats():
-    """Thống kê doanh thu"""
-    # Tính tổng doanh thu từ các đơn hàng đã hoàn thành
-    total_revenue = OrderItem.objects.filter(
-        order__status='completed'
-    ).aggregate(
-        total=Sum(F('quantity') * F('price'), output_field=DecimalField())
-    )['total'] or 0
-    revenue_data = OrderItem.objects.aggregate(
-        total_revenue=Sum(F('quantity') * F('price'), output_field=DecimalField()),
-    )
-    total_revenue = revenue_data['total_revenue'] or 0
-    # Thống kê doanh thu theo tháng
-    revenue_by_month = OrderItem.objects.filter(
-        order__status='completed'
-    ).annotate(
+    """Thống kê doanh thu tổng + theo trạng thái + theo tháng và trạng thái + top sách bán chạy"""
+    
+    # Danh sách trạng thái
+    STATUS_CHOICES = ['pending', 'processing', 'shipping', 'completed', 'cancelled']
+
+    # Tính total_revenue cho từng trạng thái
+    revenue_by_status = {}
+    for status in STATUS_CHOICES:
+        revenue = OrderItem.objects.filter(
+            order__status=status
+        ).aggregate(
+            total=Sum(F('quantity') * F('price'), output_field=DecimalField())
+        )['total'] or 0
+        revenue_by_status[status] = revenue
+
+    # Tổng doanh thu tất cả (không phân trạng thái)
+    total_revenue = OrderItem.objects.aggregate(
+        total_revenue=Sum(F('quantity') * F('price'), output_field=DecimalField())
+    )['total_revenue'] or 0
+
+    # Thống kê doanh thu theo tháng và trạng thái (lấy 6 tháng gần nhất)
+    revenue_by_month_status = OrderItem.objects.annotate(
         month=TruncMonth('order__created_at')
-    ).values('month').annotate(
+    ).values('month', 'order__status').annotate(
         revenue=Sum(F('quantity') * F('price'), output_field=DecimalField()),
         order_count=Count('order__id', distinct=True)
-    ).order_by('-month')[:6]
-
-    # Convert month to string for JSON serialization
-    revenue_by_month = [
-        {
-            'month': item['month'].strftime('%Y-%m-%d'),
-            'revenue': float(item['revenue']),
-            'order_count': item['order_count']
-        } for item in revenue_by_month
-    ]
+    ).order_by('-month', 'order__status')[:6 * len(STATUS_CHOICES)]    # Lấy top 10 sách bán chạy (dựa trên số lượng bán)
+    best_selling_books = OrderItem.objects.values(
+        'book__title',  # Lấy tiêu đề sách
+        'price'  # Lấy giá
+    ).annotate(
+        total_sold=Sum('quantity'),  # Tổng số lượng bán
+        total_revenue=Sum(F('quantity') * F('price'))  # Tổng doanh thu
+    ).exclude(
+        book__title__isnull=True  # Loại bỏ các sách không có tiêu đề
+    ).order_by('-total_sold')[:10]  # Sắp xếp giảm dần và lấy top 10
 
     return {
         'total_revenue': total_revenue,
-        'revenue_by_month': revenue_by_month
+        'revenue_by_status': revenue_by_status,
+        'revenue_by_month_status': list(revenue_by_month_status),
+        'best_selling_books': list(best_selling_books)  # Thêm top sách bán chạy
     }
-
+    
 def get_customer_order_stats():
     """Thống kê khách hàng và đơn hàng"""
     # Thống kê khách hàng
@@ -56,24 +68,17 @@ def get_customer_order_stats():
     new_customers = Users.objects.filter(
         date_joined__gte=timezone.now() - timedelta(days=30)
     ).count()
-    
+
     # Thống kê đơn hàng
     orders = Order.objects.all()
     total_orders = orders.count()
     orders_by_status = orders.values('status').annotate(count=Count('id'))
-    
-    # Top khách hàng theo doanh số
-    top_customers = Users.objects.annotate(
-        total_spent=Sum(F('order__items__quantity') * F('order__items__price'), 
-                       output_field=DecimalField())
-    ).order_by('-total_spent')[:5]
 
     return {
         'total_customers': total_customers,
         'new_customers': new_customers,
         'total_orders': total_orders,
         'orders_by_status': orders_by_status,
-        'top_customers': top_customers
     }
 
 def get_book_inventory_stats():
@@ -82,17 +87,11 @@ def get_book_inventory_stats():
     total_books = Book.objects.count()
     out_of_stock = Book.objects.filter(stock=0)
     low_stock = Book.objects.filter(stock__gt=0, stock__lte=5)
-    
-    # Top sách bán chạy
-    best_selling = Book.objects.annotate(
-        total_sold=Sum('orderitem__quantity')
-    ).order_by('-total_sold')[:10]
 
     return {
         'total_books': total_books,
         'out_of_stock_books': out_of_stock,
-        'low_stock_books': low_stock,
-        'best_selling_books': best_selling
+        'low_stock_books': low_stock
     }
 
 def analytics_dashboard(request):
@@ -109,11 +108,11 @@ def book_inventory_detail(request):
     # Xử lý tìm kiếm
     search_query = request.GET.get('search', '')
     sort_by = request.GET.get('sort', '-stock')  # Mặc định sắp xếp theo tồn kho giảm dần
-    
+
     books = Book.objects.annotate(
         total_sold=Sum('orderitem__quantity')
     ).select_related('author', 'publisher')
-    
+
     # Tìm kiếm
     if search_query:
         books = books.filter(
@@ -121,35 +120,41 @@ def book_inventory_detail(request):
             Q(author__name__icontains=search_query) |
             Q(publisher__name__icontains=search_query)
         )
-    
+
     # Sắp xếp
     books = books.order_by(sort_by)
-    
+
     # Phân trang
     paginator = Paginator(books, 20)  # 20 items mỗi trang
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    
+
     # Xuất Excel
+    # Phần xuất Excel trong book_inventory_detail
     if request.GET.get('export') == 'excel':
-        # Tạo DataFrame
         data = []
         for book in books:
+            status = (
+                "Hết hàng" if book.stock == 0
+                else "Sắp hết" if book.stock <= 5
+                else "Còn hàng"
+            )
+
             data.append({
                 'Tên Sách': book.title,
-                'Tác Giả': book.author.name,
-                'NXB': book.publisher.name,
+                'Tác Giả': book.author.name if book.author else '',
+                'NXB': book.publisher.name if book.publisher else '',
                 'Tồn Kho': book.stock,
                 'Đã Bán': book.total_sold or 0,
-                'Giá': book.price
+                'Giá ($)': book.price,
+                'Trạng Thái': status
             })
-        
+
         df = pd.DataFrame(data)
         
-        # Tạo response Excel
-        response = HttpResponse(content_type='application/vnd.ms-excel')
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
         response['Content-Disposition'] = 'attachment; filename="book_inventory.xlsx"'
-        df.to_excel(response, index=False)
+        df.to_excel(response, index=False, engine='openpyxl')
         return response
 
     context = {
@@ -160,7 +165,7 @@ def book_inventory_detail(request):
         'out_of_stock': books.filter(stock=0).count(),
         'low_stock': books.filter(stock__gt=0, stock__lte=5).count(),
     }
-    
+
     return render(request, 'analytics/book_inventory_detail.html', context)
 
 def customer_analysis_detail(request):
@@ -168,7 +173,7 @@ def customer_analysis_detail(request):
     # Xử lý tìm kiếm
     search_query = request.GET.get('search', '')
     sort_by = request.GET.get('sort', '-total_spent')  # Mặc định sắp xếp theo tổng chi tiêu
-    
+
     # Query khách hàng với tổng chi tiêu và số đơn hàng
     customers = Users.objects.annotate(
         total_spent=Sum(F('order__items__quantity') * F('order__items__price'),
@@ -176,7 +181,7 @@ def customer_analysis_detail(request):
         order_count=Count('order', distinct=True),
         last_order_date=Max('order__created_at')
     )
-    
+
     # Tìm kiếm
     if search_query:
         customers = customers.filter(
@@ -200,7 +205,7 @@ def customer_analysis_detail(request):
             data.append({
                 'Tên đăng nhập': customer.username,
                 'Email': customer.email,
-                'Số điện thoại': customer.phone,
+                'Số điện thoại': customer.phone or '',
                 'Số đơn hàng': customer.order_count,
                 'Tổng chi tiêu': customer.total_spent or 0,
                 'Đơn hàng gần nhất': customer.last_order_date
@@ -300,7 +305,7 @@ def customer_stats(request):
         }
         
         return render(request, 'analytics/customer_stats.html', context)
-    
+
     except Exception as e:
         print(f"Error in customer_stats view: {str(e)}")
         # Trả về dữ liệu mặc định nếu có lỗi
@@ -336,7 +341,7 @@ def order_stats(request):
     )
     total_revenue = revenue_data['total_revenue'] or 0
     avg_order_value = revenue_data['avg_order_value'] or 0
-
+    
     # Doanh thu theo tháng
     revenue_by_month = OrderItem.objects.annotate(
         month=TruncMonth('order__created_at')
@@ -345,10 +350,11 @@ def order_stats(request):
     ).order_by('-month')[:12]
 
     # Convert month to string for JSON serialization
+    # Giữ nguyên datetime object để template có thể dùng filter date
     revenue_by_month = [
         {
-            'month': item['month'].strftime('%Y-%m-%d'),
-            'revenue': float(item['revenue'])
+            'month': item['month'],
+            'revenue': float(item['revenue']) if item['revenue'] else 0
         } for item in revenue_by_month
     ]
 
@@ -356,14 +362,23 @@ def order_stats(request):
     order_status = Order.objects.values('status').annotate(
         count=Count('id')
     ).order_by('status')
-    
-    # Chuyển đổi trạng thái sang tiếng Việt
-    for status in order_status:
-        status['status_display'] = dict(Order.STATUS_CHOICES)[status['status']]
+
+    # Chuyển đổi trạng thái sang tiếng Việt (nếu có STATUS_CHOICES)
+    try:
+        for status in order_status:
+            status['status_display'] = dict(Order.STATUS_CHOICES)[status['status']]
+    except:
+        # Nếu không có STATUS_CHOICES, giữ nguyên
+        for status in order_status:
+            status['status_display'] = status['status']
 
     # Đơn hàng gần đây
-    recent_orders = Order.objects.select_related('customer').order_by('-created_at')[:10]
+    # Đơn hàng gần đây có phân trang
+    recent_orders_qs = Order.objects.select_related('customer').order_by('-created_at')
+    paginator = Paginator(recent_orders_qs, 10)  # 10 đơn hàng mỗi trang
 
+    page_number = request.GET.get('page')
+    recent_orders_page = paginator.get_page(page_number)
     # Phương thức thanh toán
     payment_methods = Order.objects.values('payment_method').annotate(
         count=Count('id')
@@ -376,8 +391,52 @@ def order_stats(request):
         'avg_order_value': avg_order_value,
         'revenue_by_month': revenue_by_month,
         'order_status': list(order_status),
-        'recent_orders': recent_orders,
+        'recent_orders': recent_orders_page,
         'payment_methods': list(payment_methods)
     }
-    
+
     return render(request, 'analytics/order_stats.html', context)
+
+def export_books_to_excel(books):
+    from openpyxl import Workbook
+    from openpyxl.utils import get_column_letter
+
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Inventory"
+
+    # Tiêu đề
+    headers = ["Tên Sách", "Tác Giả", "NXB", "Tồn Kho", "Đã Bán", "Giá", "Trạng Thái"]
+    ws.append(headers)
+
+    for book in books:
+        if book.stock == 0:
+            status = "Hết hàng"
+        elif book.stock <= 5:
+            status = "Sắp hết"
+        else:
+            status = "Còn hàng"
+
+        row = [
+            book.title,
+            book.author.name if book.author else '',
+            book.publisher.name if book.publisher else '',
+            book.stock,
+            book.total_sold or 0,
+            book.price,
+            status,
+        ]
+        ws.append(row)
+
+    # Tự động giãn cột
+    for col in ws.columns:
+        max_length = max(len(str(cell.value)) for cell in col)
+        ws.column_dimensions[get_column_letter(col[0].column)].width = max_length + 2
+
+    # Tạo phản hồi
+    response = HttpResponse(
+        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    )
+    response['Content-Disposition'] = 'attachment; filename="book_inventory.xlsx"'
+    wb.save(response)
+    return response
