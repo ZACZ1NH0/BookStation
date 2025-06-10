@@ -50,14 +50,18 @@
               <div class="dropdown-menu left-dropdown">
                 
                 <div class="container mt-5">
+                 <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Tài khoản của tôi</a>
                  {% if is_superuser %}
                      <a href="/admin/" ><i class="fas fa-user"></i> Quản trị website</a>
+                     <a href="{% url 'analytics:dashboard' %}"><i class="fas fa-chart-bar"></i> Thống kê </a>
                  {% elif is_staff %}
                      <a href="staff/staff_dashboard/"><i class="fas fa-user"></i>Quản lý</a>
+                     <a href="{% url 'analytics:dashboard' %}"><i class="fas fa-chart-bar"></i> Thống kê </a>
                   {% else %}
                       
                    {% endif %} 
-                  <a href="{% url 'profile' %}"><i class="fas fa-user"></i> Tài khoản của tôi</a>
+                  
+                  
                 </div>
                 <a href="{% url 'order_list'%}"><i class="fas fa-list"></i> Đơn hàng</a>
                 <a href="{% url 'view_cart' %}" class="mini-menu-item"><i class="fas fa-shopping-cart"></i> Giỏ hàng</a>
