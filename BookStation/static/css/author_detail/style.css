@@ -1,17 +1,4 @@
 /* Reset default margins and paddings for consistency */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Container styling */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
 /* Author profile section */
 .author-profile {
     background: #ffffff;

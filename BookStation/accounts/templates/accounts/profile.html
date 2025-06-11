@@ -1,12 +1,11 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <title>Trang cá nhân - BookStation</title>
-  <link rel="stylesheet" href="{% static 'css/home/style.css' %}">
-</head>
-<body>
+
+{% block title %}Trang cá nhân - BookStation{% endblock %}
+
+{% block content %}
+  <link rel="stylesheet" href="{% static 'css/profile/style.css' %}">
+
   <div class="profile-container">
     <h2>Trang cá nhân</h2>
     <h3>Thông tin tài khoản</h3>
@@ -14,7 +13,7 @@
       <li><strong>Tên người dùng:</strong> {{ user.username }}</li>
       <li><strong>Email:</strong> {{ user.email }}</li>
       <li><strong>Họ tên:</strong> {{ user.get_full_name }}</li>
-      <!-- Bạn có thể hiển thị thêm các trường khác tùy model -->
+      <!-- Thêm các trường khác nếu cần -->
     </ul>
 
     {% if messages %}
@@ -31,5 +30,4 @@
 
     <hr>
   </div>
-</body>
-</html>
+{% endblock %}
