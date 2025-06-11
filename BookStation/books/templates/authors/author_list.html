@@ -7,6 +7,11 @@
     <link href="{% static 'css/author_list/style.css' %}" rel="stylesheet"> 
     <!-- Main Content -->
     <div class="container mt-4">
+        <form method="get" action="" class="search-form">
+            <input type="text" name="q" placeholder="Tìm kiếm tác giả" value="{{ query }}">
+            <button type="submit">Tìm</button>
+        </form>
+
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Danh sách tác giả</h2>
         </div>

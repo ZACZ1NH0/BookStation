@@ -1,407 +1,335 @@
-/* Thống kê chung */
-.stats-container {
-    padding: 20px;
-}
-
 /* Card styles */
 .card {
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    overflow: hidden;
-    margin-bottom: 1.5rem;
-}
-
-/* Order Status Badges */
-.badge {
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 500;
-}
-
-.badge-pending {
-    background: #fff3cd;
-    color: #856404;
-}
-
-.badge-processing {
-    background: #cce5ff;
-    color: #004085;
-}
-
-.badge-shipping {
-    background: #d1ecf1;
-    color: #0c5460;
-}
-
-.badge-completed {
-    background: #d4edda;
-    color: #155724;
-}
-
-.badge-cancelled {
-    background: #f8d7da;
-    color: #721c24;
-}
-
-/* Recent Orders Table */
-.order-table {
-    width: 100%;
-    background: #fff;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.order-table th {
-    background: #f8f9fa;
-    color: #2c3e50;
-    font-weight: 600;
-    padding: 1rem;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-}
-
-.order-table td {
-    padding: 1rem;
-    vertical-align: middle;
-    border-top: 1px solid #e9ecef;
-}
-
-.order-id {
-    font-weight: 600;
-    color: #2c3e50;
-}
-
-.order-customer {
-    display: flex;
-    flex-direction: column;
-}
-
-.order-customer h6 {
-    margin: 0;
-    color: #2c3e50;
-    font-size: 0.9rem;
-}
-
-.order-customer p {
-    margin: 0;
-    color: #7f8c8d;
-    font-size: 0.8rem;
-}
-
-/* Payment Methods */
-.payment-method {
-    padding: 0.4rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
-}
-
-.payment-cash {
-    background: #e8f5e9;
-    color: #2e7d32;
-}
-
-.payment-bank {
-    background: #e3f2fd;
-    color: #1565c0;
-}
-
-.payment-card {
-    background: #f3e5f5;
-    color: #7b1fa2;
-}
-
-.payment-momo {
-    background: #fce4ec;
-    color: #c2185b;
 }
 
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-6px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
 
 .card-header {
-    padding: 15px;
-    border-bottom: 1px solid #eee;
+    padding: 16px 18px; /* Giảm padding một chút */
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #f9f9f9;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
 }
 
 .card-header h6 {
     margin: 0;
-    color: #333;
+    color: #212529;
+    font-size: 1rem; /* Giảm font-size */
     font-weight: 600;
 }
 
 .card-body {
-    padding: 20px;
+    padding: 18px; /* Giảm padding */
+    overflow: hidden;
 }
 
 /* Icon styles */
 .icon-shape {
-    width: 48px;
-    height: 48px;
-    background-position: center;
-    border-radius: 50%;
+    width: 45px; /* Giảm kích thước icon */
+    height: 45px;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 50%;
+    background-position: center;
+    transition: background 0.3s ease;
 }
 
 .icon i {
-    font-size: 20px;
+    font-size: 20px; /* Giảm font-size */
     color: #fff;
 }
 
-/* Gradient backgrounds */
+/* Gradient backgrounds for icons and badges */
 .bg-gradient-primary {
-    background: linear-gradient(45deg, #4e73df 0%, #224abe 100%);
+    background: linear-gradient(135deg, #4e73df, #2c45aa);
 }
 
 .bg-gradient-success {
-    background: linear-gradient(45deg, #1cc88a 0%, #13855c 100%);
+    background: linear-gradient(135deg, #1cc88a, #0f7d5d);
 }
 
 .bg-gradient-warning {
-    background: linear-gradient(45deg, #f6c23e 0%, #dda20a 100%);
+    background: linear-gradient(135deg, #f6c23e, #d49506);
 }
 
 .bg-gradient-info {
-    background: linear-gradient(45deg, #36b9cc 0%, #258391 100%);
+    background: linear-gradient(135deg, #36b9cc, #2b728c);
 }
 
-/* Chart containers */
+/* Gradient backgrounds for order status badges */
+.bg-gradient-pending {
+    background: linear-gradient(135deg, #f6c23e, #d49506);
+    color: #fff;
+}
+
+.bg-gradient-processing {
+    background: linear-gradient(135deg, #36b9cc, #2b728c);
+    color: #fff;
+}
+
+.bg-gradient-shipping {
+    background: linear-gradient(135deg, #4e73df, #2c45aa);
+    color: #fff;
+}
+
+.bg-gradient-completed {
+    background: linear-gradient(135deg, #1cc88a, #0f7d5d);
+    color: #fff;
+}
+
+.bg-gradient-cancelled {
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
+    color: #fff;
+}
+
+/* Chart containers (dự phòng) */
 .chart-container {
     position: relative;
-    height: 300px;
-    margin: 20px 0;
-}
-
-/* Enhanced chart styles */
-.chart-container {
-    background: #fff;
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    margin-bottom: 1.5rem;
+    width: 100%;
+    height: 280px; /* Giảm chiều cao */
+    margin-top: 8px;
+    overflow: hidden;
 }
 
 .chart-container canvas {
-    max-height: 400px;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 /* Table styles */
 .table-responsive {
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
-.table thead th {
-    background: #f8f9fa;
-    color: #333;
-    font-weight: 600;
-    border-bottom: 2px solid #dee2e6;
-}
-
-.table > tbody > tr {
-    transition: background-color 0.2s ease;
-}
-
-.table > tbody > tr:hover {
-    background-color: #f8faff;
-}
-
-.table td, .table th {
-    padding: 1rem 1.5rem;
-    vertical-align: middle;
-}
-
-/* Status badges */
-.badge {
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 0.8rem;
-}
-
-.badge-pending {
-    background-color: #f6c23e;
-    color: #fff;
-}
-
-.badge-processing {
-    background-color: #4e73df;
-    color: #fff;
-}
-
-.badge-shipping {
-    background-color: #36b9cc;
-    color: #fff;
-}
-
-.badge-completed {
-    background-color: #1cc88a;
-    color: #fff;
-}
-
-.badge-cancelled {
-    background-color: #e74a3b;
-    color: #fff;
-}
-
-/* Enhanced status badges */
-.badge-pending {
-    background: linear-gradient(45deg, #f6c23e 0%, #dda20a 100%);
-    color: #fff;
-}
-
-.badge-processing {
-    background: linear-gradient(45deg, #4e73df 0%, #224abe 100%);
-    color: #fff;
-}
-
-.badge-shipping {
-    background: linear-gradient(45deg, #36b9cc 0%, #258391 100%);
-    color: #fff;
-}
-
-.badge-completed {
-    background: linear-gradient(45deg, #1cc88a 0%, #13855c 100%);
-    color: #fff;
-}
-
-.badge-cancelled {
-    background: linear-gradient(45deg, #e74a3b 0%, #be2617 100%);
-    color: #fff;
-}
-
-/* Utility classes */
-.loading {
-    position: relative;
-    min-height: 200px;
-}
-
-.loading::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 40px;
-    height: 40px;
-    margin: -20px 0 0 -20px;
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #3498db;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Grid system improvements */
-.row {
-    margin-right: -15px;
-    margin-left: -15px;
-    display: flex;
-    flex-wrap: wrap;
-}
-
-[class*="col-"] {
-    padding-right: 15px;
-    padding-left: 15px;
-    position: relative;
+.stats-table {
     width: 100%;
+    border-collapse: collapse;
 }
 
-/* Additional responsive breakpoints */
-@media (max-width: 576px) {
-    .container-fluid {
-        padding: 10px;
-    }
-    
-    .card-body {
-        padding: 15px;
-    }
-    
-    .numbers h5 {
-        font-size: 1.25rem;
-    }
-    
-    .icon-shape {
-        width: 40px;
-        height: 40px;
-    }
+.stats-table thead th {
+    background-color: #f5f7fa;
+    color: #1e293b;
+    font-size: 0.72rem; /* Giảm font-size */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 10px 14px; /* Giảm padding */
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
 }
 
-/* Print styles */
-@media print {
-    .chart-container {
-        break-inside: avoid;
-    }
-    
-    .card {
-        break-inside: avoid;
-        box-shadow: none;
-    }
-    
-    .badge {
-        border: 1px solid #000;
-    }
+.stats-table tbody tr {
+    transition: background-color 0.25s ease;
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-    .card {
-        background: #1a1a1a;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    }
-    
-    .numbers h5, .card-header h6 {
-        color: #fff;
-    }
-    
-    .table thead th {
-        background: #2a2a2a;
-        color: #fff;
-    }
-    
-    .table tbody tr:hover {
-        background-color: #2a2a2a;
-    }
-    
-    .table td, .table th {
-        color: #fff;
-        border-color: #333;
-    }
+.stats-table tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+.stats-table td {
+    padding: 10px 14px; /* Giảm padding */
+    font-size: 0.82rem; /* Giảm font-size */
+    color: #334155;
+    vertical-align: middle;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.stats-table td.text-end {
+    text-align: right;
+}
+
+.stats-table td.text-center {
+    text-align: center;
+}
+
+.stats-table td h6 {
+    margin: 0;
+    font-size: 0.82rem; /* Giảm font-size */
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.stats-table td small {
+    font-size: 0.7rem; /* Giảm font-size */
+    color: #64748b;
+}
+
+.stats-table td .font-weight-bold {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.stats-table tbody tr:first-child {
+    background-color: #e0f2fe;
+    position: relative;
+}
+
+/* Badge styles */
+.badge {
+    padding: 5px 10px; /* Giảm padding */
+    border-radius: 10px;
+    font-size: 0.7rem; /* Giảm font-size */
+    font-weight: 500;
+    display: inline;
+}
+
+/* Typography */
+.text-sm {
+    font-size: 0.85rem; /* Giảm font-size */
+}
+
+.text-xs {
+    font-size: 0.7rem; /* Giảm font-size */
+}
+
+.text-muted {
+    color: #64748b;
+}
+
+.font-weight-bold {
+    font-weight: 600;
+}
+
+.font-weight-bolder {
+    font-weight: 700;
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .card {
-        margin-bottom: 20px;
+        margin-bottom: 18px;
     }
-    
+
     .chart-container {
-        height: 250px;
+        height: 220px; /* Giảm chiều cao trên mobile */
     }
-    
+
+    .chart-container canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
     .table-responsive {
-        margin-bottom: 20px;
+        margin-bottom: 18px;
     }
-    
-    .chart-container {
-        min-height: 300px;
+
+    .stats-table-responsive td,
+    .stats-table thead th {
+        padding: 8px 10px; /* Giảm padding thêm trên mobile */
+        font-size: 0.7rem; /* Giảm font-size */
     }
-    
-    .table td, .table th {
-        padding: 0.75rem 1rem;
-        font-size: 0.875rem;
+
+    .stats-table td h6 {
+        font-size: 0.78rem; /* Giảm font-size
     }
-    
-    .badge {
-        padding: 0.35rem 0.65rem;
-        font-size: 0.75rem;
+
+    .stats-table td small {
+        font-size: 0.66rem; /* Giảm font-size */
+    }
+
+    .stats-table td .badge {
+        font-size: 0.65rem;
+        padding: 4px 8px; /* Giảm padding */
+    }
+}
+
+/* Table styles - updated */
+.table-responsive {
+    border-radius: 10px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    max-width: 100%;
+}
+
+.stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Make all columns equal width */
+}
+
+.stats-table thead th {
+    background-color: #f5f7fa;
+    color: #1e293b;
+    font-size: 0.68rem; /* Giảm font-size */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 8px 12px; /* Giảm padding */
+    border-bottom: 1px solid #e2e8f0;
+    text-align: center; /* Canh giữa để cân bằng các cột */
+    word-wrap: break-word; /* Cho phép xuống dòng nếu quá dài */
+}
+
+.stats-table tbody tr {
+    transition: background-color 0.25s ease;
+}
+
+.stats-table tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+.stats-table td {
+    padding: 8px 12px; /* Giảm padding */
+    font-size: 0.78rem; /* Giảm font-size */
+    color: #334155;
+    vertical-align: middle;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: center;
+    word-wrap: break-word; /* Cho phép nội dung xuống dòng */
+}
+
+.stats-table td h6 {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.stats-table td small {
+    font-size: 0.68rem;
+    color: #64748b;
+}
+
+.stats-table td .font-weight-bold {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.stats-table td.text-end {
+    text-align: center; /* Sửa lại là center để thống nhất */
+}
+
+/* Badge size in table */
+.stats-table .badge {
+    padding: 4px 8px;
+    font-size: 0.68rem;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+/* Responsive fix */
+@media (max-width: 767px) {
+    .stats-table thead th,
+    .stats-table td {
+        padding: 6px 8px;
+        font-size: 0.68rem;
+    }
+
+    .stats-table td .badge {
+        font-size: 0.62rem;
+        padding: 3px 6px;
     }
 }

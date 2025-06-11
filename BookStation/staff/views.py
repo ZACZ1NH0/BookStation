@@ -200,53 +200,40 @@ def edit_user_view(request, user_id):
 def list_user_view(request):
     User = get_user_model()  # Lấy User model hiện tại của dự án
     query = request.GET.get('q', '').strip()  # Không cần .lower() ở đây
-
-    # Bắt đầu với tất cả người dùng không phải staff/superuser
-    # Bạn có thể điều chỉnh filter này tùy theo định nghĩa người dùng của bạn
     users_queryset = User.objects.filter(is_staff=False, is_superuser=False)
 
     if query:
-        # Chuyển đổi query về dạng không dấu và chữ thường một lần
+
         normalized_query = unidecode(query).lower()
 
-        # Xây dựng các điều kiện tìm kiếm bằng Q objects
-        # Sử dụng __icontains để tìm kiếm không phân biệt chữ hoa/thường
-        # unidecode() cho phép tìm kiếm không dấu
         search_conditions = (
                 Q(username__icontains=normalized_query) |
                 Q(first_name__icontains=normalized_query) |
                 Q(last_name__icontains=normalized_query) |
                 Q(email__icontains=normalized_query)
         )
-        # Nếu muốn tìm kiếm không dấu chính xác hơn, bạn có thể áp dụng unidecode cho trường
-        # trong database nếu bạn đang sử dụng PostgreSQL với django-unaccent,
-        # nhưng cách này là phổ biến và đủ cho đa số trường hợp.
 
         users_queryset = users_queryset.filter(search_conditions)
-
-    # Sắp xếp queryset để phân trang hoạt động ổn định
     users_queryset = users_queryset.order_by('id')
 
-    # Thiết lập phân trang
-    paginator = Paginator(users_queryset, 10)  # 10 người dùng mỗi trang
+    paginator = Paginator(users_queryset, 10)
 
     page_number = request.GET.get('page')
     try:
         users = paginator.page(page_number)
     except PageNotAnInteger:
-        # Nếu page không phải số nguyên, hiển thị trang đầu tiên
+
         users = paginator.page(1)
     except EmptyPage:
-        # Nếu page vượt quá số trang có sẵn, hiển thị trang cuối cùng
+
         users = paginator.page(paginator.num_pages)
 
-    # Kiểm tra quyền thay đổi người dùng
     can_change_user = request.user.has_perm('accounts.change_users')
 
     return render(request, 'staff/accounts/list_users.html', {
-        'users': users,  # Đây là đối tượng Page đã được phân trang
+        'users': users,
         'can_change_user': can_change_user,
-        'query': query,  # Quan trọng: Truyền query vào context để giữ lại trong liên kết phân trang
+        'query': query,
     })
 
 
@@ -300,7 +287,7 @@ def book_add(request):
         else:
             messages.error(request, '❌ Form không hợp lệ.')
     else:
-        form = BookForm()  # ✅ phải có phần này
+        form = BookForm()  #
 
     return render(request, 'staff/books/add_book.html', {'form': form})
 

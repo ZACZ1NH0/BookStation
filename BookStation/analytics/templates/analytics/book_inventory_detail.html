@@ -3,6 +3,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" type="text/css" href="{% static 'css/analytics/book_inventory_detail.css' %}">
+<link rel="stylesheet" href="{% static 'css/analytics/analytics.css' %}">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 
@@ -10,8 +11,23 @@
 <div class="analytics-container">
     <div class="inventory-header">
         <div class="stats-header">
-        <h1>Thống Kê BookStation</h1>
-        <a href="{% url 'analytics:dashboard' %}" class = "dashboard-btn">Dashboard</a>
+            <h1>Thống Kê BookStation</h1>
+            
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs">
+                <a href="{% url 'analytics:dashboard' %}" class="nav-button active">
+                    Dashboard
+                </a>
+                <a href="{% url 'analytics:book_inventory_detail' %}" class="nav-button">
+                    Thống Kê Kho Sách
+                </a>
+                <a href="{% url 'analytics:customer_stats' %}" class="nav-button">
+                    Thống Kê Khách hàng
+                </a>
+                <a href="{% url 'analytics:order_stats' %}" class="nav-button">
+                    Thống Kê Đơn Hàng
+                </a>
+            </div>
         </div>
         <!-- Tổng quan -->
         <div class="stats-grid">

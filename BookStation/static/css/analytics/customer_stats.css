@@ -28,6 +28,7 @@
 
 .card-body {
     padding: 20px;
+    overflow: hidden; /* Đảm bảo nội dung không tràn ra ngoài */
 }
 
 /* Icon styles */
@@ -67,13 +68,18 @@
 /* Chart containers */
 .chart-container {
     position: relative;
-    height: 300px;
+    width: 100%; /* Đảm bảo chiếm toàn bộ chiều rộng */
+    height: 300px; /* Chiều cao cố định */
     margin-top: 10px;
+    overflow: hidden; /* Ngăn nội dung tràn ra ngoài */
 }
 
-/* ========== Top Customer Table ========== */
+.chart-container canvas {
+    width: 100% !important; /* Đảm bảo canvas chiếm toàn bộ chiều rộng */
+    height: 100% !important; /* Đảm bảo canvas chiếm toàn bộ chiều cao */
+}
 
-/* Container */
+/* Table styles */
 .table-responsive {
     border-radius: 12px;
     overflow: hidden;
@@ -81,7 +87,6 @@
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
-/* Table head */
 .table thead th {
     background-color: #f5f7fa;
     color: #1e293b;
@@ -93,7 +98,6 @@
     border-bottom: 1px solid #e2e8f0;
 }
 
-/* Table rows */
 .table tbody tr {
     transition: background-color 0.25s ease;
 }
@@ -102,7 +106,6 @@
     background-color: #f1f5f9;
 }
 
-/* Table cells */
 .table td {
     padding: 16px 20px;
     font-size: 0.87rem;
@@ -111,7 +114,6 @@
     border-bottom: 1px solid #e2e8f0;
 }
 
-/* Customer name and email */
 .table td h6 {
     margin: 0;
     font-size: 0.875rem;
@@ -125,13 +127,11 @@
     color: #64748b;
 }
 
-/* Amount and order count */
 .table td .font-weight-bold {
     font-weight: 700;
     color: #0f172a;
 }
 
-/* Highlight Top 1 */
 .table tbody tr:first-child {
     background-color: #e0f2fe;
     position: relative;
@@ -144,24 +144,6 @@
     transform: translateY(-50%);
     font-size: 1.2rem;
 }
-
-/* Responsive improvement */
-@media (max-width: 768px) {
-    .table td,
-    .table thead th {
-        padding: 12px;
-        font-size: 0.78rem;
-    }
-
-    .table td h6 {
-        font-size: 0.82rem;
-    }
-
-    .table td p {
-        font-size: 0.72rem;
-    }
-}
-
 
 /* Customer spending categories */
 .spending-category {
@@ -229,10 +211,29 @@
     }
 
     .chart-container {
-        height: 240px;
+        height: 240px; /* Giảm chiều cao trên màn hình nhỏ */
+    }
+
+    .chart-container canvas {
+        width: 100% !important;
+        height: 100% !important;
     }
 
     .table-responsive {
         margin-bottom: 20px;
+    }
+
+    .table td,
+    .table thead th {
+        padding: 12px;
+        font-size: 0.78rem;
+    }
+
+    .table td h6 {
+        font-size: 0.82rem;
+    }
+
+    .table td p {
+        font-size: 0.72rem;
     }
 }
