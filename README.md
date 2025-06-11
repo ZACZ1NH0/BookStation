@@ -106,13 +106,23 @@ python manage.py runserver
 ---
 
 ## 📄 Requirements
-
-- asgiref==3.8.1
-- Django==5.2.1
-- mysqlclient==2.2.7
-- sqlparse==0.5.3
-- tzdata==2025.2
----
+```
+﻿asgiref==3.8.1
+Django==5.2.1
+django-widget-tweaks==1.5.0
+et_xmlfile==2.0.0
+mysqlclient==2.2.7
+numpy==1.26.4
+openpyxl==3.1.5
+pandas==2.1.3
+pillow==11.2.1
+python-dateutil==2.9.0.post0
+pytz==2025.2
+six==1.17.0
+sqlparse==0.5.3
+tzdata==2025.2
+Unidecode==1.4.0
+```
 
 ## 📝 Ghi chú
 
