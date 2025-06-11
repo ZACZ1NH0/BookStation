@@ -8,7 +8,7 @@
 {% block content %}
 <div class="container mx-auto px-4 py-8">
     <nav class="text-sm text-gray-500 mb-6" aria-label="breadcrumb">
-        <ol class="list-none p-0 inline-flex space-x-2">
+        <ol class="list-none p-0 inline-flex items-center space-x-2">
             <li class="flex items-center">
                 <a href="{% url 'view_list_book' %}" class="text-blue-600 hover:text-blue-800 transition duration-200 ease-in-out">
                     <i class="fas fa-book mr-1"></i>Sách
@@ -41,6 +41,7 @@
                     {% endif %}
                 </label>
 
+                {# Hiển thị ảnh bìa hiện tại nếu có #}
                 {% if field.name == 'cover_image' and book.cover_image %}
                 <div class="mb-4">
                     <p class="text-sm text-gray-600 mb-2">Ảnh bìa hiện tại:</p>
@@ -48,6 +49,8 @@
                 </div>
                 {% endif %}
 
+                {# Render trường form #}
+                {# Nếu bạn đã định nghĩa widgets với class trong forms.py, chúng sẽ được áp dụng tự động #}
                 {{ field }}
 
                 {% if field.help_text %}
