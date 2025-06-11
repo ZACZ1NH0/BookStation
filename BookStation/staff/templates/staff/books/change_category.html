@@ -1,13 +1,93 @@
-{% extends "base.html" %}
+{% extends 'staff/dashboard_staff.html' %} {# Kế thừa từ layout chung của bạn #}
+{% load static %}
+{% load widget_tweaks %} {# Tải thư viện widget_tweaks #}
+
+{% block title %}
+    Chỉnh sửa Thể loại - {{ category.name }} - BookStation
+{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h2>Chỉnh sửa Thể Loại</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-        <a href="{% url 'list_category' %}" class="btn btn-secondary">Quay lại</a>
-    </form>
+<div class="container mx-auto px-4 py-8">
+    <nav class="text-sm text-gray-500 mb-6" aria-label="breadcrumb">
+        <ol class="list-none p-0 inline-flex items-center space-x-2">
+            <li class="flex items-center">
+                <a href="{% url 'list_category' %}" class="text-blue-600 hover:text-blue-800 transition duration-200 ease-in-out">
+                    <i class="fas fa-list-alt mr-1"></i>Thể loại
+                </a>
+            </li>
+            <li class="flex items-center">
+                <i class="fas fa-angle-right text-gray-400 mx-2"></i>
+            </li>
+            <li class="flex items-center text-gray-700">
+                <i class="fas fa-edit mr-1"></i>Chỉnh sửa thể loại
+            </li>
+        </ol>
+    </nav>
+
+    <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <h2 class="text-3xl font-bold text-gray-800 text-center mb-8 flex items-center justify-center">
+            <i class="fas fa-edit mr-3 text-blue-600"></i> Chỉnh sửa thể loại: <span class="text-blue-600 ml-2">{{ category.name }}</span>
+        </h2>
+
+        {# Hiển thị thông báo (từ Django messages framework) #}
+        {% if messages %}
+            <div class="mb-6">
+                {% for message in messages %}
+                    <div class="p-4 mb-3 rounded-md text-sm
+                        {% if message.tags == 'success' %}bg-green-100 border border-green-400 text-green-700
+                        {% elif message.tags == 'error' %}bg-red-100 border border-red-400 text-red-700
+                        {% elif message.tags == 'warning' %}bg-yellow-100 border border-yellow-400 text-yellow-700
+                        {% else %}bg-blue-100 border border-blue-400 text-blue-700{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="post" novalidate class="space-y-6">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-sm mb-6" role="alert">
+                    <strong class="font-bold">Lỗi:</strong>
+                    <ul class="list-disc list-inside mt-1">
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            {% for field in form %}
+                <div class="mb-5">
+                    <label for="{{ field.id_for_label }}" class="block text-gray-700 text-base font-semibold mb-2">
+                        {{ field.label }}{% if field.field.required %} <span class="text-red-500 text-lg">*</span>{% endif %}
+                    </label>
+                    {# Render trường form bằng widget_tweaks cho các trường input/textarea/select thông thường #}
+                    {% render_field field class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-base" %}
+
+                    {# Hiển thị help text và lỗi #}
+                    {% if field.help_text %}
+                        <p class="text-sm text-gray-500 mt-2">{{ field.help_text }}</p>
+                    {% endif %}
+                    {% if field.errors %}
+                        <div class="text-red-600 text-sm mt-2 font-medium">
+                            {% for error in field.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3 mt-8">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105">
+                    <i class="fas fa-save mr-2"></i>Lưu thay đổi
+                </button>
+                <a href="{% url 'list_category' %}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105 text-center">
+                    <i class="fas fa-times mr-2"></i>Hủy bỏ
+                </a>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock %}

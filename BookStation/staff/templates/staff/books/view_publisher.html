@@ -1,64 +1,39 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>🏢 Danh sách nhà xuất bản</title>
-    <style>
-        table {
-            width: 80%;
-            border-collapse: collapse;
-            margin: 20px auto;
-        }
-        th, td {
-            border: 1px solid #333;
-            padding: 8px 12px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .actions {
-            display: flex;
-            gap: 10px;
-        }
-        .actions form {
-            display: inline;
-        }
-        h1 {
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-    <h1>🏢 Danh sách nhà xuất bản</h1>
+{% extends 'staff/dashboard_staff.html' %}
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow">
+    <h1 class="text-2xl font-semibold text-gray-800 text-center mb-6">🏢 Danh sách nhà xuất bản</h1>
 
     {% if publishers %}
-    <table>
-        <thead>
-            <tr>
-                <th>STT</th>
-                <th>Tên nhà xuất bản</th>
-                <th>Thao tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for p in publishers %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ p.name }}</td>
-                <td class="actions">
-                    <form action="{% url 'delete_publisher' p.id %}" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xoá nhà xuất bản này không?')">
-                        {% csrf_token %}
-                        <button type="submit">🗑️ Xoá</button>
-                    </form>
-                    <a href="{% url 'change_publisher' p.id %}">✏️ Sửa</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="overflow-x-auto">
+        <table class="min-w-full table-auto border border-gray-300">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-6 py-3 border-b border-gray-300 text-left text-sm font-medium text-gray-700">STT</th>
+                    <th class="px-6 py-3 border-b border-gray-300 text-left text-sm font-medium text-gray-700">Tên nhà xuất bản</th>
+                    <th class="px-6 py-3 border-b border-gray-300 text-left text-sm font-medium text-gray-700">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in publishers %}
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 border-b border-gray-200">{{ forloop.counter }}</td>
+                    <td class="px-6 py-4 border-b border-gray-200">{{ p.name }}</td>
+                    <td class="px-6 py-4 border-b border-gray-200">
+                        <div class="flex space-x-4">
+                            <a href="{% url 'change_publisher' p.id %}" class="text-blue-500 hover:text-blue-700">✏️ Sửa</a>
+                            <form action="{% url 'delete_publisher' p.id %}" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xoá nhà xuất bản này không?')">
+                                {% csrf_token %}
+                                <button type="submit" class="text-red-500 hover:text-red-700">🗑️ Xoá</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
     {% else %}
-        <p style="text-align: center;">Không có nhà xuất bản nào trong hệ thống.</p>
+        <p class="text-center text-gray-600">Không có nhà xuất bản nào trong hệ thống.</p>
     {% endif %}
-</body>
-</html>
+</div>
+{% endblock %}

@@ -1,29 +1,19 @@
-{% load static %}
 <!DOCTYPE html>
+{% load static %}
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BookStation - Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/staff/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* Tùy chỉnh nhỏ nếu cần */
-        .sidebar {
-            transition: all 0.3s ease-in-out;
-        }
-        .sidebar.hidden {
-            transform: translateX(-100%);
-        }
-        .main-content {
-            transition: margin-left 0.3s ease-in-out;
-        }
-    </style>
+
 </head>
 <body class="bg-gray-100 font-sans antialiased">
 
     <div class="flex h-screen">
-        <aside id="sidebar" class="sidebar bg-gray-800 text-gray-100 w-64 p-4 space-y-6 flex-shrink-0 relative">
+        <aside id="sidebar" class="sidebar bg-gray-800 text-gray-100 w-64 p-4 space-y-6 flex-shrink-0">
             <div class="flex justify-between items-center mb-6">
                 <a href="{% url 'staff_dashboard' %}" class="text-2xl font-bold text-white">📚 BookStation</a>
                 <button id="sidebar-close-btn" class="lg:hidden text-gray-400 hover:text-white focus:outline-none">
@@ -71,24 +61,10 @@
                 <a href="{% url 'list_publisher' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
                     <i class="fas fa-industry mr-3"></i> 🏢 Danh sách NXB
                 </a>
-
-{#                <h3 class="text-xs uppercase text-gray-400 mt-4 mb-2">Quản lý đơn hàng</h3>#}
-{#                <a href="{% url 'list_order' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">#}
-{#                    <i class="fas fa-shopping-cart mr-3"></i> 🏢 Danh sách đơn hàng#}
-{#                </a>#}
-{#                 <a href="{% url 'add_order' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">#}
-{#                    <i class="fas fa-plus-circle mr-3"></i> ➕ Thêm đơn hàng#}
-{#                </a>#}
-{#                <a href="{% url 'add_order_item' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">#}
-{#                    <i class="fas fa-box-open mr-3"></i> ➕ Thêm sản phẩm đơn hàng#}
-{#                </a>#}
-{#                <a href="{% url 'order_item_detal' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">#}
-{#                    <i class="fas fa-clipboard-list mr-3"></i> 📋 Chi tiết sản phẩm đơn hàng#}
-{#                </a>#}
             </nav>
         </aside>
 
-        <div class="flex-1 flex flex-col overflow-hidden">
+        <div class="flex-1 flex flex-col overflow-hidden main-content">
             <header class="bg-white shadow p-4 flex justify-between items-center lg:hidden">
                 <button id="sidebar-open-btn" class="text-gray-600 hover:text-gray-900 focus:outline-none">
                     <i class="fas fa-bars text-xl"></i>
@@ -100,8 +76,8 @@
             <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
                 {% block content %}
                     <div class="bg-white p-6 rounded-lg shadow">
-                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Chào mừng đến với Dashboard</h2>
-                        <p class="text-gray-600">Sử dụng thanh điều hướng bên trái để quản lý các mục khác nhau.</p>
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Chào mừng đến với trang quản lí website</h2>
+                        <p class="text-gray-600">Sử dụng thanh điều hướng bên trái để sử dụng các chức năng.</p>
                     </div>
                 {% endblock content %}
             </main>
@@ -112,43 +88,46 @@
         const sidebar = document.getElementById('sidebar');
         const sidebarOpenBtn = document.getElementById('sidebar-open-btn');
         const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
+const mainContent = document.querySelector('.main-content');
 
-        // Hàm để ẩn/hiện sidebar
-        function toggleSidebar() {
-            sidebar.classList.toggle('hidden');
-        }
+function toggleSidebar() {
+    sidebar.classList.toggle('hidden');
+    if (!sidebar.classList.contains('hidden')) {
+        mainContent.style.marginLeft = '0';
+    } else {
+        mainContent.style.marginLeft = window.innerWidth >= 1024 ? '16rem' : '0';
+    }
+}
 
-        // Ẩn sidebar theo mặc định trên màn hình nhỏ
-        function checkScreenSize() {
-            if (window.innerWidth < 1024) { // Tailwind's 'lg' breakpoint
-                sidebar.classList.add('hidden');
-                if (sidebarOpenBtn) sidebarOpenBtn.style.display = 'block';
-            } else {
-                sidebar.classList.remove('hidden');
-                if (sidebarOpenBtn) sidebarOpenBtn.style.display = 'none';
-            }
-        }
+function checkScreenSize() {
+    if (window.innerWidth < 1024) {
+        sidebar.classList.add('hidden');
+        mainContent.style.marginLeft = '0';
+        if (sidebarOpenBtn) sidebarOpenBtn.style.display = 'block';
+    } else {
+        sidebar.classList.remove('hidden');
+        mainContent.style.marginLeft = '16rem';
+        if (sidebarOpenBtn) sidebarOpenBtn.style.display = 'none';
+    }
+}
 
-        // Gắn sự kiện cho nút mở/đóng sidebar
-        if (sidebarOpenBtn) {
-            sidebarOpenBtn.addEventListener('click', toggleSidebar);
-        }
-        if (sidebarCloseBtn) {
-            sidebarCloseBtn.addEventListener('click', toggleSidebar);
-        }
+if (sidebarOpenBtn) {
+    sidebarOpenBtn.addEventListener('click', toggleSidebar);
+}
+if (sidebarCloseBtn) {
+    sidebarCloseBtn.addEventListener('click', toggleSidebar);
+}
 
-        // Kiểm tra kích thước màn hình khi tải trang và khi thay đổi kích thước
-        checkScreenSize();
-        window.addEventListener('resize', checkScreenSize);
+checkScreenSize();
+window.addEventListener('resize', checkScreenSize);
 
-        // Đóng sidebar khi click ra ngoài trên màn hình nhỏ
-        document.addEventListener('click', function(event) {
-            // Kiểm tra xem click có nằm trong sidebar hoặc nút mở sidebar không
-            // và sidebar đang không ẩn
-            if (window.innerWidth < 1024 && !sidebar.contains(event.target) && sidebarOpenBtn && !sidebarOpenBtn.contains(event.target) && !sidebar.classList.contains('hidden')) {
-                sidebar.classList.add('hidden');
-            }
-        });
+// Đóng sidebar khi click ra ngoài trên màn hình nhỏ
+document.addEventListener('click', function(event) {
+    if (window.innerWidth < 1024 && !sidebar.contains(event.target) && sidebarOpenBtn && !sidebarOpenBtn.contains(event.target) && !sidebar.classList.contains('hidden')) {
+        sidebar.classList.add('hidden');
+        mainContent.style.marginLeft = '0';
+    }
+});
     </script>
 </body>
 </html>
