@@ -1,76 +1,3 @@
-body {
-    font-family: 'Poppins', sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f5f5f5;
-}
-header {
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(245, 241, 241, 0.1);
-    padding: 10px 20px;
-}
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
-}
-.search-container {
-    display: flex;
-    align-items: center;
-}
-.search-box {
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-right: 5px;
-}
-.search-btn {
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 12px;
-    cursor: pointer;
-}
-.icons {
-    display: flex;
-    align-items: center;
-}
-.nav-icon {
-    margin-left: 15px;
-    color: #f8f1f1;
-    text-decoration: none;
-}
-.auth-buttons button {
-    padding: 8px 12px;
-    margin-left: 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-.login {
-    background: #007bff;
-    color: white;
-}
-.register {
-    background: #28a745;
-    color: white;
-}
-.section {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-.section h3 {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    color: #333;
-}
 .book-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -153,18 +80,98 @@ header {
 .add_button:hover {
     background: #218838;
 }
-footer {
-    background: #333;
-    color: white;
-    padding: 20px;
-    text-align: center;
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    flex-wrap: wrap;
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
 }
-header {
-      background-color: #ff9800;
-    }
-.search-box {
-    border-radius: 20px;
+
+.pagination .page-item {
+    margin: 0 4px;
 }
-.search-btn {
-    border-radius: 20px;
+
+.pagination .page-link {
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    background-color: #f1f1f1;
+    color: #007bff;
+    font-weight: 500;
+    transition: background-color 0.3s, color 0.3s;
+    text-decoration: none;
+}
+
+.pagination .page-link:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.pagination .page-link:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.page-item {
+  margin: 0 3px; /* khoảng cách giữa các nút */
+}
+
+.page-item .page-link {
+    color: #007bff;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    margin: 0 5px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+.page-item .page-link:hover {
+    background-color: #e9f7ff;
+    border-color: #007bff;
+    color: #0056b3;
+}
+
+.page-item .page-link i {
+    font-size: 0.85rem;
+}
+
+.page-item .page-link {
+    font-family: 'Roboto', sans-serif;
+    color: #007bff;
+    border-radius: 5px;
+    margin: 0 5px;
+    transition: all 0.3s ease;
+}
+
+.page-item.active .page-link {
+    background: #007bff;
+    border-color: #007bff;
+    color: #ffffff;
+}
+
+.page-item .page-link:hover {
+    background: #e7f3fe;
+    color: #0056b3;
+    border-color: #b8daff;
+}
+
+.page-item .page-link i {
+    font-size: 0.9rem;
 }
