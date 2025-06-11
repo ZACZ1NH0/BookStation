@@ -34,17 +34,24 @@ def book_detail(request, pk):
 def book_search(request):
     query = request.GET.get('q', '')
     results = []
-
+    
     if query:
         results = Book.objects.filter(
             Q(title__icontains=query) |
             Q(author__name__icontains=query)  # thay 'name' bằng field thực tế của Author
         ).distinct()
+    paginator = Paginator(results, 5)  
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
 
-    return render(request, 'books/search_results.html', {
-        'query': query,
-        'results': results
-    })
+    context = {
+        'page_obj': page_obj,
+        'is_paginated': page_obj.has_other_pages(),
+        'results': page_obj.object_list,
+        'query': query  # truyền lại query để hiển thị trong form
+    }
+
+    return render(request, 'books/search_results.html', context)
 
 
 # @user_passes_test(lambda u: u.is_superuser or u.is_staff)
