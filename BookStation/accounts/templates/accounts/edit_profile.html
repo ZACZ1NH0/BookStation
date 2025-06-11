@@ -1,38 +1,37 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Chỉnh sửa hồ sơ</title>
-    <link rel="stylesheet" href="{% static 'css/home/style.css' %}">
-    {% comment %} <link rel="stylesheet" href="{% static 'accounts/edit_profile.css' %}"> {% endcomment %}
-</head>
-<body>
-    <div class="form-container">
-        <h2>Chỉnh sửa hồ sơ</h2>
 
-        <div class="messages">
-            {% if messages %}
-                {% for message in messages %}
-                    <p class="{{ message.tags }}">{{ message }}</p>
-                {% endfor %}
-            {% endif %}
-        </div>
+{% block title %}Chỉnh sửa hồ sơ{% endblock %}
 
-        <form method="post">
-            {% csrf_token %}
-            <h3>Thông tin cá nhân</h3>
-            {{ profile_form.as_p }}
+{% block content %}
+  <link rel="stylesheet" href="{% static 'css/edit_profile/style.css' %}">
+  {# Nếu bạn muốn thêm CSS riêng cho trang này, bỏ dấu comment dưới đây #}
+  {# <link rel="stylesheet" href="{% static 'accounts/edit_profile.css' %}"> #}
 
-            <h3>Đổi mật khẩu</h3>
-            {{ password_form.as_p }}
+  <div class="form-container">
+    <h2>Chỉnh sửa hồ sơ</h2>
 
-            <button type="submit">Cập nhật</button>
-        </form>
-
-        <div style="text-align: center;">
-            <a href="{% url 'home' %}">⬅ Quay về trang chủ</a>
-        </div>
+    <div class="messages">
+      {% if messages %}
+        {% for message in messages %}
+          <p class="{{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
     </div>
-</body>
-</html>
+
+    <form method="post">
+      {% csrf_token %}
+      <h3>Thông tin cá nhân</h3>
+      {{ profile_form.as_p }}
+
+      <h3>Đổi mật khẩu</h3>
+      {{ password_form.as_p }}
+
+      <button type="submit">Cập nhật</button>
+    </form>
+
+    <div style="text-align: center; margin-top: 1em;">
+      <a href="{% url 'home' %}">⬅ Quay về trang chủ</a>
+    </div>
+  </div>
+{% endblock %}
