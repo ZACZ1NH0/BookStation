@@ -1,134 +1,127 @@
-{#<!DOCTYPE html>#}
-{#<html lang="vi">#}
-{#<head>#}
-{#    <meta charset="UTF-8">#}
-{#    <title>📚 Danh sách sách</title>#}
-{#    <style>#}
-{#        table {#}
-{#            width: 80%;#}
-{#            border-collapse: collapse;#}
-{#            margin: 20px auto;#}
-{#        }#}
-{#        th, td {#}
-{#            border: 1px solid #333;#}
-{#            padding: 8px 12px;#}
-{#            text-align: left;#}
-{#        }#}
-{#        th {#}
-{#            background-color: #f2f2f2;#}
-{#        }#}
-{#        .actions {#}
-{#            display: flex;#}
-{#            gap: 10px;#}
-{#        }#}
-{#        .actions form {#}
-{#            display: inline;#}
-{#        }#}
-{#        h1 {#}
-{#            text-align: center;#}
-{#        }#}
-{#    </style>#}
-{#</head>#}
-{#<body>#}
-{#    <h1>📚 Danh sách sách</h1>#}
-{##}
-{#    {% if books %}#}
-{#    <table>#}
-{#        <thead>#}
-{#            <tr>#}
-{#                <th>ID</th>#}
-{#                <th>Tiêu đề</th>#}
-{#                <th>Tác giả</th>#}
-{#                <th>Thao tác</th>#}
-{#            </tr>#}
-{#        </thead>#}
-{#        <tbody>#}
-{#            {% for b in books %}#}
-{#            <tr>#}
-{#                <td>{{ b.id }}</td>#}
-{#                <td>{{ b.title }}</td>#}
-{#                <td>{{ b.author }}</td>#}
-{#                <td class="actions">#}
-{#                    <form action="{% url 'book_delete' b.id %}" method="post" onsubmit="#}
-{#                    return confirm('Bạn có chắc chắn muốn xoá sách này không?')">#}
-{#                     {% csrf_token %}#}
-{#                        <button type="submit">🗑️ Xoá</button>#}
-{#                    </form>#}
-{##}
-{#                    <a href="{% url 'book_change' b.id %}">✏️ Sửa</a>#}
-{#                </td>#}
-{#            </tr>#}
-{#            {% endfor %}#}
-{#        </tbody>#}
-{#    </table>#}
-{#    {% else %}#}
-{#        <p style="text-align: center;">Không có sách nào trong hệ thống.</p>#}
-{#    {% endif %}#}
-{#</body>#}
-{#</html>#}
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>📚 Danh sách sách</title>
-    <style>
-        table {
-            width: 80%;
-            border-collapse: collapse;
-            margin: 20px auto;
-        }
-        th, td {
-            border: 1px solid #333;
-            padding: 8px 12px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .actions {
-            display: flex;
-            gap: 10px;
-        }
-        .actions form {
-            display: inline;
-        }
-        h1 {
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
-    <h1>📚 Danh sách sách</h1>
+{% extends 'staff/dashboard_staff.html' %}
+{% load static %}
+{% load widget_tweaks %}
 
-    {% if books %}
-    <table>
-        <thead>
-            <tr>
-                <th>STT</th> <!-- Số thứ tự -->
-                <th>Tiêu đề</th>
-                <th>Tác giả</th>
-                <th>Thao tác</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for b in books %}
-            <tr>
-                <td>{{ forloop.counter }}</td>
-                <td>{{ b.title }}</td>
-                <td>{{ b.author }}</td>
-                <td class="actions">
-                    <form action="{% url 'book_delete' b.id %}" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xoá sách này không?')">
-                        {% csrf_token %}
-                        <button type="submit">🗑️ Xoá</button>
-                    </form>
-                    <a href="{% url 'book_change' b.id %}">✏️ Sửa</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
-        <p style="text-align: center;">Không có sách nào trong hệ thống.</p>
-    {% endif %}
-</body>
-</html>
+{% block content %}
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+            <i class="fas fa-book mr-3"></i> 📚 Danh sách sách
+        </h2>
+
+        {# Đã sửa action của form để trỏ đúng URL của list_book_view #}
+        <form method="get" action="{% url 'view_list_book' %}" class="mb-6 flex items-center space-x-3">
+            <div class="relative flex-grow">
+                {# Giữ nguyên cách sử dụng render_field của bạn, đảm bảo có name="q" và id. #}
+{#                {% render_field request.GET.q|attr:"id:id_q"|attr:"name:q"|attr:"placeholder:Tìm kiếm sách theo tiêu đề hoặc tác giả..." #}
+{#                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value=query %}#}
+                <input type="text" name="q" placeholder="Tìm kiếm sách theo tên hoặc tác giả..."
+                       value="{{ query|default:'' }}"
+                       class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-search text-gray-400"></i>
+                </div>
+            </div>
+            <button type="submit"
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200">
+                🔍 Tìm kiếm
+            </button>
+        </form>
+
+        {% if books %}
+            <div class="overflow-x-auto rounded-lg shadow-sm border border-gray-200">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">STT</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ảnh</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tiêu đề</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tác giả</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Giá</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tồn kho</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for b in books %}
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                {{ forloop.counter0|add:books.start_index }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                {# Đảm bảo đây là tên trường ảnh đúng trong Book model của bạn #}
+                                {% if b.cover_image %}
+                                    <img src="{{ b.cover_image.url }}" alt="{{ b.title }}" class="h-16 w-12 object-cover rounded-md">
+                                {% else %}
+                                    <div class="h-16 w-12 bg-gray-200 flex items-center justify-center text-xs text-gray-500 rounded-md text-center">
+                                        Không ảnh
+                                    </div>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ b.title }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ b.author }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ b.price|floatformat:"0" }} đ</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ b.stock }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex items-center space-x-3"> {# Thêm flexbox để các nút nằm ngang #}
+                                <a href="{% url 'book_change' pk=b.id %}" {# Cập nhật URL để khớp với tên hàm view trong views.py và namespace staff #}
+                                   class="text-indigo-600 hover:text-indigo-900 transition duration-200">
+                                    ✏️ Sửa
+                                </a>
+                                <form action="{% url 'book_delete' pk=b.id %}" method="post" {# Cập nhật URL để khớp với tên hàm view trong views.py và namespace staff #}
+                                      onsubmit="return confirm('Bạn có chắc chắn muốn xoá sách &quot;{{ b.title }}&quot; này không?');"
+                                      class="inline"> {# Thêm inline để form không xuống dòng khi có flex #}
+                                    {% csrf_token %}
+                                    <button type="submit"
+                                            class="text-red-600 hover:text-red-900 transition duration-200">
+                                        🗑️ Xoá
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {# Pagination (phân trang) #}
+            {# ĐÃ BỎ ĐIỀU KIỆN 'if books.has_other_pages' ĐỂ LUÔN HIỆN THÔNG TIN TRANG #}
+            <div class="flex justify-between items-center mt-6">
+                <div>
+                    {% if books.has_previous %}
+                        <a href="?page={{ books.previous_page_number }}{% if query %}&q={{ query }}{% endif %}"
+                           class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l transition duration-200">
+                            <i class="fas fa-arrow-left mr-2"></i> Trước
+                        </a>
+                    {% else %}
+                        <span class="bg-gray-200 text-gray-500 font-bold py-2 px-4 rounded-l cursor-not-allowed">
+                            <i class="fas fa-arrow-left mr-2"></i> Trước
+                        </span>
+                    {% endif %}
+                </div>
+
+                <div class="text-gray-700">
+                    Trang {{ books.number }} trên {{ books.paginator.num_pages }}
+                </div>
+
+                <div>
+                    {% if books.has_next %}
+                        <a href="?page={{ books.next_page_number }}{% if query %}&q={{ query }}{% endif %}"
+                           class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r transition duration-200">
+                            Tiếp <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    {% else %}
+                        <span class="bg-gray-200 text-gray-500 font-bold py-2 px-4 rounded-r cursor-not-allowed">
+                            Tiếp <i class="fas fa-arrow-right ml-2"></i>
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+            {# Kết thúc phần phân trang #}
+
+        {% else %}
+            <div class="bg-white p-6 rounded-lg shadow-md text-center text-gray-600">
+                <p>Không có sách nào trong hệ thống.</p>
+
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}

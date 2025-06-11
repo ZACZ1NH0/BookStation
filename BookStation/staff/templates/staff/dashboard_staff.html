@@ -1,110 +1,154 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>📊 Trang nhân viên</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookStation - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
-            padding: 30px;
-            color: #333;
+        /* Tùy chỉnh nhỏ nếu cần */
+        .sidebar {
+            transition: all 0.3s ease-in-out;
         }
-
-        h1 {
-            text-align: center;
-            color: #007bff;
+        .sidebar.hidden {
+            transform: translateX(-100%);
         }
-
-        p {
-            text-align: center;
-            font-size: 1.1em;
-        }
-
-        .dashboard {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            max-width: 800px;
-            margin: 30px auto;
-        }
-
-        .card {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            transition: transform 0.2s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-        }
-
-        .card a {
-            text-decoration: none;
-            color: #007bff;
-            font-weight: bold;
-            font-size: 1em;
-        }
-
-        .card a:hover {
-            text-decoration: underline;
-        }
-
-        .emoji {
-            font-size: 1.5em;
-            display: block;
-            margin-bottom: 8px;
+        .main-content {
+            transition: margin-left 0.3s ease-in-out;
         }
     </style>
 </head>
-<body>
-    <h1>Chào {{ request.user.username }}!</h1>
-    <p>Đây là trang dashboard của nhân viên.</p>
+<body class="bg-gray-100 font-sans antialiased">
 
-    <div class="dashboard">
-        <div class="card">
-            <span class="emoji">➕</span>
-            <a href="{% url 'add_user' %}">Thêm người dùng mới</a>
-        </div>
-        <div class="card">
-            <span class="emoji">📋</span>
-            <a href="{% url 'list_user' %}">Xem danh sách người dùng</a>
-        </div>
-        <div class="card">
-            <span class="emoji">➕</span>
-            <a href="{% url 'book_add' %}">Thêm sách mới</a>
-        </div>
-        <div class="card">
-            <span class="emoji">📚</span>
-            <a href="{% url 'view_list_book' %}">Xem danh sách sách</a>
-        </div>
-        <div class="card">
-            <span class="emoji">➕</span>
-            <a href="{% url 'add_author' %}">Thêm tác giả mới</a>
-        </div>
-        <div class="card">
-            <span class="emoji">📖</span>
-            <a href="{% url 'list_authors' %}">Xem danh sách tác giả</a>
-        </div>
-        <div class="card">
-            <span class="emoji">➕</span>
-            <a href="{% url 'add_category' %}">Thêm danh mục mới</a>
-        </div>
-        <div class="card">
-            <span class="emoji">📂</span>
-            <a href="{% url 'list_category' %}">Xem danh sách danh mục</a>
-        </div>
-        <div class="card">
-            <span class="emoji">➕</span>
-            <a href="{% url 'add_publisher' %}">Thêm nhà xuất bản mới</a>
-        </div>
-        <div class="card">
-            <span class="emoji">🏢</span>
-            <a href="{% url 'list_publisher' %}">Xem danh sách nhà xuất bản</a>
+    <div class="flex h-screen">
+        <aside id="sidebar" class="sidebar bg-gray-800 text-gray-100 w-64 p-4 space-y-6 flex-shrink-0 relative">
+            <div class="flex justify-between items-center mb-6">
+                <a href="{% url 'staff_dashboard' %}" class="text-2xl font-bold text-white">📚 BookStation</a>
+                <button id="sidebar-close-btn" class="lg:hidden text-gray-400 hover:text-white focus:outline-none">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <nav>
+                <h3 class="text-xs uppercase text-gray-400 mb-2">Quản lý người dùng</h3>
+                <a href="{% url 'add_user' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
+                    <i class="fas fa-user-plus mr-3"></i> ➕ Thêm người dùng
+                </a>
+                <a href="{% url 'list_user' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
+                    <i class="fas fa-users mr-3"></i> 📋 Danh sách người dùng
+                </a>
+
+                <h3 class="text-xs uppercase text-gray-400 mt-4 mb-2">Quản lý sách</h3>
+                <a href="{% url 'book_add' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
+                    <i class="fas fa-plus-square mr-3"></i> ➕ Thêm sách
+                </a>
+                <a href="{% url 'view_list_book' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
+                    <i class="fas fa-book mr-3"></i> 📚 Danh sách sách
+                </a>
+
+                <h3 class="text-xs uppercase text-gray-400 mt-4 mb-2">Quản lý tác giả</h3>
+                <a href="{% url 'add_author' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
+                    <i class="fas fa-user-edit mr-3"></i> ➕ Thêm tác giả
+                </a>
+                <a href="{% url 'list_authors' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
+                    <i class="fas fa-feather-alt mr-3"></i> 📖 Danh sách tác giả
+                </a>
+
+                <h3 class="text-xs uppercase text-gray-400 mt-4 mb-2">Quản lý danh mục</h3>
+                <a href="{% url 'add_category' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
+                    <i class="fas fa-folder-plus mr-3"></i> ➕ Thêm danh mục
+                </a>
+                <a href="{% url 'list_category' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
+                    <i class="fas fa-folder-open mr-3"></i> 📂 Danh sách danh mục
+                </a>
+
+                <h3 class="text-xs uppercase text-gray-400 mt-4 mb-2">Quản lý NXB</h3>
+                <a href="{% url 'add_publisher' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
+                    <i class="fas fa-building mr-3"></i> ➕ Thêm NXB
+                </a>
+                <a href="{% url 'list_publisher' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
+                    <i class="fas fa-industry mr-3"></i> 🏢 Danh sách NXB
+                </a>
+
+{#                <h3 class="text-xs uppercase text-gray-400 mt-4 mb-2">Quản lý đơn hàng</h3>#}
+{#                <a href="{% url 'list_order' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">#}
+{#                    <i class="fas fa-shopping-cart mr-3"></i> 🏢 Danh sách đơn hàng#}
+{#                </a>#}
+{#                 <a href="{% url 'add_order' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">#}
+{#                    <i class="fas fa-plus-circle mr-3"></i> ➕ Thêm đơn hàng#}
+{#                </a>#}
+{#                <a href="{% url 'add_order_item' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">#}
+{#                    <i class="fas fa-box-open mr-3"></i> ➕ Thêm sản phẩm đơn hàng#}
+{#                </a>#}
+{#                <a href="{% url 'order_item_detal' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">#}
+{#                    <i class="fas fa-clipboard-list mr-3"></i> 📋 Chi tiết sản phẩm đơn hàng#}
+{#                </a>#}
+            </nav>
+        </aside>
+
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="bg-white shadow p-4 flex justify-between items-center lg:hidden">
+                <button id="sidebar-open-btn" class="text-gray-600 hover:text-gray-900 focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <h1 class="text-xl font-semibold text-gray-800">BookStation Dashboard</h1>
+                <div></div>
+            </header>
+
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
+                {% block content %}
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Chào mừng đến với Dashboard</h2>
+                        <p class="text-gray-600">Sử dụng thanh điều hướng bên trái để quản lý các mục khác nhau.</p>
+                    </div>
+                {% endblock content %}
+            </main>
         </div>
     </div>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOpenBtn = document.getElementById('sidebar-open-btn');
+        const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
+
+        // Hàm để ẩn/hiện sidebar
+        function toggleSidebar() {
+            sidebar.classList.toggle('hidden');
+        }
+
+        // Ẩn sidebar theo mặc định trên màn hình nhỏ
+        function checkScreenSize() {
+            if (window.innerWidth < 1024) { // Tailwind's 'lg' breakpoint
+                sidebar.classList.add('hidden');
+                if (sidebarOpenBtn) sidebarOpenBtn.style.display = 'block';
+            } else {
+                sidebar.classList.remove('hidden');
+                if (sidebarOpenBtn) sidebarOpenBtn.style.display = 'none';
+            }
+        }
+
+        // Gắn sự kiện cho nút mở/đóng sidebar
+        if (sidebarOpenBtn) {
+            sidebarOpenBtn.addEventListener('click', toggleSidebar);
+        }
+        if (sidebarCloseBtn) {
+            sidebarCloseBtn.addEventListener('click', toggleSidebar);
+        }
+
+        // Kiểm tra kích thước màn hình khi tải trang và khi thay đổi kích thước
+        checkScreenSize();
+        window.addEventListener('resize', checkScreenSize);
+
+        // Đóng sidebar khi click ra ngoài trên màn hình nhỏ
+        document.addEventListener('click', function(event) {
+            // Kiểm tra xem click có nằm trong sidebar hoặc nút mở sidebar không
+            // và sidebar đang không ẩn
+            if (window.innerWidth < 1024 && !sidebar.contains(event.target) && sidebarOpenBtn && !sidebarOpenBtn.contains(event.target) && !sidebar.classList.contains('hidden')) {
+                sidebar.classList.add('hidden');
+            }
+        });
+    </script>
 </body>
 </html>

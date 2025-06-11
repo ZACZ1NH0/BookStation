@@ -30,7 +30,7 @@ class Category(models.Model):
 
 class Book(models.Model):
     title = models.CharField(max_length=200)
-    price = models.DecimalField(max_digits=6, decimal_places=2)  
+    price = models.DecimalField(max_digits=8, decimal_places=4)
     description = models.TextField(blank=True)        
     stock = models.PositiveIntegerField(default=0)    #tồn kho
     cover_image = models.ImageField(upload_to='book_covers/', blank=True, null=True)  
