@@ -8,7 +8,7 @@ from django.db.models import Q
 def book_list(request):
     Book.cover_image.field.upload_to = 'book_covers/'  # Đảm bảo đường dẫn đúng
     books = Book.objects.all()
-    paginator = Paginator(books, 10)  
+    paginator = Paginator(books, 12)  
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     

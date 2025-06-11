@@ -1,0 +1,125 @@
+/* General body styling */
+
+/* Profile container styling */
+.profile-container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+    margin-top: 20px;
+}
+
+/* Headings */
+.profile-container h2 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 2em;
+    font-weight: 600;
+}
+
+.profile-container h3 {
+    color: #555;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* User information list */
+.user-info {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.user-info li {
+    background-color: #f9f9f9;
+    margin-bottom: 10px;
+    padding: 12px 15px;
+    border-radius: 5px;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    font-size: 1.1em;
+    color: #444;
+}
+
+.user-info li strong {
+    color: #333;
+    margin-right: 8px;
+    min-width: 120px; /* Align the values nicely */
+}
+
+/* Messages styling (for success, error, etc.) */
+.messages {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.messages li {
+    padding: 12px 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.messages .success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.messages .error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.messages .warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.messages .info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* Save button styling */
+.save-button {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none; /* In case it's on an anchor tag */
+    text-align: center;
+    box-sizing: border-box; /* Include padding in width */
+}
+
+.save-button:hover {
+    background-color: #0056b3;
+}
+
+/* Horizontal rule */
+hr {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0));
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
