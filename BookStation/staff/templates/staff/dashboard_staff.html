@@ -15,7 +15,7 @@
     <div class="flex h-screen">
         <aside id="sidebar" class="sidebar bg-gray-800 text-gray-100 w-64 p-4 space-y-6 flex-shrink-0">
             <div class="flex justify-between items-center mb-6">
-                <a href="{% url 'staff_dashboard' %}" class="text-2xl font-bold text-white">📚 BookStation</a>
+                <a href="{% url 'staff_dashboard' %}" class="text-2xl font-bold text-white"> BookStation</a>
                 <button id="sidebar-close-btn" class="lg:hidden text-gray-400 hover:text-white focus:outline-none">
                     <i class="fas fa-times text-xl"></i>
                 </button>
@@ -24,42 +24,42 @@
             <nav>
                 <h3 class="text-xs uppercase text-gray-400 mb-2">Quản lý người dùng</h3>
                 <a href="{% url 'add_user' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
-                    <i class="fas fa-user-plus mr-3"></i> ➕ Thêm người dùng
+                    <i class="fas fa-user-plus mr-3"></i>  Thêm người dùng
                 </a>
                 <a href="{% url 'list_user' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
-                    <i class="fas fa-users mr-3"></i> 📋 Danh sách người dùng
+                    <i class="fas fa-users mr-3"></i>  Danh sách người dùng
                 </a>
 
                 <h3 class="text-xs uppercase text-gray-400 mt-4 mb-2">Quản lý sách</h3>
                 <a href="{% url 'book_add' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
-                    <i class="fas fa-plus-square mr-3"></i> ➕ Thêm sách
+                    <i class="fas fa-plus-square mr-3"></i>  Thêm sách
                 </a>
                 <a href="{% url 'view_list_book' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
-                    <i class="fas fa-book mr-3"></i> 📚 Danh sách sách
+                    <i class="fas fa-book mr-3"></i>  Kho sách
                 </a>
 
                 <h3 class="text-xs uppercase text-gray-400 mt-4 mb-2">Quản lý tác giả</h3>
                 <a href="{% url 'add_author' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
-                    <i class="fas fa-user-edit mr-3"></i> ➕ Thêm tác giả
+                    <i class="fas fa-user-edit mr-3"></i>  Thêm tác giả
                 </a>
                 <a href="{% url 'list_authors' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
-                    <i class="fas fa-feather-alt mr-3"></i> 📖 Danh sách tác giả
+                    <i class="fas fa-feather-alt mr-3"></i>  Danh sách tác giả
                 </a>
 
                 <h3 class="text-xs uppercase text-gray-400 mt-4 mb-2">Quản lý danh mục</h3>
                 <a href="{% url 'add_category' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
-                    <i class="fas fa-folder-plus mr-3"></i> ➕ Thêm danh mục
+                    <i class="fas fa-folder-plus mr-3"></i>  Thêm thể loại
                 </a>
                 <a href="{% url 'list_category' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
-                    <i class="fas fa-folder-open mr-3"></i> 📂 Danh sách danh mục
+                    <i class="fas fa-folder-open mr-3"></i>  Danh sách thể loại
                 </a>
 
                 <h3 class="text-xs uppercase text-gray-400 mt-4 mb-2">Quản lý NXB</h3>
                 <a href="{% url 'add_publisher' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
-                    <i class="fas fa-building mr-3"></i> ➕ Thêm NXB
+                    <i class="fas fa-building mr-3"></i>  Thêm NXB
                 </a>
                 <a href="{% url 'list_publisher' %}" class="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
-                    <i class="fas fa-industry mr-3"></i> 🏢 Danh sách NXB
+                    <i class="fas fa-industry mr-3"></i>  Danh sách NXB
                 </a>
             </nav>
         </aside>
@@ -75,10 +75,12 @@
 
             <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
                 {% block content %}
-                    <div class="bg-white p-6 rounded-lg shadow">
-                        <h2 class="text-2xl font-semibold text-gray-800 mb-4">Chào mừng đến với trang quản lí website</h2>
-                        <p class="text-gray-600">Sử dụng thanh điều hướng bên trái để sử dụng các chức năng.</p>
-                    </div>
+                    <a href="{% url 'home' %}" class="inline-block mb-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-200">
+                    🔙 Trở về trang chính</a>
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Chào mừng đến với trang quản lí website</h2>
+                <p class="text-gray-600">Sử dụng thanh điều hướng bên trái để sử dụng các chức năng.</p>
+            </div>
                 {% endblock content %}
             </main>
         </div>
@@ -121,7 +123,6 @@ if (sidebarCloseBtn) {
 checkScreenSize();
 window.addEventListener('resize', checkScreenSize);
 
-// Đóng sidebar khi click ra ngoài trên màn hình nhỏ
 document.addEventListener('click', function(event) {
     if (window.innerWidth < 1024 && !sidebar.contains(event.target) && sidebarOpenBtn && !sidebarOpenBtn.contains(event.target) && !sidebar.classList.contains('hidden')) {
         sidebar.classList.add('hidden');

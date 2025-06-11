@@ -4,13 +4,13 @@
 {% block content %}
     <div class="bg-white p-6 rounded-lg shadow-md">
         <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-            <i class="fas fa-users mr-3"></i> 📋 Danh sách người dùng
+            <i class="fas fa-users mr-3"></i>  Danh sách người dùng
         </h2>
 
-        {# Đã sửa action của form để trỏ đúng URL #}
+
         <form method="get" action="{% url 'list_user' %}" class="mb-6 flex items-center space-x-3">
             <div class="relative flex-grow">
-                {# Giữ nguyên input HTML gốc của bạn. 'name="q"' là quan trọng để tìm kiếm hoạt động. #}
+
                 <input type="text" name="q" placeholder="Tìm kiếm người dùng..."
                        value="{{ query|default:'' }}"
                        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -43,8 +43,8 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ u.first_name }} {{ u.last_name }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ u.email }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            {% if can_change_user %} {# Giữ nguyên biến 'can_change_user' như trong code gốc của bạn #}
-                                <a href="{% url 'change_user' user_id=u.id %}" {# Cập nhật URL để khớp với tên hàm view trong views.py #}
+                            {% if can_change_user %}
+                                <a href="{% url 'change_user' user_id=u.id %}"
                                    class="text-indigo-600 hover:text-indigo-900 mr-4 transition duration-200">
                                     ✏️ Sửa
                                 </a>
@@ -64,8 +64,7 @@
             </table>
         </div>
 
-        {# Pagination (phân trang) #}
-        {# ĐÃ BỎ ĐIỀU KIỆN 'if users.has_other_pages' ĐỂ LUÔN HIỆN THÔNG TIN TRANG #}
+
         <div class="flex justify-between items-center mt-6">
             <div>
                 {% if users.has_previous %}
@@ -97,10 +96,6 @@
                 {% endif %}
             </div>
         </div>
-        {# Kết thúc phần phân trang #}
 
-{#        <a href="{% url 'staff_dashboard' %}" class="mt-6 inline-block bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg transition duration-200">#}
-{#            ⬅️ Về dashboard#}
-{#        </a>#}
     </div>
 {% endblock content %}
