@@ -47,8 +47,28 @@ def create_order(request):
             total += subtotal
 
     if request.method == 'POST' and selected_cart:
+        # Xử lý khuyến mãi nếu có
+        promotion_id = request.POST.get('promotion_id')
+        discount_amount = Decimal(request.POST.get('discount_amount', '0'))
+        final_total = total - float(discount_amount)
+        
         # Lưu đơn hàng
-        order = Order.objects.create(customer=request.user, note=request.POST.get('note', ''))
+        order = Order.objects.create(
+            customer=request.user, 
+            note=request.POST.get('note', ''),
+            total_amount=final_total
+        )
+        
+        # Ghi lại việc sử dụng khuyến mãi nếu có
+        if promotion_id and discount_amount > 0:
+            from promotions.models import Promotion
+            from promotions.views import record_promotion_usage
+            try:
+                promotion = Promotion.objects.get(id=promotion_id)
+                record_promotion_usage(promotion, request.user, str(order.id), discount_amount)
+            except Promotion.DoesNotExist:
+                pass
+        
         from books.models import Book
         for key, item in selected_cart.items():
             OrderItem.objects.create(
