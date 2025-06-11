@@ -174,17 +174,6 @@ def publisher_detail(request, pk):
         'books': books
     })
 
-# @user_passes_test(lambda u: u.is_superuser)
-# def publisher_add(request):
-#     if request.method == 'POST':
-#         form = PublisherForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('publishers:publisher_list')
-#     else:
-#         form = PublisherForm()
-#     return render(request, 'publishers/publisher_form.html', {'form': form, 'title': 'Add Publisher'})
-
 @user_passes_test(lambda u: u.is_superuser)
 def publisher_edit(request, pk):
     publisher = get_object_or_404(Publisher, pk=pk)

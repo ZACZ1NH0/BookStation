@@ -13,12 +13,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            if user.is_superuser:
-                return redirect('home')
-            elif user.is_staff:
-                return redirect('home')
-            else:
-                return redirect('home')
+            return redirect('home')
         else:
             messages.error(request, 'Tài khoản hoặc mật khẩu không đúng!')
 

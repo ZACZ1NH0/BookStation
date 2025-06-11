@@ -1,14 +1,14 @@
 {% extends 'staff/dashboard_staff.html' %}
 {% load static %}
-{% load widget_tweaks %} {# <-- Thêm dòng này #}
+{% load widget_tweaks %}
 
 {% block content %}
     <div class="bg-white p-6 rounded-lg shadow-md max-w-lg mx-auto mt-8">
         <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center flex items-center justify-center">
-            <i class="fas fa-user-plus mr-3"></i> ➕ Thêm người dùng mới
+            <i class="fas fa-user-plus mr-3"></i>  Thêm người dùng mới
         </h2>
 
-        {# Hiển thị thông báo (từ Django messages framework) #}
+
         {% if messages %}
             <div class="mb-4">
                 {% for message in messages %}
@@ -26,7 +26,7 @@
         <form method="post" class="space-y-4">
             {% csrf_token %}
 
-            {# Hiển thị lỗi tổng quát của form (non-field errors) #}
+
             {% if form.non_field_errors %}
                 <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                     <strong class="font-bold">Lỗi:</strong>
@@ -38,7 +38,7 @@
                 </div>
             {% endif %}
 
-            {# Lặp qua từng trường trong form để hiển thị #}
+
             {% for field in form %}
                 <div class="mb-4">
                     <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
@@ -47,8 +47,7 @@
                             <span class="text-red-500">*</span>
                         {% endif %}
                     </label>
-                    {# Sử dụng |add_class để thêm Tailwind classes #}
-                    {# Thêm placeholder và icon nếu bạn muốn, sử dụng |attr:"placeholder:Giá trị" #}
+
                     {% render_field field class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %}
 
                     {% if field.help_text %}

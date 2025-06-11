@@ -8,7 +8,7 @@
             <i class="fas fa-user-edit mr-3"></i> Chỉnh sửa người dùng: <span class="text-blue-600 ml-2">{{ user.username }}</span>
         </h2>
 
-        {# Hiển thị thông báo (từ Django messages framework) #}
+
         {% if messages %}
             <div class="mb-4">
                 {% for message in messages %}
@@ -23,17 +23,17 @@
             </div>
         {% endif %}
 
-        {# Form chỉnh sửa thông tin cá nhân #}
+
         <div class="mb-8 p-6 border border-gray-200 rounded-lg shadow-sm">
             <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center">
                 <i class="fas fa-info-circle mr-2"></i> Thông tin cá nhân
             </h3>
             <form method="post" class="space-y-4">
                 {% csrf_token %}
-                {# Thêm một trường ẩn để xác định form nào đang được submit #}
+
                 <input type="hidden" name="form_type" value="profile_form">
 
-                {# Hiển thị lỗi tổng quát của form #}
+
                 {% if form.non_field_errors %}
                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                         <strong class="font-bold">Lỗi:</strong>
@@ -77,17 +77,17 @@
             </form>
         </div>
 
-        {# Form đổi mật khẩu #}
+
         <div class="mb-8 p-6 border border-gray-200 rounded-lg shadow-sm">
             <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center">
                 <i class="fas fa-key mr-2"></i> Đổi mật khẩu
             </h3>
             <form method="post" class="space-y-4">
                 {% csrf_token %}
-                {# Thêm một trường ẩn để xác định form nào đang được submit #}
+
                 <input type="hidden" name="form_type" value="password_form">
 
-                {# Hiển thị lỗi tổng quát của form #}
+
                 {% if password_form.non_field_errors %}
                     <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                         <strong class="font-bold">Lỗi:</strong>

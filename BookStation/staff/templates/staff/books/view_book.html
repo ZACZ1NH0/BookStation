@@ -1,19 +1,18 @@
 {% extends 'staff/dashboard_staff.html' %}
 {% load static %}
 {% load widget_tweaks %}
+{% load humanize %}
 
 {% block content %}
     <div class="bg-white p-6 rounded-lg shadow-md">
         <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
-            <i class="fas fa-book mr-3"></i> 📚 Danh sách sách
+            <i class="fas fa-book mr-3"></i>  Danh sách sách
         </h2>
 
-        {# Đã sửa action của form để trỏ đúng URL của list_book_view #}
+
         <form method="get" action="{% url 'view_list_book' %}" class="mb-6 flex items-center space-x-3">
             <div class="relative flex-grow">
-                {# Giữ nguyên cách sử dụng render_field của bạn, đảm bảo có name="q" và id. #}
-{#                {% render_field request.GET.q|attr:"id:id_q"|attr:"name:q"|attr:"placeholder:Tìm kiếm sách theo tiêu đề hoặc tác giả..." #}
-{#                class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" value=query %}#}
+
                 <input type="text" name="q" placeholder="Tìm kiếm sách theo tên hoặc tác giả..."
                        value="{{ query|default:'' }}"
                        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -48,7 +47,7 @@
                                 {{ forloop.counter0|add:books.start_index }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                {# Đảm bảo đây là tên trường ảnh đúng trong Book model của bạn #}
+
                                 {% if b.cover_image %}
                                     <img src="{{ b.cover_image.url }}" alt="{{ b.title }}" class="h-16 w-12 object-cover rounded-md">
                                 {% else %}
@@ -59,16 +58,16 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ b.title }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ b.author }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ b.price|floatformat:"0" }} đ</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${{ b.price|floatformat:"0"|intcomma }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ b.stock }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium flex items-center space-x-3"> {# Thêm flexbox để các nút nằm ngang #}
-                                <a href="{% url 'book_change' pk=b.id %}" {# Cập nhật URL để khớp với tên hàm view trong views.py và namespace staff #}
+                                <a href="{% url 'book_change' pk=b.id %}"
                                    class="text-indigo-600 hover:text-indigo-900 transition duration-200">
                                     ✏️ Sửa
                                 </a>
                                 <form action="{% url 'book_delete' pk=b.id %}" method="post" {# Cập nhật URL để khớp với tên hàm view trong views.py và namespace staff #}
                                       onsubmit="return confirm('Bạn có chắc chắn muốn xoá sách &quot;{{ b.title }}&quot; này không?');"
-                                      class="inline"> {# Thêm inline để form không xuống dòng khi có flex #}
+                                      class="inline">
                                     {% csrf_token %}
                                     <button type="submit"
                                             class="text-red-600 hover:text-red-900 transition duration-200">
@@ -82,8 +81,7 @@
                 </table>
             </div>
 
-            {# Pagination (phân trang) #}
-            {# ĐÃ BỎ ĐIỀU KIỆN 'if books.has_other_pages' ĐỂ LUÔN HIỆN THÔNG TIN TRANG #}
+
             <div class="flex justify-between items-center mt-6">
                 <div>
                     {% if books.has_previous %}
@@ -115,7 +113,7 @@
                     {% endif %}
                 </div>
             </div>
-            {# Kết thúc phần phân trang #}
+
 
         {% else %}
             <div class="bg-white p-6 rounded-lg shadow-md text-center text-gray-600">
