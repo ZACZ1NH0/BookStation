@@ -13,20 +13,20 @@ class BookImportForm(forms.Form):
     image_zip = forms.FileField(label="File ZIP chứa ảnh bìa sách", required=True)
 
 
-class StaffOrderForm(OrderForm):
-    class Meta(OrderForm.Meta):
-        fields = ['status', 'note']  # Thêm status
-        widgets = {
-            'status': forms.Select(attrs={'class': 'w-full p-2 border rounded'}),
-            'note': forms.Textarea(attrs={'rows': 3, 'class': 'w-full p-2 border rounded'}),
-        }
-
-class StaffOrderItemFormSet(BaseOrderItemFormSet):
-    def clean(self):
-        super().clean()
-        for form in self.forms:
-            if not form.cleaned_data.get('DELETE'):
-                book = form.cleaned_data.get('book')
-                quantity = form.cleaned_data.get('quantity')
-                if book and quantity and quantity > book.stock:
-                    raise forms.ValidationError(f"Sách {book.title} chỉ còn {book.stock} cuốn.")
+# class StaffOrderForm(OrderForm):
+#     class Meta(OrderForm.Meta):
+#         fields = ['status', 'note']  # Thêm status
+#         widgets = {
+#             'status': forms.Select(attrs={'class': 'w-full p-2 border rounded'}),
+#             'note': forms.Textarea(attrs={'rows': 3, 'class': 'w-full p-2 border rounded'}),
+#         }
+#
+# class StaffOrderItemFormSet(BaseOrderItemFormSet):
+#     def clean(self):
+#         super().clean()
+#         for form in self.forms:
+#             if not form.cleaned_data.get('DELETE'):
+#                 book = form.cleaned_data.get('book')
+#                 quantity = form.cleaned_data.get('quantity')
+#                 if book and quantity and quantity > book.stock:
+#                     raise forms.ValidationError(f"Sách {book.title} chỉ còn {book.stock} cuốn.")

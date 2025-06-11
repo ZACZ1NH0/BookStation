@@ -93,15 +93,10 @@ def import_books_json(request):
             data = json.load(json_file)
 
             for book_data in data:
-                # Tạo hoặc lấy Author
                 author_name = book_data.get('author', 'Unknown')
                 author_obj, _ = Author.objects.get_or_create(name=author_name)
-
-                # Tạo hoặc lấy Publisher
                 publisher_name = book_data.get('publisher', 'Unknown')
                 publisher_obj, _ = Publisher.objects.get_or_create(name=publisher_name)
-
-                # Tạo sách
                 book = Book.objects.create(
                     title=book_data['title'],
                     price=book_data['price'],
@@ -113,13 +108,10 @@ def import_books_json(request):
                     publisher=publisher_obj,
                 )
 
-                # Gán Category (theo tên thay vì ID)
                 for cat_name in book_data.get('categories', []):
                     category_obj, _ = Category.objects.get_or_create(name=cat_name)
                     book.categories.add(category_obj)
-
                 book.save()
-
             messages.success(request, " Đã import dữ liệu thành công!")
             return redirect('')
         except json.JSONDecodeError:
@@ -137,9 +129,7 @@ def import_book_images(request):
         try:
             with zipfile.ZipFile(zip_file) as zf:
                 for filename in zf.namelist():
-                    name = Path(filename).name  # VD: "book_1.jpg"
-
-                    # Tìm sách theo tên ảnh đã lưu trong DB
+                    name = Path(filename).name
                     book = Book.objects.filter(cover_image=name).first()
                     if book:
                         with zf.open(filename) as f:
@@ -148,6 +138,7 @@ def import_book_images(request):
         except Exception as e:
             messages.error(request, f"❌ Lỗi khi xử lý ZIP: {e}")
     return render(request, 'staff/books/add_book.html')
+
 @login_required
 @permission_required('accounts.add_users', raise_exception=True)
 def add_user_view(request):
@@ -253,24 +244,20 @@ def list_book_view(request):
 
         books_queryset = books_queryset.filter(search_conditions)
 
-    books_queryset = books_queryset.order_by('id')  # Hoặc theo title, tùy ý
-
-    # Thiết lập phân trang
-    paginator = Paginator(books_queryset, 10)  # 10 sách mỗi trang
+    books_queryset = books_queryset.order_by('id')
+    paginator = Paginator(books_queryset, 10)
 
     page_number = request.GET.get('page')
     try:
         books = paginator.page(page_number)
     except PageNotAnInteger:
-        # Nếu page không phải số nguyên, hiển thị trang đầu tiên
         books = paginator.page(1)
     except EmptyPage:
-        # Nếu page vượt quá số trang có sẵn, hiển thị trang cuối cùng
         books = paginator.page(paginator.num_pages)
 
     context = {
-        'books': books,  # Đây là đối tượng Page đã được phân trang
-        'query': query,  # Quan trọng: Truyền query vào context để giữ lại trong liên kết phân trang
+        'books': books,
+        'query': query,
     }
     return render(request, 'staff/books/view_book.html', context)
 
@@ -320,19 +307,11 @@ def book_delete(request, pk):
 @login_required
 @permission_required('books.view_author', raise_exception=True)
 def view_list_author(request):
-    # Lấy từ khóa tìm kiếm từ request.GET, mặc định là chuỗi rỗng
     query = request.GET.get('q', '').strip()
-
-    # Bắt đầu với tất cả các tác giả
     authors_queryset = Author.objects.all()
 
-    # Nếu có từ khóa tìm kiếm, lọc queryset
     if query:
-        # Chuyển đổi từ khóa tìm kiếm về dạng không dấu và chữ thường để tìm kiếm linh hoạt hơn
         normalized_query = unidecode(query).lower()
-
-        # Xây dựng các điều kiện tìm kiếm bằng Q objects
-        # Tìm kiếm theo tên hoặc quốc tịch (không phân biệt chữ hoa/thường, không dấu)
         search_conditions = (
                 Q(name__icontains=normalized_query) |
                 Q(nationality__icontains=normalized_query)
@@ -344,18 +323,13 @@ def view_list_author(request):
     try:
         authors = paginator.page(page_number)
     except PageNotAnInteger:
-        # Nếu page_number không phải số nguyên, hiển thị trang đầu tiên
         authors = paginator.page(1)
     except EmptyPage:
-        # Nếu page_number vượt quá số trang có sẵn, hiển thị trang cuối cùng
         authors = paginator.page(paginator.num_pages)
-
-    # Chuẩn bị context để truyền dữ liệu sang template
     context = {
-        'authors': authors,  # Đối tượng Page đã được phân trang (chứa các tác giả của trang hiện tại)
-        'query': query,  # Truyền lại từ khóa tìm kiếm để giữ nó trên ô tìm kiếm và các liên kết phân trang
+        'authors': authors,
+        'query': query,
     }
-    # Render template 'staff/authors/list_authors.html'
     return render(request, 'staff/books/view_author.html', context)
 
 
@@ -439,7 +413,7 @@ def delete_category(request, pk):
     if request.method == 'POST':
         category.delete()
         return redirect('list_category')
-    return render(request, 'staff/books/view_category.html', {'categories': category})
+    return render(request, 'staff/books/view_category.html', {'category': category})
 
 
 @login_required
@@ -485,119 +459,3 @@ def edit_publisher(request, pk):
         form = PublisherForm(instance=publisher)
     return render(request, 'staff/books/change_publisher.html', {'form': form, 'title': 'Edit Publisher'})
 
-
-# @permission_required('orders.view_order', raise_exception=True)
-# def list_order_view(request):
-#     query = request.GET.get('q')
-#     if query:
-#         orders = Order.objects.filter(
-#             Q(user__username__icontains=query) |
-#             Q(status__icontains=query)
-#         ).order_by('-created_at')
-#     else:
-#         orders = Order.objects.all().order_by('-created_at')
-#     return render(request, 'staff/orders/view_order.html', {'orders': orders, 'query': query})
-#
-#
-#
-# @permission_required('orders.add_order', raise_exception=True)
-# def add_order_view(request):
-#     if request.method == 'POST':
-#         form = OrderForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, 'Đã thêm đơn hàng mới.')
-#             return redirect('view_orders')
-#     else:
-#         form = OrderForm()
-#     return render(request, 'staff/orders/add_order.html', {'form': form})
-#
-#
-# @permission_required('orders.change_order', raise_exception=True)
-# def edit_order_view(request, order_id):
-#     order = get_object_or_404(Order, pk=order_id)
-#
-#     if request.method == 'POST':
-#         order_form = OrderForm(request.POST, instance=order)
-#         formset = OrderItemFormSet(request.POST, instance=order)
-#         if order_form.is_valid() and formset.is_valid():
-#             order_form.save()
-#             # Gán price cho OrderItem mới hoặc sửa
-#             for form in formset:
-#                 if form.cleaned_data and not form.cleaned_data.get('DELETE'):
-#                     instance = form.save(commit=False)
-#                     if not instance.price or instance.book.price != instance.price:  # Cập nhật price nếu cần
-#                         instance.price = instance.book.price or Decimal('0.00')
-#                     instance.save()
-#             formset.save()
-#             messages.success(request, "Đơn hàng đã được cập nhật thành công.")
-#             return redirect('staff:list_order')  # Cập nhật URL nếu khác
-#         else:
-#             messages.error(request, "Vui lòng sửa các lỗi bên dưới.")
-#     else:
-#         order_form = OrderForm(instance=order)
-#         formset = OrderItemFormSet(instance=order)
-#
-#     total_amount = order.total_amount()
-#     customer = order.customer
-#
-#     return render(request, 'staff/orders/change_order.html', {
-#         'order_form': order_form,
-#         'formset': formset,
-#         'order': order,
-#         'total_amount': total_amount,
-#         'customer': customer,
-#     })
-#
-# @permission_required('orders.delete_order', raise_exception=True)
-# def delete_order_view(request, order_id):
-#     order = get_object_or_404(Order, id=order_id)
-#     if request.method == 'POST':
-#         order.delete()
-#         messages.success(request, 'Đã xóa đơn hàng.')
-#         return redirect('view_orders')
-#     return render(request, '', {'order': order})
-#
-#
-# @permission_required('orders.add_orderitem', raise_exception=True)
-# def add_order_item_view(request):
-#     if request.method == 'POST':
-#         form = OrderItemFormSet(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, 'Đã thêm sản phẩm vào đơn hàng.')
-#             return redirect('staff:list_order_item')
-#     else:
-#         form = OrderItemFormSet()
-#     return render(request, 'staff/orders/add_orderitem.html', {'form': form})
-#
-#
-# @permission_required('orders.view_order', raise_exception=True)
-# def order_item_detail(request, order_id):
-#     order = get_object_or_404(Order, pk=order_id)
-#     return render(request, 'staff/orders/view_orderitem.html', {'order': order})
-#
-# @login_required
-# @permission_required('orders.change_orderitem', raise_exception=True)
-# def edit_order_item_view(request, item_id):
-#     item = get_object_or_404(OrderItem, id=item_id)
-#     if request.method == 'POST':
-#         form = OrderItemFormSet(request.POST, instance=item)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, 'Đã cập nhật sản phẩm trong đơn hàng.')
-#             return redirect('staff:list_order_item')
-#     else:
-#         form = OrderItemFormSet(instance=item)
-#     return render(request, 'staff/orders/change_orderitem.html', {'form': form, 'item': item})
-#
-#
-# @permission_required('orders.delete_orderitem', raise_exception=True)
-# def delete_order_item_view(request, item_id):
-#     item = get_object_or_404(OrderItem, id=item_id)
-#     if request.method == 'POST':
-#         item.delete()
-#         messages.success(request, 'Đã xóa sản phẩm khỏi đơn hàng.')
-#         return redirect('list_order_item')
-#     return render(request, '', {'item': item})
-#
