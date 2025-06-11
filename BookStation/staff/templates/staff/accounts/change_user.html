@@ -1,0 +1,141 @@
+{% extends 'staff/dashboard_staff.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block content %}
+    <div class="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto mt-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center flex items-center justify-center">
+            <i class="fas fa-user-edit mr-3"></i> Chỉnh sửa người dùng: <span class="text-blue-600 ml-2">{{ user.username }}</span>
+        </h2>
+
+        {# Hiển thị thông báo (từ Django messages framework) #}
+        {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                    <div class="p-3 mb-2 rounded-md
+                        {% if message.tags == 'success' %}bg-green-100 border border-green-400 text-green-700
+                        {% elif message.tags == 'error' %}bg-red-100 border border-red-400 text-red-700
+                        {% elif message.tags == 'warning' %}bg-yellow-100 border border-yellow-400 text-yellow-700
+                        {% else %}bg-blue-100 border border-blue-400 text-blue-700{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {# Form chỉnh sửa thông tin cá nhân #}
+        <div class="mb-8 p-6 border border-gray-200 rounded-lg shadow-sm">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center">
+                <i class="fas fa-info-circle mr-2"></i> Thông tin cá nhân
+            </h3>
+            <form method="post" class="space-y-4">
+                {% csrf_token %}
+                {# Thêm một trường ẩn để xác định form nào đang được submit #}
+                <input type="hidden" name="form_type" value="profile_form">
+
+                {# Hiển thị lỗi tổng quát của form #}
+                {% if form.non_field_errors %}
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">Lỗi:</strong>
+                        <ul class="list-disc list-inside mt-1">
+                            {% for error in form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                {% for field in form %}
+                    <div class="mb-4">
+                        <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                            {{ field.label }}
+                            {% if field.field.required %}
+                                <span class="text-red-500">*</span>
+                            {% endif %}
+                        </label>
+                        {% render_field field class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %}
+
+                        {% if field.help_text %}
+                            <p class="mt-1 text-sm text-gray-500">{{ field.help_text }}</p>
+                        {% endif %}
+                        {% if field.errors %}
+                            <div class="text-red-600 text-sm mt-1">
+                                {% for error in field.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <div class="flex justify-end pt-4">
+                    <button type="submit" name="update_profile"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center">
+                        <i class="fas fa-save mr-2"></i> Lưu thay đổi
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        {# Form đổi mật khẩu #}
+        <div class="mb-8 p-6 border border-gray-200 rounded-lg shadow-sm">
+            <h3 class="text-xl font-semibold text-gray-700 mb-4 flex items-center">
+                <i class="fas fa-key mr-2"></i> Đổi mật khẩu
+            </h3>
+            <form method="post" class="space-y-4">
+                {% csrf_token %}
+                {# Thêm một trường ẩn để xác định form nào đang được submit #}
+                <input type="hidden" name="form_type" value="password_form">
+
+                {# Hiển thị lỗi tổng quát của form #}
+                {% if password_form.non_field_errors %}
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">Lỗi:</strong>
+                        <ul class="list-disc list-inside mt-1">
+                            {% for error in password_form.non_field_errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+
+                {% for field in password_form %}
+                    <div class="mb-4">
+                        <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-1">
+                            {{ field.label }}
+                            {% if field.field.required %}
+                                <span class="text-red-500">*</span>
+                            {% endif %}
+                        </label>
+                        {% render_field field class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" %}
+
+                        {% if field.help_text %}
+                            <p class="mt-1 text-sm text-gray-500">{{ field.help_text }}</p>
+                        {% endif %}
+                        {% if field.errors %}
+                            <div class="text-red-600 text-sm mt-1">
+                                {% for error in field.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <div class="flex justify-end pt-4">
+                    <button type="submit" name="change_password"
+                            class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-200 flex items-center">
+                        <i class="fas fa-exchange-alt mr-2"></i> Đổi mật khẩu
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="text-center mt-6">
+            <a href="{% url 'list_user' %}"
+               class="inline-block bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg transition duration-200 flex items-center justify-center">
+                <i class="fas fa-arrow-left mr-2"></i> Quay lại danh sách người dùng
+            </a>
+        </div>
+    </div>
+{% endblock content %}

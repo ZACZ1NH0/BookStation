@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ author.name }} - BookStation{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/author_detail/style.css' %}" />
+<div class="container mt-4">
+    <div class="author-profile">
+        <div class="row">
+            <div class="col-md-4">
+                {% if author.image %}
+                    <img src="{{ author.image.url }}" alt="{{ author.name }}" class="img-fluid rounded author-image">
+                {% else %}
+                    <img src="{% static 'images/default-author.png' %}" alt="{{ author.name }}" class="img-fluid rounded author-image">
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <h1 class="author-name">{{ author.name }}</h1>
+                {% if author.birth_date %}
+                    <p class="author-info"><strong>Ngày sinh:</strong> {{ author.birth_date }}</p>
+                {% endif %}
+                {% if author.nationality %}
+                    <p class="author-info"><strong>Quốc tịch:</strong> {{ author.nationality }}</p>
+                {% endif %}
+                <div class="author-description">
+                    {{ author.bio|linebreaks }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="author-books mt-5">
+        <h2>Sách của tác giả</h2>
+        <div class="row">
+            {% for book in author.book_set.all %}
+                <div class="col-md-3 mb-4">
+                    <div class="book-card">
+                        <a href="{% url 'book_detail' book.id %}">
+                            {% if book.cover_image %}
+                                <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="card-img-top">
+                            {% else %}
+                                <img src="{% static 'images/default-book.png' %}" alt="{{ book.title }}" class="card-img-top">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ book.title }}</h5>
+                                <p class="card-text text-muted">{{ book.price }} $</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col">
+                    <p>Chưa có sách nào của tác giả này.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

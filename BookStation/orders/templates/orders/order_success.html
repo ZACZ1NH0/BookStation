@@ -1,7 +1,49 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
-  <h2>Order Successful!</h2>
-  <p>Thank you, {{ order.customer.username }}! Your order #{{ order.id }} has been placed.</p>
-  <p>Total amount: {{ order.total_amount }}</p>
-  <a href="{% url 'book_list' %}">Continue shopping</a>
+  <link rel="stylesheet" href="{% static 'css/home/style.css' %}">
+  <style>
+    .success-container {
+      max-width: 600px;
+      margin: 50px auto;
+      background-color: #f8f9fa;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .success-container h2 {
+      color: #28a745;
+      margin-bottom: 20px;
+    }
+
+    .success-container p {
+      font-size: 1.1rem;
+      color: #495057;
+    }
+
+    .home-btn {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 12px 30px;
+      font-size: 1rem;
+      color: white;
+      background-color: #d63384;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .home-btn:hover {
+      background-color: #c2186a;
+    }
+  </style>
+  <div class="success-container">
+    <h2>🎉 Đặt hàng thành công!</h2>
+    <p>Cảm ơn bạn đã đặt hàng. Chúng tôi sẽ xử lý đơn hàng của bạn sớm nhất.</p>
+    <a href="{% url 'home' %}" class="home-btn">🏠 Quay về Trang chủ</a>
+  </div>
 {% endblock %}

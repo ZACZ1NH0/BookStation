@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Thống kê khách hàng{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="{% static 'css/analytics/customer_stats.css' %}">
+<link rel="stylesheet" href="{% static 'css/analytics/analytics.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="stats-header">
+    <h1>Thống Kê BookStation</h1>
+    
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <a href="{% url 'analytics:dashboard' %}" class="nav-button active">
+            Dashboard
+        </a>
+        <a href="{% url 'analytics:book_inventory_detail' %}" class="nav-button">
+            Thống Kê Kho Sách
+        </a>
+        <a href="{% url 'analytics:customer_stats' %}" class="nav-button">
+            Thống Kê Khách hàng
+        </a>
+        <a href="{% url 'analytics:order_stats' %}" class="nav-button">
+            Thống Kê Đơn Hàng   
+        </a>
+    </div>
+</div>
+<div class="container-fluid py-4">
+    <!-- Thống kê tổng quan về khách hàng -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Tổng số khách hàng</p>
+                                <h5 class="font-weight-bolder mb-0">{{ total_customers }}</h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-primary shadow text-center rounded-circle">
+                                <i class="fas fa-users opacity-10"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Khách hàng mới (30 ngày)</p>
+                                <h5 class="font-weight-bolder mb-0">{{ new_customers }}</h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-success shadow text-center rounded-circle">
+                                <i class="fas fa-user-plus opacity-10"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Khách hàng hoạt động</p>
+                                <h5 class="font-weight-bolder mb-0">{{ active_customers }}</h5>
+                                <p class="text-xs text-muted mb-0">30 ngày qua</p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-warning shadow text-center rounded-circle">
+                                <i class="fas fa-user-check opacity-10"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Trung bình chi tiêu</p>
+                                <h5 class="font-weight-bolder mb-0">{{ avg_spent|floatformat:2 }}$</h5>
+                                <p class="text-xs text-muted mb-0">Mỗi khách hàng</p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-info shadow text-center rounded-circle">
+                                <i class="fas fa-coins opacity-10"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Biểu đồ và phân tích -->
+    <div class="row mb-4">
+        <!-- Biểu đồ số lượng khách hàng theo thời gian -->
+        <div class="col-lg-7 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Tăng trưởng khách hàng</h6>
+                    <p class="text-sm mb-0">Số lượng khách hàng mới theo tháng</p>
+                </div>
+                <div class="card-body">
+                    <div style="position: relative; height: 300px;">
+                        <canvas id="customerGrowthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top khách hàng -->
+        <div class="col-lg-5 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Top 10 khách hàng</h6>
+                    <p class="text-sm mb-0">Theo tổng chi tiêu</p>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Khách hàng</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Email</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Số điện thoại</th>                                    
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Tổng chi tiêu</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Số đơn hàng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for customer in top_customers %}
+                                <tr>
+                                    <td>
+                                        <h6 class="mb-0 text-sm">{{ customer.username }}</h6>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">{{ customer.email }}</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">{{ customer.phone }}</p>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">{{ customer.total_spent }}$</p>
+                                    </td>
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">{{ customer.order_count }}</p>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phân tích chi tiết -->
+    <div class="row">
+        <!-- Tỷ lệ khách hàng theo trạng thái -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Trạng thái khách hàng</h6>
+                    <p class="text-sm mb-0">Phân loại theo hoạt động</p>
+                </div>
+                <div class="card-body">
+                    <div style="position: relative; height: 300px;">
+                        <canvas id="customerStatusChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Dữ liệu cho biểu đồ tăng trưởng khách hàng
+    const customerGrowthData = [
+        {% for item in customer_growth %}
+        {
+            month: '{{ item.month|date:"Y-m-d" }}',
+            new_users: {{ item.new_users }}
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    // Dữ liệu trạng thái khách hàng
+    const customerStatusData = {
+        active: {{ customer_status.active }},
+        inactive: {{ customer_status.inactive }},
+        no_orders: {{ customer_status.no_orders }}
+    };
+</script>
+<script src="{% static 'js/analytics/customer_stats.js' %}"></script>
+{% endblock %}
+
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if publisher %}Sửa nhà xuất bản - {{ publisher.name }}{% else %}Thêm nhà xuất bản mới{% endif %} - BookStation
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'publisher_list' %}">Nhà xuất bản</a></li>
+            <li class="breadcrumb-item active">
+                {% if publisher %}Sửa nhà xuất bản{% else %}Thêm nhà xuất bản mới{% endif %}
+            </li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">
+                        {% if publisher %}Sửa nhà xuất bản - {{ publisher.name }}
+                        {% else %}Thêm nhà xuất bản mới{% endif %}
+                    </h2>
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+
+                        {% for field in form %}
+                        <div class="mb-3">
+                            <label for="{{ field.id_for_label }}" class="form-label">
+                                {{ field.label }}
+                                {% if field.field.required %}
+                                <span class="text-danger">*</span>
+                                {% endif %}
+                            </label>
+
+                            {{ field }}
+
+                            {% if field.help_text %}
+                            <div class="form-text">{{ field.help_text }}</div>
+                            {% endif %}
+
+                            {% if field.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in field.errors %}
+                                {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                {% if publisher %}
+                                <i class="fas fa-save me-2"></i>Lưu thay đổi
+                                {% else %}
+                                <i class="fas fa-plus me-2"></i>Thêm nhà xuất bản
+                                {% endif %}
+                            </button>
+                            <a href="{% url 'publisher_list' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Hủy
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    // Add Bootstrap validation classes to form fields
+    document.querySelectorAll('.form-control, .form-select').forEach(function(input) {
+        input.classList.add('form-control');
+        if (input.required) {
+            input.classList.add('required');
+        }
+    });
+</script>
+{% endblock %}
+
+{% endblock %}

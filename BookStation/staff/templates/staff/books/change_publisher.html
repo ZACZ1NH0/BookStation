@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Chỉnh sửa Nhà Xuất Bản</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+        <a href="{% url 'list_publisher' %}" class="btn btn-secondary">Quay lại</a>
+    </form>
+</div>
+{% endblock %}

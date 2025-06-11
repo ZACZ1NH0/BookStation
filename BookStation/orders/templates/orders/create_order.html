@@ -1,49 +1,118 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block content %}
-  <h2>Create Order</h2>
-  <form method="post">
-    {% csrf_token %}
-    
-    <fieldset>
-      <legend>Order Information</legend>
-      {{ form.as_p }}
-    </fieldset>
-    
-    <fieldset>
-      <legend>Order Items</legend>
-      {{ formset.management_form }}
-      {% for form in formset %}
-        <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-          {{ form.as_p }}
-          {% if form.instance.pk %}
-            <label for="{{ form.prefix }}-DELETE">Delete:</label> {{ form.DELETE }}
-          {% endif %}
-        </div>
-      {% endfor %}
-      <button type="button" onclick="addForm()">Add Item</button>
-    </fieldset>
-    
-    <button type="submit">Submit Order</button>
-  </form>
-
-  <script>
-    // JavaScript nhỏ để thêm formset động (nếu muốn)
-    function addForm() {
-      const totalForms = document.getElementById('id_orderitem_set-TOTAL_FORMS');
-      const currentCount = parseInt(totalForms.value);
-      const formCopyTarget = totalForms.parentNode;
-      const emptyForm = document.getElementById('empty-form').innerHTML.replace(/__prefix__/g, currentCount);
-      
-      const div = document.createElement('div');
-      div.innerHTML = emptyForm;
-      formCopyTarget.appendChild(div);
-      totalForms.value = currentCount + 1;
+  <link rel="stylesheet" href="{% static 'css/home/style.css' %}">
+  <style>
+    .order-container {
+      max-width: 900px;
+      margin: 30px auto;
+      background-color: #fff5fa;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-  </script>
 
-  <div id="empty-form" style="display:none;">
-    {{ formset.empty_form.as_p }}
+    .order-container h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #d63384;
+    }
+
+    fieldset {
+      border: 1px solid #dee2e6;
+      padding: 20px;
+      margin-bottom: 25px;
+      border-radius: 8px;
+      background-color: #ffffff;
+    }
+
+    legend {
+      font-weight: bold;
+      font-size: 1.1rem;
+      color: #343a40;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    th, td {
+      border: 1px solid #dee2e6;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background-color: #f8f9fa;
+      color: #495057;
+    }
+
+    .total-price {
+      text-align: right;
+      font-weight: bold;
+      margin-top: 15px;
+      color: #d63384;
+      font-size: 1.1rem;
+    }
+
+    .checkout-btn {
+      background-color: #d63384;
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .checkout-btn:hover {
+      background-color: #c2186a;
+    }
+  </style>
+
+  <div class="order-container">
+    <h2>📄 Xác nhận đơn hàng</h2>
+
+    <form method="post">
+      {% csrf_token %}
+
+      <fieldset>
+        <legend>Thông tin người đặt</legend>
+        {{ form.as_p }}
+      </fieldset>
+
+      {% if cart %}
+        <fieldset>
+          <legend>Sản phẩm sẽ mua</legend>
+          <table>
+            <tr>
+              <th>Tên sản phẩm</th>
+              <th>Giá</th>
+              <th>Số lượng</th>
+              <th>Thành tiền</th>
+            </tr>
+            {% for key, item in cart.items %}
+              <tr>
+                <td>{{ item.title }}</td>
+                <td>{{ item.price|floatformat:2 }} $</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.subtotal|floatformat:2 }} $</td>
+              </tr>
+            {% endfor %}
+          </table>
+          <p class="total-price">Tổng cộng: {{ total|floatformat:2 }} $</p>
+        </fieldset>
+      {% else %}
+        <p>Không có sản phẩm nào trong giỏ hàng.</p>
+      {% endif %}
+
+      <div style="text-align:center; margin-top: 20px;">
+        <button type="submit" class="checkout-btn">✅ Xác nhận mua hàng</button>
+      </div>
+    </form>
   </div>
 {% endblock %}

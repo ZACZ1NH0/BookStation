@@ -1,0 +1,16 @@
+
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Chỉnh sửa tác giả</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+        <a href="{% url 'list_authors' %}" class="btn btn-secondary">Hủy</a>
+    </form>
+</div>
+{% endblock %}

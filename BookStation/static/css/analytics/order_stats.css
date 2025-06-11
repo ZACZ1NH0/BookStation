@@ -1,0 +1,335 @@
+/* Card styles */
+.card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+    padding: 16px 18px; /* Giảm padding một chút */
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #f9f9f9;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.card-header h6 {
+    margin: 0;
+    color: #212529;
+    font-size: 1rem; /* Giảm font-size */
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 18px; /* Giảm padding */
+    overflow: hidden;
+}
+
+/* Icon styles */
+.icon-shape {
+    width: 45px; /* Giảm kích thước icon */
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-position: center;
+    transition: background 0.3s ease;
+}
+
+.icon i {
+    font-size: 20px; /* Giảm font-size */
+    color: #fff;
+}
+
+/* Gradient backgrounds for icons and badges */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #4e73df, #2c45aa);
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg, #1cc88a, #0f7d5d);
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(135deg, #f6c23e, #d49506);
+}
+
+.bg-gradient-info {
+    background: linear-gradient(135deg, #36b9cc, #2b728c);
+}
+
+/* Gradient backgrounds for order status badges */
+.bg-gradient-pending {
+    background: linear-gradient(135deg, #f6c23e, #d49506);
+    color: #fff;
+}
+
+.bg-gradient-processing {
+    background: linear-gradient(135deg, #36b9cc, #2b728c);
+    color: #fff;
+}
+
+.bg-gradient-shipping {
+    background: linear-gradient(135deg, #4e73df, #2c45aa);
+    color: #fff;
+}
+
+.bg-gradient-completed {
+    background: linear-gradient(135deg, #1cc88a, #0f7d5d);
+    color: #fff;
+}
+
+.bg-gradient-cancelled {
+    background: linear-gradient(135deg, #ef4444, #b91c1c);
+    color: #fff;
+}
+
+/* Chart containers (dự phòng) */
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 280px; /* Giảm chiều cao */
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Table styles */
+.table-responsive {
+    border-radius: 10px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.stats-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.stats-table thead th {
+    background-color: #f5f7fa;
+    color: #1e293b;
+    font-size: 0.72rem; /* Giảm font-size */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 10px 14px; /* Giảm padding */
+    border-bottom: 1px solid #e2e8f0;
+    text-align: left;
+}
+
+.stats-table tbody tr {
+    transition: background-color 0.25s ease;
+}
+
+.stats-table tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+.stats-table td {
+    padding: 10px 14px; /* Giảm padding */
+    font-size: 0.82rem; /* Giảm font-size */
+    color: #334155;
+    vertical-align: middle;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.stats-table td.text-end {
+    text-align: right;
+}
+
+.stats-table td.text-center {
+    text-align: center;
+}
+
+.stats-table td h6 {
+    margin: 0;
+    font-size: 0.82rem; /* Giảm font-size */
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.stats-table td small {
+    font-size: 0.7rem; /* Giảm font-size */
+    color: #64748b;
+}
+
+.stats-table td .font-weight-bold {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.stats-table tbody tr:first-child {
+    background-color: #e0f2fe;
+    position: relative;
+}
+
+/* Badge styles */
+.badge {
+    padding: 5px 10px; /* Giảm padding */
+    border-radius: 10px;
+    font-size: 0.7rem; /* Giảm font-size */
+    font-weight: 500;
+    display: inline;
+}
+
+/* Typography */
+.text-sm {
+    font-size: 0.85rem; /* Giảm font-size */
+}
+
+.text-xs {
+    font-size: 0.7rem; /* Giảm font-size */
+}
+
+.text-muted {
+    color: #64748b;
+}
+
+.font-weight-bold {
+    font-weight: 600;
+}
+
+.font-weight-bolder {
+    font-weight: 700;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+    .card {
+        margin-bottom: 18px;
+    }
+
+    .chart-container {
+        height: 220px; /* Giảm chiều cao trên mobile */
+    }
+
+    .chart-container canvas {
+        width: 100% !important;
+        height: 100% !important;
+    }
+
+    .table-responsive {
+        margin-bottom: 18px;
+    }
+
+    .stats-table-responsive td,
+    .stats-table thead th {
+        padding: 8px 10px; /* Giảm padding thêm trên mobile */
+        font-size: 0.7rem; /* Giảm font-size */
+    }
+
+    .stats-table td h6 {
+        font-size: 0.78rem; /* Giảm font-size
+    }
+
+    .stats-table td small {
+        font-size: 0.66rem; /* Giảm font-size */
+    }
+
+    .stats-table td .badge {
+        font-size: 0.65rem;
+        padding: 4px 8px; /* Giảm padding */
+    }
+}
+
+/* Table styles - updated */
+.table-responsive {
+    border-radius: 10px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    max-width: 100%;
+}
+
+.stats-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Make all columns equal width */
+}
+
+.stats-table thead th {
+    background-color: #f5f7fa;
+    color: #1e293b;
+    font-size: 0.68rem; /* Giảm font-size */
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    padding: 8px 12px; /* Giảm padding */
+    border-bottom: 1px solid #e2e8f0;
+    text-align: center; /* Canh giữa để cân bằng các cột */
+    word-wrap: break-word; /* Cho phép xuống dòng nếu quá dài */
+}
+
+.stats-table tbody tr {
+    transition: background-color 0.25s ease;
+}
+
+.stats-table tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+.stats-table td {
+    padding: 8px 12px; /* Giảm padding */
+    font-size: 0.78rem; /* Giảm font-size */
+    color: #334155;
+    vertical-align: middle;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: center;
+    word-wrap: break-word; /* Cho phép nội dung xuống dòng */
+}
+
+.stats-table td h6 {
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.stats-table td small {
+    font-size: 0.68rem;
+    color: #64748b;
+}
+
+.stats-table td .font-weight-bold {
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.stats-table td.text-end {
+    text-align: center; /* Sửa lại là center để thống nhất */
+}
+
+/* Badge size in table */
+.stats-table .badge {
+    padding: 4px 8px;
+    font-size: 0.68rem;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+/* Responsive fix */
+@media (max-width: 767px) {
+    .stats-table thead th,
+    .stats-table td {
+        padding: 6px 8px;
+        font-size: 0.68rem;
+    }
+
+    .stats-table td .badge {
+        font-size: 0.62rem;
+        padding: 3px 6px;
+    }
+}

@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Thống kê đơn hàng{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/analytics/order_stats.css' %}">
+<link rel="stylesheet" href="{% static 'css/analytics/analytics.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="stats-header">
+    <h1>Thống Kê BookStation</h1>
+    
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <a href="{% url 'analytics:dashboard' %}" class="nav-button active">
+            Dashboard
+        </a>
+        <a href="{% url 'analytics:book_inventory_detail' %}" class="nav-button">
+            Thống Kê Kho Sách
+        </a>
+        <a href="{% url 'analytics:customer_stats' %}" class="nav-button">
+            Thống Kê Khách Hàng
+        </a>
+        <a href="{% url 'analytics:order_stats' %}" class="nav-button">
+            Thống Kê Đơn Hàng
+        </a>
+    </div>
+</div>
+<div class="container-fluid py-4">
+    <!-- Thống kê tổng quan về đơn hàng -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Tổng đơn hàng</p>
+                                <h5 class="font-weight-bolder mb-0">{{ total_orders }}</h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-primary shadow text-center rounded-circle">
+                                <i class="fas fa-shopping-cart opacity-10"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Đơn hàng mới</p>
+                                <h5 class="font-weight-bolder mb-0">{{ new_orders }}</h5>
+                                <p class="text-xs text-muted mb-0">7 ngày qua</p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-success shadow text-center rounded-circle">
+                                <i class="fas fa-file-invoice opacity-10"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Tổng doanh thu</p>
+                                <h5 class="font-weight-bolder mb-0">{{ total_revenue|floatformat:2 }}$</h5>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-warning shadow text-center rounded-circle">
+                                <i class="fas fa-money-bill-wave opacity-10"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3 col-sm-6 mb-4">
+            <div class="card">
+                <div class="card-body p-3">
+                    <div class="row">
+                        <div class="col-8">
+                            <div class="numbers">
+                                <p class="text-sm mb-0 text-uppercase font-weight-bold">Giá trị trung bình</p>
+                                <h5 class="font-weight-bolder mb-0">{{ avg_order_value|floatformat:2 }}$</h5>
+                                <p class="text-xs text-muted mb-0">Mỗi đơn hàng</p>
+                            </div>
+                        </div>
+                        <div class="col-4 text-end">
+                            <div class="icon icon-shape bg-gradient-info shadow text-center rounded-circle">
+                                <i class="fas fa-chart-line opacity-10"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thống kê và phân tích -->
+    <div class="row mb-4">
+        <!-- Doanh thu theo tháng -->
+        <div class="col-lg-8 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Doanh thu theo thời gian</h6>
+                    <p class="text-sm mb-0">Thống kê 12 tháng gần nhất</p>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Tháng</th>
+                                    <th class="text-end">Doanh thu</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in revenue_by_month %}
+                                <tr>
+                                    <td>{{ item.month|date:"n/Y" }}</td>
+                                    <td class="text-end">{{ item.revenue|floatformat:2 }}$</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="2" class="text-center">Không có dữ liệu</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trạng thái đơn hàng -->
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Trạng thái đơn hàng</h6>
+                    <p class="text-sm mb-0">Phân bố theo trạng thái</p>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Trạng thái</th>
+                                    <th class="text-end">Số lượng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for status in order_status %}
+                                <tr>
+                                    <td>
+                                        <span class="badge bg-gradient-{{ status.status }}">
+                                            {{ status.status_display }}
+                                        </span>
+                                    </td>
+                                    <td class="text-end">{{ status.count }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="2" class="text-center">Không có dữ liệu</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chi tiết đơn hàng -->
+    <div class="row">
+        <!-- Đơn hàng gần đây -->
+        <div class="col-lg-8 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">10 Đơn hàng gần đây</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Mã đơn</th>
+                                    <th>Khách hàng</th>
+                                    <th class="text-end">Tổng tiền</th>
+                                    <th>Trạng thái</th>
+                                    <th>Ngày đặt</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in recent_orders %}
+                                <tr>
+                                    <td>#{{ order.id }}</td>
+                                    <td>
+                                        <div class="d-flex flex-column">
+                                            <span class="text-dark font-weight-bold">{{ order.customer.username }}</span>
+                                            <small class="text-muted">{{ order.customer.email }}</small>
+                                        </div>
+                                    </td>
+                                    <td class="text-end">{{ order.total_amount|floatformat:2 }}$</td>
+                                    <td>
+                                        <span class="badge bg-gradient-{{ order.status_class }}">
+                                            {{ order.get_status_display }}
+                                        </span>
+                                    </td>
+                                    <td>{{ order.created_at|date:"d/m/Y H:i" }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center">Không có đơn hàng nào</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phương thức thanh toán -->
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="mb-0">Phương thức thanh toán</h6>
+                    <p class="text-sm mb-0">Tỷ lệ sử dụng</p>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="stats-table">
+                            <thead>
+                                <tr>
+                                    <th>Phương thức</th>
+                                    <th class="text-end">Số lượng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for method in payment_methods %}
+                                <tr>
+                                    <td>
+                                        {% if method.payment_method == 'cash' %}
+                                            Tiền mặt
+                                        {% elif method.payment_method == 'bank_transfer' %}
+                                            Chuyển khoản
+                                        {% elif method.payment_method == 'card' %}
+                                            Thẻ tín dụng
+                                        {% elif method.payment_method == 'momo' %}
+                                            Ví MoMo
+                                        {% else %}
+                                            {{ method.payment_method }}
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-end">{{ method.count }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="2" class="text-center">Không có dữ liệu</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

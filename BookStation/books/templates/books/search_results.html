@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Kết quả tìm kiếm - Book Station{% endblock %}
+
+{% block content %}
+  
+  <link rel="stylesheet" href="{% static 'css/home/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/search_results/style.css' %}" /> 
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+
+  <section class="section">
+    <h3><i class="fas fa-search"></i> Kết quả tìm kiếm cho "{{ query }}"</h3>
+    {% if results %}
+      <div class="book-list">
+        {% for book in results %}
+          <div class="book">
+            <div class="book-badges">
+              {% if book.old_price %}
+                <span class="discount-badge">-{{ book.discount_percent }}%</span>
+              {% endif %}
+              {% if book.is_new %}
+                <span class="new-badge">New</span>
+              {% endif %}
+            </div>
+              <a href="{% url 'book_detail' book.pk %}" class="logo-link">
+                <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" />
+              </a>
+            <div class="book-info">
+              <h4>{{ book.title }}</h4>
+              <p class="author">{{ book.author }}</p>
+              <div class="price-container">
+                <p>${{ book.price }}
+                  {% if book.old_price %}
+                    <span class="old-price">${{ book.old_price }}</span>
+                  {% endif %}
+                </p>
+                <div class="rating">
+                  <i class="fas fa-star"></i>
+                  <span>{{ book.rating|default:"4.5" }}</span>
+                </div>
+              </div>
+            </div>
+            <form action="{% url 'add_to_cart' book.id %}" method="post">
+              {% csrf_token %}
+              <div class="quantity-container">
+                <button type="button" class="quantity-btn decrease-btn" onclick="decreaseQuantity(this)"><i class="fas fa-minus"></i></button>
+                <input type="number" name="quantity" value="1" min="1" class="quantity-input" />
+                <button type="button" class="quantity-btn increase-btn" onclick="increaseQuantity(this)"><i class="fas fa-plus"></i></button>
+              </div>
+              <button type="submit" class="add_button"><i class="fas fa-shopping-cart"></i> Thêm vào giỏ hàng</button>
+            </form>
+          </div>
+        {% endfor %}
+        
+      </div>
+    {% else %}
+      <p>Không tìm thấy kết quả nào.</p>
+    {% endif %}
+    {% if is_paginated %}
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?q={{ query }}&page={{ page_obj.previous_page_number }}">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                    <a class="page-link" href="?q={{ query }}&page={{ num }}">{{ num }}</a>
+                </li>
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?q={{ query }}&page={{ page_obj.next_page_number }}">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+  </section>
+  <script>
+    function decreaseQuantity(button) {
+      const input = button.nextElementSibling;
+      let value = parseInt(input.value);
+      if (value > 1) {
+        value--;
+        input.value = value;
+      }
+    }
+    function increaseQuantity(button) {
+      const input = button.previousElementSibling;
+      let value = parseInt(input.value);
+      value++;
+      input.value = value;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchBox = document.querySelector('.search-box');
+      const searchBtn = document.querySelector('.search-btn');
+
+      searchBox.addEventListener('focus', function() {
+        this.style.borderColor = '#ff9800';
+      });
+
+      searchBox.addEventListener('blur', function() {
+        this.style.borderColor = '#ddd';
+      });
+
+      searchBtn.addEventListener('mouseover', function() {
+        this.style.backgroundColor = '#ff5722';
+      });
+
+      searchBtn.addEventListener('mouseout', function() {
+        this.style.backgroundColor = '#ff9800';
+      });
+    });
+  </script>
+{% endblock %}

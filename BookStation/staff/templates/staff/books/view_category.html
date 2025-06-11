@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>📂 Danh sách thể loại</title>
+    <style>
+        table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+        .actions form {
+            display: inline;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>📂 Danh sách thể loại</h1>
+
+    {% if categories %}
+    <table>
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Tên thể loại</th>
+                <th>Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in categories %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ c.name }}</td>
+                <td class="actions">
+                    <form action="{% url 'delete_category' c.id %}" method="post" onsubmit="return confirm('Bạn có chắc muốn xoá thể loại này không?')">
+                        {% csrf_token %}
+                        <button type="submit">🗑️ Xoá</button>
+                    </form>
+                    <a href="{% url 'change_category' c.id %}">✏️ Sửa</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p style="text-align: center;">Không có thể loại nào trong hệ thống.</p>
+    {% endif %}
+</body>
+</html>

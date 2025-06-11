@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ category.name }} - BookStation{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <link rel="stylesheet" href="{% static 'css/category_detail/style.css' %}" /> 
+    <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1>{{ category.name }}</h1>
+        </div>
+        {% if category.description %}
+        <p class="lead mt-3">{{ category.description }}</p>
+        {% endif %}
+    </div>
+
+    <!-- Books in this Category -->
+    <h2 class="mb-4">Sách trong thể loại này</h2>
+    
+    <!-- Search and Sort -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form class="d-flex" method="get">
+                <input type="text" name="search" class="form-control me-2" 
+                       placeholder="Tìm kiếm sách..." value="{{ request.GET.search|default:'' }}">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search me-2"></i>Tìm kiếm
+                </button>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <select class="form-select" id="sort-select">
+                <option value="">Sắp xếp theo</option>
+                <option value="title">Tên A-Z</option>
+                <option value="-title">Tên Z-A</option>
+                <option value="price">Giá tăng dần</option>
+                <option value="-price">Giá giảm dần</option>
+                <option value="-created_at">Mới nhất</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Books Grid -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        {% for book in category.books.all %}
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+                {% if book.cover_image.url %}
+                <img src="{{ book.cover_image.url }}" class="card-img-top" alt="{{ book.title }}" 
+                     style="height: 300px; object-fit: cover;">
+                {% else %}
+                <img src="{% static 'images/default_book.png' %}" class="card-img-top" 
+                     alt="Default book cover" style="height: 300px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text text-muted">
+                        By {% for author in book.authors.all %}
+                        {{ author.name }}{% if not forloop.last %}, {% endif %}
+                        {% endfor %}
+                    </p>
+                    <p class="card-text"><strong>{{ book.price|floatformat:2 }} $</strong></p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{% url 'book_detail' book.pk %}" class="btn btn-outline-primary">
+                            Chi tiết
+                        </a>
+                        <form method="post" action="{% url 'add_to_cart' book.pk %}" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>Chưa có sách nào trong thể loại này
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+            <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+            </li>
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+
+{% block extra_js %}
+<script>
+    // Handle sort select change
+    document.getElementById('sort-select').addEventListener('change', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('sort', this.value);
+        window.location.search = urlParams.toString();
+    });
+</script>
+{% endblock %}
+
+{% endblock %}

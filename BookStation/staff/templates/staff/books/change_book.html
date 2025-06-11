@@ -1,0 +1,81 @@
+{% extends 'staff/dashboard_staff.html' %}
+{% load static %}
+
+{% block title %}
+    Sửa Sách - {{ book.title }} - BookStation
+{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <nav class="text-sm text-gray-500 mb-6" aria-label="breadcrumb">
+        <ol class="list-none p-0 inline-flex items-center space-x-2">
+            <li class="flex items-center">
+                <a href="{% url 'view_list_book' %}" class="text-blue-600 hover:text-blue-800 transition duration-200 ease-in-out">
+                    <i class="fas fa-book mr-1"></i>Sách
+                </a>
+            </li>
+            <li class="flex items-center">
+                <i class="fas fa-angle-right text-gray-400 mx-2"></i>
+            </li>
+            <li class="flex items-center text-gray-700">
+                <i class="fas fa-edit mr-1"></i>Sửa sách
+            </li>
+        </ol>
+    </nav>
+
+    <div class="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <h2 class="text-3xl font-bold text-gray-800 text-center mb-8">
+            Chỉnh sửa thông tin sách
+            <p class="text-blue-600 mt-2">{{ book.title }}</p>
+        </h2>
+
+        <form method="post" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+
+            {% for field in form %}
+            <div class="mb-5">
+                <label for="{{ field.id_for_label }}" class="block text-gray-700 text-base font-semibold mb-2">
+                    {{ field.label }}
+                    {% if field.field.required %}
+                        <span class="text-red-500 text-lg">*</span>
+                    {% endif %}
+                </label>
+
+                {# Hiển thị ảnh bìa hiện tại nếu có #}
+                {% if field.name == 'cover_image' and book.cover_image %}
+                <div class="mb-4">
+                    <p class="text-sm text-gray-600 mb-2">Ảnh bìa hiện tại:</p>
+                    <img src="{{ book.cover_image.url }}" alt="Ảnh bìa hiện tại của sách" class="w-40 h-auto rounded-lg shadow-md border border-gray-200">
+                </div>
+                {% endif %}
+
+                {# Render trường form #}
+                {# Nếu bạn đã định nghĩa widgets với class trong forms.py, chúng sẽ được áp dụng tự động #}
+                {{ field }}
+
+                {% if field.help_text %}
+                <p class="text-sm text-gray-500 mt-2">{{ field.help_text }}</p>
+                {% endif %}
+
+                {% if field.errors %}
+                <div class="text-red-600 text-sm mt-2 font-medium">
+                    {% for error in field.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <div class="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-3 mt-8">
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105">
+                    <i class="fas fa-save mr-2"></i>Lưu thay đổi
+                </button>
+                <a href="{% url 'view_list_book' %}" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg shadow-md transition duration-200 ease-in-out transform hover:scale-105 text-center">
+                    <i class="fas fa-times mr-2"></i>Hủy bỏ
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

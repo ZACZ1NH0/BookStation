@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết đơn hàng #{{ order.id }}</title>
+    <link rel="stylesheet" href="{% static 'staff/style.css' %}">
+</head>
+<body>
+    <h1>📦 Chi tiết đơn hàng #{{ order.id }}</h1>
+
+    <p><strong>Khách hàng:</strong> {{ order.customer.username }}</p>
+    <p><strong>Ngày đặt:</strong> {{ order.created_at }}</p>
+    <p><strong>Trạng thái:</strong> {{ order.get_status_display }}</p>
+    <p><strong>Thanh toán:</strong> {{ order.get_payment_method_display }}</p>
+    <p><strong>Ghi chú:</strong> {{ order.note|default:"Không có" }}</p>
+
+    <h2>📚 Sách trong đơn</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>STT</th>
+                <th>Tên sách</th>
+                <th>Số lượng</th>
+                <th>Đơn giá</th>
+                <th>Thành tiền</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in order.items.all %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ item.book.title }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price }}₫</td>
+                <td>{{ item.subtotal }}₫</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3 style="text-align: right;">💰 Tổng cộng: {{ order.total_amount }}₫</h3>
+
+    <p><a href="{% url 'list_orders' %}">← Quay lại danh sách đơn hàng</a></p>
+</body>
+</html>

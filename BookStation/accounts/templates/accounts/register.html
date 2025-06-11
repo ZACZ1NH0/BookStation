@@ -80,6 +80,7 @@
                     <div class="input-group">
                         <i class="fas fa-phone"></i>
                         <input type="tel" name="phone" placeholder="Nhập số điện thoại" class="form-control">
+
                         {% if form.phone.errors %}
                             <div class="field-error">
                                 {{ form.phone.errors|striptags }}

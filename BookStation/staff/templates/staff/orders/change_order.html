@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container mx-auto p-4">
+        <h2 class="text-2xl font-bold mb-4">Chỉnh sửa đơn hàng #{{ order.pk }}</h2>
+
+        {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                    <div class="p-2 bg-{{ message.tags }}-100 border border-{{ message.tags }}-400 text-{{ message.tags }}-700">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
+
+            <!-- Thông tin khách hàng -->
+            <div class="bg-white p-4 rounded shadow">
+                <h3 class="text-lg font-semibold mb-2">Thông tin khách hàng</h3>
+                <p><strong>Tên:</strong> {{ customer.username }}</p>
+                <p><strong>Email:</strong> {{ customer.email|default:"Không có" }}</p>
+                <p><strong>Phương thức thanh toán:</strong> {{ order.get_payment_method_display }}</p>
+            </div>
+
+            <!-- Thông tin đơn hàng -->
+            <div class="bg-white p-4 rounded shadow">
+                <h3 class="text-lg font-semibold mb-2">Thông tin đơn hàng</h3>
+                <div class="grid grid-cols-1 gap-4">
+                    {% if order_form.status %}
+                        <div>
+                            <label class="block text-sm font-medium">Trạng thái</label>
+                            {{ order_form.status }}
+                        </div>
+                    {% else %}
+                        <div>
+                            <label class="block text-sm font-medium">Trạng thái</label>
+                            <span>{{ order.get_status_display }}</span>
+                        </div>
+                    {% endif %}
+                    <div>
+                        <label class="block text-sm font-medium">Ghi chú</label>
+                        {{ order_form.note }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Danh sách sách -->
+            <div class="bg-white p-4 rounded shadow">
+                <h3 class="text-lg font-semibold mb-2">Danh sách sách</h3>
+                {{ formset.management_form }}
+                <div id="order-items" class="space-y-2">
+                    {% for form in formset %}
+                        <div class="flex items-center space-x-4 p-2 border-b order-item">
+                            {{ form.id }}
+                            {{ form.DELETE }}
+                            <div class="flex-1">
+                                <label class="block text-sm font-medium">Sách</label>
+                                {{ form.book }}
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium">Số lượng</label>
+                                {{ form.quantity }}
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium">Giá</label>
+                                <span class="price">{{ form.instance.price|default:"0.00" }}</span>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium">Tổng phụ</label>
+                                <span class="subtotal">{{ form.instance.subtotal|default:"0.00" }}</span>
+                            </div>
+                            <div class="mt-6">
+                                <button type="button" class="delete-item text-red-500 hover:text-red-700" onclick="this.closest('.order-item').style.display='none'; this.closest('.order-item').querySelector('input[name$=\"-DELETE\"]').checked=true;">Xóa</button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Nút thêm sách -->
+                <button type="button" id="add-item" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Thêm sách</button>
+            </div>
+
+            <!-- Tổng tiền -->
+            <div class="text-right">
+                <h3 class="text-lg font-semibold">Tổng tiền: <span class="total-amount text-green-600">{{ total_amount|default:"0.00" }} VNĐ</span></h3>
+            </div>
+
+            <!-- Nút lưu -->
+            <div class="text-right">
+                <button type="submit" class="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg hover:bg-green-700 transition duration-200">Lưu thay đổi</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Thêm sách mới
+        document.getElementById('add-item').addEventListener('click', function() {
+            try {
+                const formset = document.getElementById('order-items');
+                const totalForms = document.querySelector('[name="items-TOTAL_FORMS"]');
+                const formCount = parseInt(totalForms.value);
+                const newForm = formset.querySelector('.order-item').cloneNode(true);
+
+                // Cập nhật id và name cho các input
+                newForm.querySelectorAll('input, select').forEach(input => {
+                    if (input.name) {
+                        input.name = input.name.replace(/items-\d+-/, `items-${formCount}-`);
+                        input.id = input.id.replace(/items-\d+-/, `items-${formCount}-`);
+                        if (input.type === 'number') input.value = 1;
+                        if (input.type === 'checkbox') input.checked = false;
+                    }
+                });
+
+                // Xóa giá và tổng cũ
+                newForm.querySelectorAll('.price, .subtotal').forEach(span => span.textContent = '0.00');
+
+                formset.appendChild(newForm);
+                totalForms.value = formCount + 1;
+            } catch (e) {
+                console.error('Lỗi khi thêm sách:', e);
+            }
+        });
+
+        // Cập nhật tổng phụ và tổng tiền động
+        document.querySelectorAll('input[name$="-quantity"]').forEach(input => {
+            input.classList.add('quantity-input');
+            input.addEventListener('change', function() {
+                const item = this.closest('.order-item');
+                const price = parseFloat(item.querySelector('.price').textContent) || 0;
+                const quantity = parseInt(this.value) || 0;
+                item.querySelector('.subtotal').textContent = (price * quantity).toFixed(2);
+                updateTotal();
+            });
+        });
+
+        function updateTotal() {
+            let total = 0;
+            document.querySelectorAll('.subtotal').forEach(span => {
+                total += parseFloat(span.textContent) || 0;
+            });
+            document.querySelector('.total-amount').textContent = total.toFixed(2);
+        }
+    </script>
+{% endblock %}

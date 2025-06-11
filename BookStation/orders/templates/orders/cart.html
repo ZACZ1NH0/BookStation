@@ -1,4 +1,4 @@
-{% extends 'orders/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Giỏ hàng{% endblock %}
@@ -7,25 +7,143 @@
 <h2 style="text-align:center; margin-top: 20px;">🛒 Giỏ hàng của bạn</h2>
 
 <link rel="stylesheet" href="{% static 'css/home/style.css' %}" />
+<style>
+  /* Bảng giỏ hàng */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  font-size: 16px;
+}
 
+th, td {
+  padding: 15px;
+  text-align: center;
+}
+
+thead {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+/* Checkbox */
+input[type="checkbox"] {
+  transform: scale(1.2);
+  accent-color: #007bff;
+}
+
+/* Ô nhập số lượng */
+.item-quantity {
+  padding: 5px;
+  font-size: 16px;
+  text-align: center;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Tổng cộng */
+.cart-summary {
+  text-align: right;
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  padding-right: 40px;
+}
+
+/* Nút đặt hàng */
+.checkout-btn {
+  background-color: #ff4da6;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  font-size: 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.checkout-btn:hover {
+  background-color: #e60073;
+}
+</style>
 {% if cart %}
-  <div class="cart-grid">
-    {% for key, item in cart.items %}
-      <div class="cart-item">
-        <h3>{{ item.title }}</h3>
-        {% comment %} <img src="{{ item.image.url}}" alt="{{ item.title }}" /> {% endcomment %}
-        <p><strong>Giá:</strong> {{ item.price|floatformat:2 }} $</p>
-        <p><strong>Số lượng:</strong> {{ item.quantity }}</p>
-        <p><strong>Thành tiền:</strong> {{ item.subtotal }} $</p>
-      </div>
-    {% endfor %}
-  </div>
+  <form method="post" action="{% url 'create_order' %}">
+    {% csrf_token %}
+    <table style="width: 100%; border-collapse: collapse; margin-top: 30px;">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Sản phẩm</th>
+          <th>Giá</th>
+          <th>Số lượng</th>
+          <th>Thành tiền</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for key, item in cart.items %}
+          <tr style="border-bottom: 1px solid #ccc;">
+            <td style="text-align:center;">
+              <input type="checkbox"
+                     class="item-checkbox"
+                     data-price="{{ item.price }}"
+                     name="selected_items"
+                     value="{{ key }}"
+                     checked>
+            </td>
+            <td>{{ item.title }}</td>
+            <td>{{ item.price|floatformat:2 }} $</td>
+            <td>
+              <input type="number"
+                     class="item-quantity"
+                     value="{{ item.quantity }}"
+                     min="1"
+                     style="width: 60px;">
+            </td>
+            <td>{{ item.subtotal|floatformat:2 }} $</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 
-  <div class="cart-summary">
-    <p><strong>Tổng cộng:</strong> {{ total|floatformat:2 }} $</p>
-    <button class="checkout-btn">🧾 Thanh toán</button>
-  </div>
+    <div class="cart-summary" style="margin-top: 20px;">
+      <p><strong>Tổng cộng:</strong> <span id="total-price">{{ total|floatformat:2 }}</span> $</p>
+      <button type="submit" class="checkout-btn">🛍️ Đặt hàng</button>
+    </div>
+  </form>
 {% else %}
   <p style="text-align:center;">Giỏ hàng của bạn đang trống.</p>
 {% endif %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  function updateTotal() {
+    let checkboxes = document.querySelectorAll(".item-checkbox");
+    let total = 0;
+    checkboxes.forEach(function(cb) {
+      if (cb.checked) {
+        let price = parseFloat(cb.dataset.price);
+        let quantityInput = cb.closest("tr").querySelector(".item-quantity");
+        let quantity = quantityInput ? parseInt(quantityInput.value) : 1;
+        total += price * quantity;
+      }
+    });
+    document.getElementById("total-price").innerText = total.toFixed(2);
+  }
+
+  document.querySelectorAll(".item-checkbox").forEach(function(cb) {
+    cb.addEventListener("change", updateTotal);
+  });
+
+  document.querySelectorAll(".item-quantity").forEach(function(input) {
+    input.addEventListener("change", updateTotal);
+  });
+
+  updateTotal(); // Gọi ngay khi trang tải xong
+});
+</script>
+
 {% endblock %}

@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/analytics/book_inventory_detail.css' %}">
+<link rel="stylesheet" href="{% static 'css/analytics/analytics.css' %}">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="analytics-container">
+    <div class="inventory-header">
+        <div class="stats-header">
+            <h1>Thống Kê BookStation</h1>
+            
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs">
+                <a href="{% url 'analytics:dashboard' %}" class="nav-button active">
+                    Dashboard
+                </a>
+                <a href="{% url 'analytics:book_inventory_detail' %}" class="nav-button">
+                    Thống Kê Kho Sách
+                </a>
+                <a href="{% url 'analytics:customer_stats' %}" class="nav-button">
+                    Thống Kê Khách hàng
+                </a>
+                <a href="{% url 'analytics:order_stats' %}" class="nav-button">
+                    Thống Kê Đơn Hàng
+                </a>
+            </div>
+        </div>
+        <!-- Tổng quan -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Tổng Số Sách</div>
+                <div class="stat-number">{{ total_books }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Hết Hàng</div>
+                <div class="stat-number">{{ out_of_stock }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Sắp Hết</div>
+                <div class="stat-number">{{ low_stock }}</div>
+            </div>
+        </div>
+
+        <!-- Thanh công cụ -->
+        <div class="toolbar">
+            <form method="GET" class="search-form">
+                <input type="text" name="search" value="{{ search_query }}" 
+                       placeholder="Tìm kiếm sách, tác giả, NXB...">
+                <select name="sort">
+                    <option value="-stock" {% if sort_by == '-stock' %}selected{% endif %}>
+                        Tồn kho (Cao → Thấp)
+                    </option>
+                    <option value="stock" {% if sort_by == 'stock' %}selected{% endif %}>
+                        Tồn kho (Thấp → Cao)
+                    </option>
+                    <option value="-total_sold" {% if sort_by == '-total_sold' %}selected{% endif %}>
+                        Đã bán (Cao → Thấp)
+                    </option>
+                    <option value="title" {% if sort_by == 'title' %}selected{% endif %}>
+                        Tên sách (A → Z)
+                    </option>
+                </select>
+                
+                <button type="submit" class="btn btn-primary">Lọc</button>
+                <a href="?export=excel" class="btn btn-success">Xuất Excel</a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bảng dữ liệu -->
+    <div class="inventory-table">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Tên Sách</th>
+                    <th>Tác Giả</th>
+                    <th>NXB</th>
+                    <th>Tồn Kho</th>
+                    <th>Đã Bán</th>
+                    <th>Giá ($)</th>
+                    <th>Trạng Thái</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in page_obj %}
+                <tr {% if book.stock == 0 %}class="out-of-stock"{% elif book.stock <= 5 %}class="low-stock"{% endif %}>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author.name }}</td>
+                    <td>{{ book.publisher.name }}</td>
+                    <td>{{ book.stock }}</td>
+                    <td>{{ book.total_sold|default:"0" }}</td>
+                    <td>{{ book.price }}</td>
+                    <td>
+                        {% if book.stock == 0 %}
+                            <span class="status-badge status-out">Hết hàng</span>
+                        {% elif book.stock <= 5 %}
+                            <span class="status-badge status-low">Sắp hết</span>
+                        {% else %}
+                            <span class="status-badge status-ok">Còn hàng</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Phân trang -->
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1&search={{ search_query }}&sort={{ sort_by }}">&laquo; Đầu</a>
+                    <a href="?page={{ page_obj.previous_page_number }}&search={{ search_query }}&sort={{ sort_by }}">Trước</a>
+                {% endif %}
+
+                <span class="current">
+                    Trang {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}&search={{ search_query }}&sort={{ sort_by }}">Tiếp</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}&search={{ search_query }}&sort={{ sort_by }}">Cuối &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    </div>
+</div>
+{% endblock %}

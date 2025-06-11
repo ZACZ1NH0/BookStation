@@ -1,0 +1,243 @@
+/* .author-card {
+            border: none;
+            transition: transform 0.3s;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+.author-card:hover {
+    transform: translateY(-5px);
+} */
+h2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 20px;
+}
+
+/* Author card styling */
+.author-card {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.author-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Card body styling */
+.card-body {
+    padding: 20px;
+}
+
+/* Card title (author name) styling */
+.card-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #34495e;
+    margin-bottom: 10px;
+}
+
+/* Card text (author bio) styling */
+.card-text {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    color: #7f8c8d;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+/* Button styling for "Chi tiết" */
+.btn-outline-primary {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    color: #007bff;
+    border-color: #007bff;
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background: #007bff;
+    color: #ffffff;
+    border-color: #007bff;
+}
+
+/* Alert styling for empty state */
+.alert-info {
+    background: #e7f3fe;
+    border-color: #b8daff;
+    color: #31708f;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1rem;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Pagination styling */
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+    flex-wrap: wrap;
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.pagination .page-item {
+    margin: 0 4px;
+}
+
+.pagination .page-link {
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    background-color: #f1f1f1;
+    color: #007bff;
+    font-weight: 500;
+    transition: background-color 0.3s, color 0.3s;
+    text-decoration: none;
+}
+
+.pagination .page-link:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.pagination .page-link:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.page-item {
+  margin: 0 3px; /* khoảng cách giữa các nút */
+}
+
+.page-item .page-link {
+    color: #007bff;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    margin: 0 5px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+.page-item .page-link:hover {
+    background-color: #e9f7ff;
+    border-color: #007bff;
+    color: #0056b3;
+}
+
+.page-item .page-link i {
+    font-size: 0.85rem;
+}
+
+.page-item .page-link {
+    font-family: 'Roboto', sans-serif;
+    color: #007bff;
+    border-radius: 5px;
+    margin: 0 5px;
+    transition: all 0.3s ease;
+}
+
+.page-item.active .page-link {
+    background: #007bff;
+    border-color: #007bff;
+    color: #ffffff;
+}
+
+.page-item .page-link:hover {
+    background: #e7f3fe;
+    color: #0056b3;
+    border-color: #b8daff;
+}
+
+.page-item .page-link i {
+    font-size: 0.9rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+    }
+
+    .card-text {
+        font-size: 0.9rem;
+    }
+
+    .btn-outline-primary {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .author-card {
+        margin-bottom: 15px;
+    }
+}
+.search-form {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.search-form input[type="text"] {
+    width: 300px;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+}
+
+.search-form input[type="text"]:focus {
+    outline: none;
+    border-color: #66afe9;
+    box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.search-form button {
+    padding: 8px 16px;
+    margin-left: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-form button:hover {
+    background-color: #45a049;
+}
