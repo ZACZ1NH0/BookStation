@@ -82,8 +82,15 @@ def book_search(request):
 #         return render(request, 'books/book_confirm_delete.html', {'book': book})
 #     return redirect('view_list_book')
 
+from django.db.models import Q  # để dùng cho tìm kiếm phức tạp
+
 def author_list(request):
+    query = request.GET.get('q')  # lấy từ khóa tìm kiếm từ URL (?q=...)
     authors = Author.objects.all()
+
+    if query:
+        authors = authors.filter(Q(name__icontains=query))  # tìm kiếm không phân biệt hoa thường
+
     paginator = Paginator(authors, 5)  
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -91,9 +98,11 @@ def author_list(request):
     context = {
         'page_obj': page_obj,
         'is_paginated': page_obj.has_other_pages(),
-        'authors': page_obj.object_list  
+        'authors': page_obj.object_list,
+        'query': query  # truyền lại query để hiển thị trong form
     }
     return render(request, 'authors/author_list.html', context)
+
 
 def author_detail(request, pk):
     author = get_object_or_404(Author, pk=pk)
@@ -132,15 +141,21 @@ def author_add(request):
 #     return render(request, 'authors/author_confirm_delete.html', {'author': author})
 
 def publisher_list(request):
+    query = request.GET.get('q')
     publishers = Publisher.objects.all()
-    paginator = Paginator(publishers, 5)  
+
+    if query:
+        publishers = publishers.filter(Q(name__icontains=query))
+
+    paginator = Paginator(publishers, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    
+
     context = {
         'page_obj': page_obj,
         'is_paginated': page_obj.has_other_pages(),
-        'publishers': page_obj.object_list  
+        'publishers': page_obj.object_list,
+        'query': query,
     }
     return render(request, 'publishers/publisher_list.html', context)
 
@@ -184,15 +199,21 @@ def publisher_delete(request, pk):
     return render(request, 'publishers/publisher_confirm_delete.html', {'publisher': publisher})
 
 def category_list(request):
+    query = request.GET.get('q')
     categories = Category.objects.all()
-    paginator = Paginator(categories, 5)  
+
+    if query:
+        categories = categories.filter(Q(name__icontains=query))
+
+    paginator = Paginator(categories, 5)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    
+
     context = {
         'page_obj': page_obj,
         'is_paginated': page_obj.has_other_pages(),
-        'categories': page_obj.object_list  
+        'categories': page_obj.object_list,
+        'query': query,
     }
     return render(request, 'categories/category_list.html', context)
 
