@@ -24,11 +24,13 @@ class Order(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     note = models.TextField(blank=True)
     payment_method = models.CharField(max_length=20, choices=PAYMENT_CHOICES, default='cash')
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="Tổng tiền")
 
     def __str__(self):
         return f"Order #{self.pk} by {self.customer.username if self.customer else 'Guest'}"
 
-    def total_amount(self):
+    def get_items_total(self):
+        """Tính tổng tiền các sản phẩm (chưa tính khuyến mãi)"""
         return sum(item.subtotal() for item in self.items.all())
 
 

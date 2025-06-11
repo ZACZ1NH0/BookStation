@@ -19,7 +19,14 @@
         <div class="row">
             <!-- Ảnh sách -->
             <div class="col-md-4 text-center">
-                <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-image">
+                {% if book.cover_image %}
+                    <img src="{{ book.cover_image.url }}" alt="{{ book.title }}" class="book-image">
+                {% else %}
+                    <div class="no-image-placeholder">
+                        <i class="fas fa-book" style="font-size: 100px; color: #ccc;"></i>
+                        <p style="color: #999; margin-top: 10px;">Không có ảnh bìa</p>
+                    </div>
+                {% endif %}
             </div>
 
             <!-- Thông tin sách -->

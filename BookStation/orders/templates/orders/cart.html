@@ -109,8 +109,37 @@ input[type="checkbox"] {
       </tbody>
     </table>
 
+    <!-- Phần nhập mã khuyến mãi -->
+    <div class="promotion-section" style="margin-top: 20px; padding: 20px; background-color: #f8f9fa; border-radius: 10px;">
+      <h4 style="margin-bottom: 15px; color: #495057;">🎁 Mã khuyến mãi</h4>
+      <div class="promotion-input-group" style="display: flex; gap: 10px; margin-bottom: 15px;">
+        <input type="text" 
+               id="promotion-code" 
+               placeholder="Nhập mã khuyến mãi" 
+               style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px;">
+        <button type="button" 
+                id="apply-promotion-btn" 
+                class="promotion-btn" 
+                style="padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+          Áp dụng
+        </button>
+      </div>
+      <div id="promotion-message" style="margin-top: 10px; padding: 10px; border-radius: 5px; display: none;"></div>
+      <div id="available-promotions" style="margin-top: 15px;">
+        <button type="button" id="show-promotions-btn" style="background: none; border: none; color: #007bff; text-decoration: underline; cursor: pointer;">
+          Xem mã khuyến mãi có sẵn
+        </button>
+        <div id="promotions-list" style="display: none; margin-top: 10px; max-height: 200px; overflow-y: auto;"></div>
+      </div>
+    </div>
+
     <div class="cart-summary" style="margin-top: 20px;">
+      <div id="discount-info" style="display: none; margin-bottom: 10px; color: #28a745; font-weight: bold;">
+        <p>Giảm giá: -<span id="discount-amount">0</span> $</p>
+      </div>
       <p><strong>Tổng cộng:</strong> <span id="total-price">{{ total|floatformat:2 }}</span> $</p>
+      <input type="hidden" id="applied-promotion-id" name="promotion_id" value="">
+      <input type="hidden" id="discount-value" name="discount_amount" value="0">
       <button type="submit" class="checkout-btn">🛍️ Đặt hàng</button>
     </div>
   </form>
@@ -120,6 +149,9 @@ input[type="checkbox"] {
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+  let originalTotal = 0;
+  let currentDiscount = 0;
+  
   function updateTotal() {
     let checkboxes = document.querySelectorAll(".item-checkbox");
     let total = 0;
@@ -131,9 +163,109 @@ document.addEventListener("DOMContentLoaded", function() {
         total += price * quantity;
       }
     });
-    document.getElementById("total-price").innerText = total.toFixed(2);
+    originalTotal = total;
+    let finalTotal = total - currentDiscount;
+    document.getElementById("total-price").innerText = finalTotal.toFixed(2);
   }
 
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+
+  function showMessage(message, isSuccess = false) {
+    const messageDiv = document.getElementById("promotion-message");
+    messageDiv.textContent = message;
+    messageDiv.style.display = "block";
+    messageDiv.style.backgroundColor = isSuccess ? "#d4edda" : "#f8d7da";
+    messageDiv.style.color = isSuccess ? "#155724" : "#721c24";
+    messageDiv.style.border = isSuccess ? "1px solid #c3e6cb" : "1px solid #f5c6cb";
+  }
+
+  function applyPromotion() {
+    const code = document.getElementById("promotion-code").value.trim();
+    if (!code) {
+      showMessage("Vui lòng nhập mã khuyến mãi");
+      return;
+    }
+
+    fetch('/promotions/apply-code/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken')
+      },
+      body: JSON.stringify({
+        code: code,
+        order_amount: originalTotal
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        currentDiscount = data.data.discount_amount;
+        document.getElementById("discount-amount").textContent = currentDiscount.toFixed(2);
+        document.getElementById("discount-info").style.display = "block";
+        document.getElementById("applied-promotion-id").value = data.data.promotion_id;
+        document.getElementById("discount-value").value = currentDiscount;
+        updateTotal();
+        showMessage(data.message, true);
+      } else {
+        showMessage(data.message);
+      }
+    })
+    .catch(error => {
+      showMessage("Có lỗi xảy ra, vui lòng thử lại");
+    });
+  }
+
+  function loadAvailablePromotions() {
+    fetch('/promotions/valid-promotions/')
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        const listDiv = document.getElementById("promotions-list");
+        if (data.promotions.length === 0) {
+          listDiv.innerHTML = "<p style='color: #666;'>Không có mã khuyến mãi nào khả dụng</p>";
+        } else {
+          let html = '<div style="border: 1px solid #ddd; border-radius: 5px; padding: 10px; background: white;">';
+          data.promotions.forEach(promotion => {
+            html += `
+              <div style="border-bottom: 1px solid #eee; padding: 10px 0; cursor: pointer;" onclick="usePromotion('${promotion.code}')">
+                <strong>${promotion.code}</strong> - ${promotion.name}<br>
+                <small style="color: #666;">${promotion.description}</small><br>
+                <small style="color: #28a745;">Giảm ${promotion.discount_type === 'percentage' ? promotion.discount_value + '%' : promotion.discount_value + '$'} 
+                (Tối thiểu ${promotion.min_order_amount}$)</small>
+              </div>
+            `;
+          });
+          html += '</div>';
+          listDiv.innerHTML = html;
+        }
+        listDiv.style.display = listDiv.style.display === "none" ? "block" : "none";
+      }
+    });
+  }
+
+  window.usePromotion = function(code) {
+    document.getElementById("promotion-code").value = code;
+    document.getElementById("promotions-list").style.display = "none";
+    applyPromotion();
+  }
+
+  document.getElementById("apply-promotion-btn").addEventListener("click", applyPromotion);
+  document.getElementById("show-promotions-btn").addEventListener("click", loadAvailablePromotions);
+  
   document.querySelectorAll(".item-checkbox").forEach(function(cb) {
     cb.addEventListener("change", updateTotal);
   });
