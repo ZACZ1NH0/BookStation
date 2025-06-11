@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'staff',
     'reviews',
     'analytics',
+    'promotions',
 ]
 AUTH_USER_MODEL = 'accounts.Users'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -89,9 +90,9 @@ WSGI_APPLICATION = 'BookStation.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bookstore_db',
+        'NAME': 'az',
         'USER': 'root',                 # Username của MySQL
-        'PASSWORD': '1234',     # Password của MySQL
+        'PASSWORD': '',     # Password của MySQL
         'HOST': 'localhost',            # Hoặc IP của DB server
         'PORT': '3306',                 # Cổng mặc định
         'OPTIONS': {

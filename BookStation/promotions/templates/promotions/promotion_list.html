@@ -1,0 +1,232 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}Khuyến mãi{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="mb-4">
+                <i class="fas fa-tags text-warning"></i>
+                Khuyến mãi đặc biệt
+            </h2>
+        </div>
+    </div>
+
+    <!-- Khuyến mãi đang diễn ra -->
+    {% if active_promotions %}
+    <div class="row mb-5">
+        <div class="col-12">
+            <h3 class="text-success mb-3">
+                <i class="fas fa-fire"></i>
+                Đang diễn ra
+            </h3>
+            <div class="row">
+                {% for promotion in active_promotions %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card promotion-card h-100 border-success">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-gift"></i>
+                                {{ promotion.name }}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="promotion-code mb-3">
+                                <span class="badge badge-warning badge-lg">
+                                    <i class="fas fa-ticket-alt"></i>
+                                    {{ promotion.code }}
+                                </span>
+                            </div>
+                            
+                            <p class="card-text">{{ promotion.description }}</p>
+                            
+                            <div class="promotion-details">
+                                <div class="mb-2">
+                                    <strong>Giảm giá:</strong>
+                                    {% if promotion.discount_type == 'percentage' %}
+                                        {{ promotion.discount_value }}%
+                                        {% if promotion.max_discount_amount %}
+                                            (tối đa {{ promotion.max_discount_amount|floatformat:0|intcomma }}đ)
+                                        {% endif %}
+                                    {% else %}
+                                        {{ promotion.discount_value|floatformat:0|intcomma }}đ
+                                    {% endif %}
+                                </div>
+                                
+                                {% if promotion.min_order_amount > 0 %}
+                                <div class="mb-2">
+                                    <strong>Đơn tối thiểu:</strong>
+                                    {{ promotion.min_order_amount|floatformat:0|intcomma }}đ
+                                </div>
+                                {% endif %}
+                                
+                                <div class="mb-2">
+                                    <strong>Hết hạn:</strong>
+                                    <span class="text-danger">
+                                        {{ promotion.end_date|date:"d/m/Y H:i" }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-outline-success btn-sm copy-code" 
+                                    data-code="{{ promotion.code }}">
+                                <i class="fas fa-copy"></i>
+                                Sao chép mã
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Khuyến mãi sắp diễn ra -->
+    {% if upcoming_promotions %}
+    <div class="row">
+        <div class="col-12">
+            <h3 class="text-info mb-3">
+                <i class="fas fa-clock"></i>
+                Sắp diễn ra
+            </h3>
+            <div class="row">
+                {% for promotion in upcoming_promotions %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card promotion-card h-100 border-info">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-gift"></i>
+                                {{ promotion.name }}
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="promotion-code mb-3">
+                                <span class="badge badge-secondary badge-lg">
+                                    <i class="fas fa-ticket-alt"></i>
+                                    {{ promotion.code }}
+                                </span>
+                            </div>
+                            
+                            <p class="card-text">{{ promotion.description }}</p>
+                            
+                            <div class="promotion-details">
+                                <div class="mb-2">
+                                    <strong>Giảm giá:</strong>
+                                    {% if promotion.discount_type == 'percentage' %}
+                                        {{ promotion.discount_value }}%
+                                        {% if promotion.max_discount_amount %}
+                                            (tối đa {{ promotion.max_discount_amount|floatformat:0|intcomma }}đ)
+                                        {% endif %}
+                                    {% else %}
+                                        {{ promotion.discount_value|floatformat:0|intcomma }}đ
+                                    {% endif %}
+                                </div>
+                                
+                                {% if promotion.min_order_amount > 0 %}
+                                <div class="mb-2">
+                                    <strong>Đơn tối thiểu:</strong>
+                                    {{ promotion.min_order_amount|floatformat:0|intcomma }}đ
+                                </div>
+                                {% endif %}
+                                
+                                <div class="mb-2">
+                                    <strong>Bắt đầu:</strong>
+                                    <span class="text-primary">
+                                        {{ promotion.start_date|date:"d/m/Y H:i" }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if not active_promotions and not upcoming_promotions %}
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                <i class="fas fa-info-circle fa-2x mb-3"></i>
+                <h4>Hiện tại chưa có khuyến mãi nào</h4>
+                <p>Hãy theo dõi để không bỏ lỡ các chương trình khuyến mãi hấp dẫn!</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Toast notification -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="copyToast" class="toast hide" role="alert">
+        <div class="toast-header">
+            <i class="fas fa-check-circle text-success me-2"></i>
+            <strong class="me-auto">Thành công</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+        </div>
+        <div class="toast-body">
+            Đã sao chép mã khuyến mãi!
+        </div>
+    </div>
+</div>
+
+<style>
+.promotion-card {
+    transition: transform 0.2s;
+}
+
+.promotion-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.badge-lg {
+    font-size: 1.1em;
+    padding: 0.5em 1em;
+}
+
+.promotion-code {
+    text-align: center;
+}
+
+.copy-code {
+    width: 100%;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Xử lý sao chép mã khuyến mãi
+    document.querySelectorAll('.copy-code').forEach(button => {
+        button.addEventListener('click', function() {
+            const code = this.getAttribute('data-code');
+            
+            // Sao chép vào clipboard
+            navigator.clipboard.writeText(code).then(() => {
+                // Hiển thị toast
+                const toast = new bootstrap.Toast(document.getElementById('copyToast'));
+                toast.show();
+            }).catch(err => {
+                console.error('Không thể sao chép: ', err);
+                // Fallback cho trình duyệt cũ
+                const textArea = document.createElement('textarea');
+                textArea.value = code;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                
+                const toast = new bootstrap.Toast(document.getElementById('copyToast'));
+                toast.show();
+            });
+        });
+    });
+});
+</script>
+{% endblock %}
