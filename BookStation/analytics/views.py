@@ -17,7 +17,6 @@ from django.db.models.functions import TruncMonth
 import openpyxl
 
 def get_revenue_stats():
-    """Thống kê doanh thu tổng + theo trạng thái + theo tháng và trạng thái + top sách bán chạy"""
     
     # Danh sách trạng thái
     STATUS_CHOICES = ['pending', 'processing', 'shipping', 'completed', 'cancelled']
@@ -62,7 +61,6 @@ def get_revenue_stats():
     }
     
 def get_customer_order_stats():
-    """Thống kê khách hàng và đơn hàng"""
     # Thống kê khách hàng
     total_customers = Users.objects.count()
     new_customers = Users.objects.filter(
@@ -82,7 +80,6 @@ def get_customer_order_stats():
     }
 
 def get_book_inventory_stats():
-    """Thống kê tình trạng sách"""
     # Thống kê tổng quan về sách
     total_books = Book.objects.count()
     out_of_stock = Book.objects.filter(stock=0)
@@ -95,7 +92,6 @@ def get_book_inventory_stats():
     }
 
 def analytics_dashboard(request):
-    """View chính cho dashboard analytics"""
     context = {
         **get_revenue_stats(),
         **get_customer_order_stats(),
@@ -104,7 +100,6 @@ def analytics_dashboard(request):
     return render(request, 'analytics/dashboard.html', context)
 
 def book_inventory_detail(request):
-    """Thống kê chi tiết về sách và kho"""
     # Xử lý tìm kiếm
     search_query = request.GET.get('search', '')
     sort_by = request.GET.get('sort', '-stock')  # Mặc định sắp xếp theo tồn kho giảm dần
@@ -167,70 +162,6 @@ def book_inventory_detail(request):
     }
 
     return render(request, 'analytics/book_inventory_detail.html', context)
-
-def customer_analysis_detail(request):
-    """Chi tiết phân tích khách hàng và đơn hàng"""
-    # Xử lý tìm kiếm
-    search_query = request.GET.get('search', '')
-    sort_by = request.GET.get('sort', '-total_spent')  # Mặc định sắp xếp theo tổng chi tiêu
-
-    # Query khách hàng với tổng chi tiêu và số đơn hàng
-    customers = Users.objects.annotate(
-        total_spent=Sum(F('order__items__quantity') * F('order__items__price'),
-                       output_field=DecimalField()),
-        order_count=Count('order', distinct=True),
-        last_order_date=Max('order__created_at')
-    )
-
-    # Tìm kiếm
-    if search_query:
-        customers = customers.filter(
-            Q(username__icontains=search_query) |
-            Q(email__icontains=search_query) |
-            Q(phone__icontains=search_query)
-        )
-
-    # Sắp xếp
-    customers = customers.order_by(sort_by)
-
-    # Phân trang
-    paginator = Paginator(customers, 20)  # 20 khách hàng mỗi trang
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-
-    # Xuất Excel nếu được yêu cầu
-    if request.GET.get('export') == 'excel':
-        data = []
-        for customer in customers:
-            data.append({
-                'Tên đăng nhập': customer.username,
-                'Email': customer.email,
-                'Số điện thoại': customer.phone or '',
-                'Số đơn hàng': customer.order_count,
-                'Tổng chi tiêu': customer.total_spent or 0,
-                'Đơn hàng gần nhất': customer.last_order_date
-            })
-
-        df = pd.DataFrame(data)
-        response = HttpResponse(content_type='application/vnd.ms-excel')
-        response['Content-Disposition'] = 'attachment; filename="customer_analysis.xlsx"'
-        df.to_excel(response, index=False)
-        return response
-
-    context = {
-        'page_obj': page_obj,
-        'search_query': search_query,
-        'sort_by': sort_by,
-        'total_customers': customers.count(),
-        'new_customers': customers.filter(
-            date_joined__gte=timezone.now() - timedelta(days=30)
-        ).count(),
-        'active_customers': customers.filter(
-            order__created_at__gte=timezone.now() - timedelta(days=30)
-        ).distinct().count(),
-    }
-
-    return render(request, 'analytics/customer_analysis_detail.html', context)
 
 @login_required
 def customer_stats(request):
@@ -396,47 +327,3 @@ def order_stats(request):
     }
 
     return render(request, 'analytics/order_stats.html', context)
-
-def export_books_to_excel(books):
-    from openpyxl import Workbook
-    from openpyxl.utils import get_column_letter
-
-    wb = Workbook()
-    ws = wb.active
-    ws.title = "Inventory"
-
-    # Tiêu đề
-    headers = ["Tên Sách", "Tác Giả", "NXB", "Tồn Kho", "Đã Bán", "Giá", "Trạng Thái"]
-    ws.append(headers)
-
-    for book in books:
-        if book.stock == 0:
-            status = "Hết hàng"
-        elif book.stock <= 5:
-            status = "Sắp hết"
-        else:
-            status = "Còn hàng"
-
-        row = [
-            book.title,
-            book.author.name if book.author else '',
-            book.publisher.name if book.publisher else '',
-            book.stock,
-            book.total_sold or 0,
-            book.price,
-            status,
-        ]
-        ws.append(row)
-
-    # Tự động giãn cột
-    for col in ws.columns:
-        max_length = max(len(str(cell.value)) for cell in col)
-        ws.column_dimensions[get_column_letter(col[0].column)].width = max_length + 2
-
-    # Tạo phản hồi
-    response = HttpResponse(
-        content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-    )
-    response['Content-Disposition'] = 'attachment; filename="book_inventory.xlsx"'
-    wb.save(response)
-    return response
